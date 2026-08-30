@@ -89,6 +89,40 @@ foreach ($desiredAddresses as $address) {
     }
 }
 
+$wwwName = 'www.test.kolodahearthstone.com';
+$wwwResponse = khs_cf_request(
+    'GET',
+    'zones/' . rawurlencode($zoneId) . '/dns_records?name=' . rawurlencode($wwwName) . '&per_page=100'
+);
+$wwwRecords = is_array($wwwResponse['result'] ?? null) ? $wwwResponse['result'] : [];
+foreach ($wwwRecords as $record) {
+    $type = strtoupper((string) ($record['type'] ?? ''));
+    $content = strtolower(rtrim((string) ($record['content'] ?? ''), '.'));
+    if ($type !== 'CNAME' || $content !== 'test.kolodahearthstone.com') {
+        throw new RuntimeException('Unexpected www staging DNS record; refusing to modify DNS.');
+    }
+}
+$wwwExisting = $wwwRecords[0] ?? null;
+$wwwPayload = [
+    'type' => 'CNAME',
+    'name' => $wwwName,
+    'content' => 'test.kolodahearthstone.com',
+    'ttl' => 60,
+    'proxied' => false,
+];
+if ($wwwExisting === null) {
+    echo ($apply ? 'create ' : 'would create ') . 'CNAME ' . $wwwName . ' -> test.kolodahearthstone.com' . PHP_EOL;
+    if ($apply) {
+        khs_cf_request('POST', 'zones/' . rawurlencode($zoneId) . '/dns_records', $wwwPayload);
+    }
+} else {
+    $needsUpdate = (bool) ($wwwExisting['proxied'] ?? false) || (int) ($wwwExisting['ttl'] ?? 0) !== 60;
+    echo ($needsUpdate ? ($apply ? 'update ' : 'would update ') : 'unchanged ') . 'CNAME ' . $wwwName . ' -> test.kolodahearthstone.com' . PHP_EOL;
+    if ($apply && $needsUpdate) {
+        khs_cf_request('PUT', 'zones/' . rawurlencode($zoneId) . '/dns_records/' . rawurlencode((string) $wwwExisting['id']), $wwwPayload);
+    }
+}
+
 if (!$apply) {
     echo 'dry-run only; set KHS_DNS_APPLY=1 to apply' . PHP_EOL;
 }

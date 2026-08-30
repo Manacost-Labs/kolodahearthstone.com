@@ -7,7 +7,7 @@ production_database=kldhs
 staging_database=kldhs_stage
 staging_user=kldhs_stage
 backup_root=/var/backups/kolodahearthstone-staging
-repo_root=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
+repo_root=$(CDPATH='' cd -- "$(dirname "$0")/../.." && pwd)
 guard_source="$repo_root/ops/staging/koloda-staging-guard.php"
 
 if [ "${1:-}" != "--apply" ] || [ "$(id -u)" -ne 0 ]; then
@@ -43,26 +43,20 @@ rsync -a --delete \
     --exclude='/wp-content/ai1wm-backups/***' \
     "$production_root/" "$staging_root/"
 
-staging_config_created=0
 if [ ! -f "$staging_root/wp-config.php" ]; then
     cp "$production_root/wp-config.php" "$staging_root/wp-config.php"
-    staging_config_created=1
 fi
+chown koloda:koloda "$staging_root/wp-config.php"
 
-staging_password=''
-if [ "$staging_database_exists" -eq 0 ] || [ "$staging_config_created" -eq 1 ]; then
-    staging_password=$(openssl rand -hex 32)
-    if [ "$staging_database_exists" -eq 0 ]; then
-        mariadb -e "CREATE DATABASE \`$staging_database\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-    fi
-    mariadb -e "CREATE USER IF NOT EXISTS '$staging_user'@'localhost' IDENTIFIED BY '$staging_password'; ALTER USER '$staging_user'@'localhost' IDENTIFIED BY '$staging_password'; GRANT ALL PRIVILEGES ON \`$staging_database\`.* TO '$staging_user'@'localhost'; FLUSH PRIVILEGES;"
+staging_password=$(openssl rand -hex 32)
+if [ "$staging_database_exists" -eq 0 ]; then
+    mariadb -e "CREATE DATABASE \`$staging_database\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 fi
+mariadb -e "CREATE USER IF NOT EXISTS '$staging_user'@'localhost' IDENTIFIED BY '$staging_password'; ALTER USER '$staging_user'@'localhost' IDENTIFIED BY '$staging_password'; GRANT ALL PRIVILEGES ON \`$staging_database\`.* TO '$staging_user'@'localhost'; FLUSH PRIVILEGES;"
 sudo -u koloda wp --path="$staging_root" config set DB_NAME "$staging_database" --type=constant --quiet
 sudo -u koloda wp --path="$staging_root" config set DB_USER "$staging_user" --type=constant --quiet
 sudo -u koloda wp --path="$staging_root" config set DB_HOST "localhost" --type=constant --quiet
-if [ -n "$staging_password" ]; then
-    sudo -u koloda wp --path="$staging_root" config set DB_PASSWORD "$staging_password" --type=constant --quiet
-fi
+sudo -u koloda wp --path="$staging_root" config set DB_PASSWORD "$staging_password" --type=constant --quiet
 sudo -u koloda wp --path="$staging_root" config set WP_ENVIRONMENT_TYPE staging --type=constant --quiet
 sudo -u koloda wp --path="$staging_root" config set WP_REDIS_PREFIX "khs_stage_" --type=constant --quiet
 sudo -u koloda wp --path="$staging_root" config set WP_REDIS_DATABASE 1 --type=constant --raw --quiet

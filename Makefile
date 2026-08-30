@@ -6,7 +6,7 @@ config:
 	@python3 ops/validate-config.py
 
 php-lint:
-	@find wordpress -type f -name '*.php' -print0 | xargs -0 -n 1 php -l >/dev/null
+	@find wordpress ops -type f -name '*.php' -print0 | xargs -0 -n 1 php -l >/dev/null
 	@echo 'PHP syntax: OK'
 
 test:

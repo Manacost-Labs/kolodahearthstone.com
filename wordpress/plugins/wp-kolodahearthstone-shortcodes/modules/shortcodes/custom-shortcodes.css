@@ -1,0 +1,241 @@
+/* Модальное окно */
+#mtp-shortcodes-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+}
+
+.mtp-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
+}
+
+.mtp-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.mtp-modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+}
+
+.mtp-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #23282d;
+}
+
+.mtp-modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.mtp-modal-close:hover {
+    color: #000;
+}
+
+.mtp-modal-body {
+    padding: 25px;
+    overflow-y: auto;
+    max-height: calc(90vh - 80px);
+}
+
+/* Опции шорткодов */
+.mtp-shortcode-option {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.mtp-shortcode-option:hover {
+    border-color: #0073aa;
+    background: #f0f8ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 115, 170, 0.15);
+}
+
+.mtp-shortcode-option:last-child {
+    margin-bottom: 0;
+}
+
+.mtp-shortcode-icon {
+    font-size: 40px;
+    margin-right: 20px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.mtp-shortcode-info {
+    flex: 1;
+}
+
+.mtp-shortcode-info h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #23282d;
+}
+
+.mtp-shortcode-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Стили для шаблонов */
+.mtp-template-item {
+    transition: all 0.2s ease;
+}
+
+.mtp-template-item:hover {
+    background: #f0f8ff !important;
+    border-color: #0073aa !important;
+    transform: translateX(3px);
+}
+
+.mtp-delete-template:hover {
+    background: #a00 !important;
+}
+
+/* Глобальные стили для всех модальных окон TinyMCE */
+.mce-window * {
+    box-sizing: border-box;
+}
+
+.mce-window input,
+.mce-window select,
+.mce-window textarea,
+.mce-window button {
+    box-sizing: border-box !important;
+    max-width: 100%;
+}
+
+.mce-window button {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+/* Стили для форм шаблонов в TinyMCE */
+.mce-window #mtp-save-form {
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+.mce-window #mtp-save-form input,
+.mce-window #mtp-save-form select,
+.mce-window #mtp-save-form textarea {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.mce-window #mtp-save-form button {
+    box-sizing: border-box;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+/* Стили для контейнеров в модальных окнах */
+.mce-window .mce-container-body {
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.mce-window .mce-container-body * {
+    box-sizing: border-box;
+}
+
+/* Исправление для flex-контейнеров */
+.mce-window [style*="display:flex"] {
+    box-sizing: border-box;
+}
+
+.mce-window [style*="display:flex"] * {
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+    .mtp-modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+    
+    .mtp-modal-header {
+        padding: 15px 20px;
+    }
+    
+    .mtp-modal-body {
+        padding: 20px 15px;
+    }
+    
+    .mtp-shortcode-option {
+        padding: 15px;
+    }
+    
+    .mtp-shortcode-icon {
+        font-size: 32px;
+        width: 50px;
+        height: 50px;
+        margin-right: 15px;
+    }
+    
+    .mtp-shortcode-info h3 {
+        font-size: 16px;
+    }
+    
+    .mtp-shortcode-info p {
+        font-size: 13px;
+    }
+}
+
+
+
+

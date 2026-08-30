@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "site": {
+    "name": "KolodaHearthstone",
+    "canonical_url": "https://kolodahearthstone.com",
+    "legacy_redirect_url": "https://kolodahearthstone.ru",
+    "staging_url": "https://test.kolodahearthstone.com",
+    "timezone": "Europe/Moscow",
+    "permalink_structure": "/%postname%/"
+  },
+  "runtime": {
+    "wordpress": "6.9.7",
+    "php_fpm": "8.4",
+    "mariadb": "10.11.18",
+    "theme": "blocksy",
+    "theme_version": "2.1.40",
+    "companion_version": "2.1.40"
+  },
+  "paths": {
+    "source": "/srv/projects/wordpress/kolodahearthstone.com",
+    "staging": "/var/www/koloda/data/www/test.kolodahearthstone.com",
+    "production": "/var/www/koloda/data/www/kolodahearthstone.ru"
+  },
+  "data_policy": {
+    "database_in_git": false,
+    "uploads_in_git": false,
+    "secrets_in_git": false,
+    "runtime_cache_in_git": false,
+    "production_and_legacy_share_runtime": true,
+    "staging_uses_isolated_database": true
+  }
+}

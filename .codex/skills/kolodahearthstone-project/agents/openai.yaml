@@ -1,0 +1,4 @@
+interface:
+  display_name: "KolodaHearthstone project"
+  short_description: "WordPress Blocksy project context and safe delivery"
+  default_prompt: "Use $kolodahearthstone-project to map this task to the Koloda WordPress source, runtime, tests, and release gates."

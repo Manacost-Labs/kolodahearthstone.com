@@ -1,0 +1,427 @@
+/* ============================================
+   СТИЛИ ОПРОСОВ В СТИЛЕ HEARTHSTONE
+   ============================================ */
+
+/* Контейнер опроса - пергаментный стиль */
+.khs-poll-wrapper {
+    margin: 30px 0;
+    padding: 35px;
+    background: linear-gradient(135deg, 
+        rgba(250, 242, 230, 0.95) 0%, 
+        rgba(245, 235, 220, 0.95) 50%,
+        rgba(240, 228, 210, 0.95) 100%);
+    border: 2px solid rgba(184, 150, 120, 0.4);
+    border-radius: 15px;
+    box-shadow: 
+        inset 0 1px 3px rgba(255, 255, 255, 0.6),
+        inset 0 -1px 3px rgba(0, 0, 0, 0.1),
+        0 4px 20px rgba(0, 0, 0, 0.12),
+        0 1px 4px rgba(0, 0, 0, 0.08);
+    position: relative;
+    animation: khs-poll-fade-in 0.5s ease-out;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Анимация появления */
+@keyframes khs-poll-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Заголовок вопроса - Hearthstone стиль */
+.khs-poll-question {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #2d1b0e;
+    margin-bottom: 25px;
+    line-height: 1.4;
+    letter-spacing: 0.2px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+/* Декоративная линия под вопросом */
+.khs-poll-question::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        rgba(212, 175, 55, 0.8) 0%, 
+        rgba(184, 150, 120, 0.6) 100%);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(212, 175, 55, 0.3);
+}
+
+.khs-poll-description {
+    margin-bottom: 25px;
+    color: #4a3727;
+    line-height: 1.7;
+    font-size: 0.98rem;
+}
+
+.khs-poll-description p {
+    margin: 12px 0;
+}
+
+.khs-poll-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* Варианты ответов - карточки Hearthstone */
+.khs-poll-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 26px;
+    background: linear-gradient(135deg, 
+        rgba(255, 252, 248, 0.98) 0%, 
+        rgba(255, 250, 240, 0.98) 50%,
+        rgba(250, 245, 235, 0.98) 100%);
+    border: 2px solid rgba(184, 150, 120, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-align: left;
+    font-size: 1.05rem;
+    color: #2d1b0e;
+    overflow: hidden;
+    box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.08),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
+    transform: scale(1);
+}
+
+/* Hover эффект - золотистое свечение и подъем */
+.khs-poll-option:hover:not(:disabled) {
+    background: linear-gradient(135deg, 
+        rgba(255, 250, 240, 1) 0%, 
+        rgba(255, 248, 235, 1) 50%,
+        rgba(250, 243, 230, 1) 100%);
+    border-color: rgba(212, 175, 55, 0.6);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 8px 24px rgba(212, 175, 55, 0.25),
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 3px rgba(255, 255, 255, 0.9),
+        0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+/* Активное состояние */
+.khs-poll-option:active:not(:disabled) {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 
+        0 4px 12px rgba(212, 175, 55, 0.2),
+        0 2px 6px rgba(0, 0, 0, 0.12),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
+    background: linear-gradient(135deg, 
+        rgba(250, 243, 230, 1) 0%, 
+        rgba(245, 238, 225, 1) 50%,
+        rgba(240, 233, 220, 1) 100%);
+}
+
+/* Заблокированное состояние */
+.khs-poll-option:disabled {
+    cursor: default;
+    background: linear-gradient(135deg, 
+        rgba(240, 235, 228, 0.85) 0%, 
+        rgba(235, 230, 220, 0.85) 100%);
+    border-color: rgba(184, 150, 120, 0.25);
+    opacity: 0.85;
+    transform: scale(1);
+}
+
+/* Текст варианта ответа */
+.khs-poll-option-text {
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1.08rem;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #2d1b0e;
+    letter-spacing: 0.1px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+    transition: color 0.3s ease-in-out;
+}
+
+.khs-poll-option:hover:not(:disabled) .khs-poll-option-text {
+    color: #1a150f;
+    text-shadow: 0 1px 2px rgba(212, 175, 55, 0.3);
+}
+
+.khs-poll-option-votes {
+    font-size: 0.9rem;
+    color: #6b5b4a;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.khs-poll-bar-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: rgba(139, 117, 95, 0.1);
+    overflow: hidden;
+    border-radius: 0 0 10px 10px;
+}
+
+/* Прогресс-бар с золотистым градиентом */
+.khs-poll-bar {
+    height: 100%;
+    background: linear-gradient(90deg, 
+        rgba(212, 175, 55, 0.85) 0%, 
+        rgba(230, 190, 80, 0.75) 50%,
+        rgba(212, 175, 55, 0.85) 100%);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 0 10px 10px;
+    will-change: width;
+    box-shadow: 
+        0 0 8px rgba(212, 175, 55, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Анимация заполнения прогресс-бара */
+.khs-poll-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.4) 50%,
+        transparent 100%);
+    animation: khs-poll-shine 2s ease-in-out infinite;
+}
+
+@keyframes khs-poll-shine {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.khs-poll-option.khs-poll-loading {
+    opacity: 0.7;
+    pointer-events: none;
+    position: relative;
+}
+
+.khs-poll-option.khs-poll-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    border: 2px solid rgba(139, 117, 95, 0.3);
+    border-top-color: rgba(139, 117, 95, 0.8);
+    border-radius: 50%;
+    animation: khs-poll-spin 0.6s linear infinite;
+}
+
+@keyframes khs-poll-spin {
+    to { transform: rotate(360deg); }
+}
+
+.khs-poll-cancel-vote.khs-poll-loading {
+    opacity: 0.7;
+    pointer-events: none;
+    position: relative;
+    padding-right: 35px;
+}
+
+.khs-poll-cancel-vote.khs-poll-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 14px;
+    height: 14px;
+    margin-top: -7px;
+    border: 2px solid rgba(139, 117, 95, 0.3);
+    border-top-color: rgba(139, 117, 95, 0.8);
+    border-radius: 50%;
+    animation: khs-poll-spin 0.6s linear infinite;
+}
+
+/* Кнопка отмены голоса - стиль Hearthstone */
+.khs-poll-cancel-vote {
+    margin-top: 18px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, 
+        rgba(240, 230, 215, 0.9) 0%, 
+        rgba(235, 225, 210, 0.9) 100%);
+    border: 2px solid rgba(184, 150, 120, 0.4);
+    border-radius: 10px;
+    color: #6b5b4a;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: Georgia, "Times New Roman", serif;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    display: inline-block;
+    align-self: flex-start;
+    box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.08),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+.khs-poll-cancel-vote::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(212, 175, 55, 0.2) 50%,
+        transparent 100%);
+    transition: left 0.5s ease;
+}
+
+.khs-poll-cancel-vote:hover {
+    background: linear-gradient(135deg, 
+        rgba(250, 240, 225, 1) 0%, 
+        rgba(245, 235, 220, 1) 100%);
+    border-color: rgba(212, 175, 55, 0.5);
+    color: #2d1b0e;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 
+        0 4px 12px rgba(212, 175, 55, 0.2),
+        0 2px 6px rgba(0, 0, 0, 0.12),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.khs-poll-cancel-vote:hover::before {
+    left: 100%;
+}
+
+.khs-poll-cancel-vote:active {
+    transform: translateY(0) scale(1);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.khs-poll-message {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    margin-top: 15px;
+    display: none;
+    font-weight: 500;
+}
+
+.khs-poll-message.success {
+    display: block;
+    background: rgba(56, 161, 105, 0.12);
+    color: #1a7c4a;
+    border: 1px solid rgba(56, 161, 105, 0.25);
+}
+
+.khs-poll-message.error {
+    display: block;
+    background: rgba(229, 62, 62, 0.12);
+    color: #b91c1c;
+    border: 1px solid rgba(229, 62, 62, 0.25);
+}
+
+/* Улучшенные сообщения */
+.khs-poll-message {
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    margin-top: 18px;
+    display: none;
+    font-weight: 500;
+    font-family: Georgia, "Times New Roman", serif;
+    animation: khs-poll-message-fade-in 0.3s ease-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes khs-poll-message-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.khs-poll-message.success {
+    display: block;
+    background: linear-gradient(135deg, 
+        rgba(200, 230, 210, 0.9) 0%, 
+        rgba(180, 220, 190, 0.9) 100%);
+    color: #1a5c3a;
+    border: 2px solid rgba(56, 161, 105, 0.4);
+}
+
+.khs-poll-message.error {
+    display: block;
+    background: linear-gradient(135deg, 
+        rgba(240, 200, 200, 0.9) 0%, 
+        rgba(230, 180, 180, 0.9) 100%);
+    color: #8b1a1a;
+    border: 2px solid rgba(229, 62, 62, 0.4);
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+    .khs-poll-wrapper {
+        padding: 24px 20px;
+        margin: 20px 0;
+        border-radius: 12px;
+    }
+    
+    .khs-poll-question {
+        font-size: 1.25rem;
+        margin-bottom: 20px;
+    }
+    
+    .khs-poll-option {
+        padding: 18px 20px;
+    }
+    
+    .khs-poll-option:hover:not(:disabled) {
+        transform: translateY(-2px) scale(1.01);
+    }
+    
+    .khs-poll-option-text {
+        font-size: 1rem;
+    }
+    
+    .khs-poll-cancel-vote {
+        width: 100%;
+        text-align: center;
+        padding: 10px 20px;
+    }
+}
+

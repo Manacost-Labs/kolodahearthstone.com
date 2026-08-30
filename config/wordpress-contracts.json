@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "scope": {
+    "description": "Project-owned plugins and Blocksy child theme only",
+    "source_roots": [
+      "wordpress/plugins/hs-tooltip",
+      "wordpress/plugins/hs-parses-graphs-wp",
+      "wordpress/plugins/mulligan",
+      "wordpress/plugins/KolodaHearthstone Locker",
+      "wordpress/plugins/separator-placeholder-quick-insert",
+      "wordpress/plugins/wp-kolodahearthstone-decks",
+      "wordpress/plugins/wp-kolodahearthstone-login",
+      "wordpress/plugins/wp-kolodahearthstone-plausible",
+      "wordpress/plugins/wp-kolodahearthstone-shortcodes",
+      "wordpress/plugins/wp-kolodahearthstone-social",
+      "wordpress/themes/blocksy-child",
+      "wordpress/mu-plugins/kolodahearthstone-shortcode-compat",
+      "wordpress/mu-plugins/google-site-verification.php",
+      "wordpress/mu-plugins/hs-belwe-font.php",
+      "wordpress/mu-plugins/hs-local-image-optimizer.php",
+      "wordpress/mu-plugins/manacost-cache-purge.php",
+      "wordpress/mu-plugins/manacost-media-unique-filenames.php",
+      "wordpress/mu-plugins/plausible-analytics.php",
+      "wordpress/mu-plugins/teamplanner-application-password-policy.php"
+    ],
+    "dynamic_contracts": "Unresolved hooks and options require an integration test before release."
+  },
+  "contracts": {
+    "post_meta": [],
+    "options": [],
+    "shortcodes": ["hs_card", "hs_bg", "khs_poll"],
+    "ajax_actions": [],
+    "rest_routes": [],
+    "cron_hooks": [],
+    "capabilities": []
+  }
+}

@@ -1,0 +1,9 @@
+i.mce-i-hs_deck:before {
+    content: "\f109";
+    font-family: dashicons;
+    font-size: 18px;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: middle;
+}
+

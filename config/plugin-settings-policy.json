@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "export_mode": "allowlist-only",
+  "allowed_option_prefixes": [
+    "blocksy_",
+    "theme_mods_blocksy",
+    "hs_tooltip_",
+    "hs_deck",
+    "khs_poll_",
+    "svl_locker_stats"
+  ],
+  "always_redact_key_patterns": [
+    "token",
+    "secret",
+    "password",
+    "api[_-]?key",
+    "license",
+    "cookie",
+    "private",
+    "access[_-]?key",
+    "webhook"
+  ],
+  "never_export": [
+    "wp-config.php",
+    "database rows",
+    "Telegram/S3/Cloudflare credentials",
+    "Wordfence firewall state",
+    "personal data",
+    "uploads and cache state"
+  ]
+}

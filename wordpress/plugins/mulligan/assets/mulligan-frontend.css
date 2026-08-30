@@ -1,0 +1,551 @@
+/* Mulligan Stimulation — vintage wood + parchment theme */
+
+@font-face{
+    font-family:'HSMulligan';
+    src:url('font/2318-font.otf') format('opentype');
+    font-weight:400 900;
+    font-style:normal;
+    font-display:swap;
+}
+
+.hs-mulligan-app{
+    font-family:'HSMulligan',Georgia,"Times New Roman",serif;
+    width:100%;
+    max-width:920px;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    margin-top:28px;
+    margin-bottom:28px;
+    padding:26px 24px 22px;
+    color:#f1e4cc;
+    border:1px solid #1a120a;
+    border-radius:14px;
+    box-shadow:
+        0 0 0 1px rgba(120,90,55,0.25) inset,
+        0 12px 32px rgba(0,0,0,0.55),
+        0 1px 0 rgba(255,220,170,0.08) inset;
+    position:relative;
+    overflow:hidden;
+    isolation:isolate;
+    background-color:#0d0a07;
+    box-sizing:border-box;
+    float:none !important;
+    clear:both;
+    display:block;
+}
+/* Blurred + darkened in-game board background.
+   URL картинки приходит в style="--hsm-board:url(...)" из шорткода. */
+.hs-mulligan-app::before{
+    content:"";
+    position:absolute;
+    inset:-20px;
+    background-color:#0d0a07;
+    background-image:var(--hsm-board, url('board.jpg'));
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    filter:blur(6px) brightness(0.5) saturate(0.85);
+    transform:scale(1.08);
+    z-index:0;
+}
+/* Контент должен быть выше фоновых псевдо */
+.hs-mulligan-app > *{position:relative;z-index:2;}
+/* Vignette + warm tint over the board */
+.hs-mulligan-app::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(ellipse at center, rgba(0,0,0,0) 35%, rgba(0,0,0,0.55) 100%),
+        linear-gradient(180deg, rgba(20,12,5,0.35) 0%, rgba(10,6,2,0.55) 100%);
+    z-index:1;                 /* над блюром, под контентом */
+    pointer-events:none;
+}
+
+.hs-mulligan-header{
+    margin-bottom:14px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(180,140,90,0.35);
+    box-shadow:0 1px 0 rgba(255,220,170,0.06);
+    position:relative;
+}
+.hs-mulligan-header::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;bottom:-1px;
+    height:1px;
+    background:linear-gradient(90deg, transparent 0%, rgba(240,192,104,0.55) 25%, rgba(240,192,104,0.55) 75%, transparent 100%);
+    pointer-events:none;
+}
+.hs-mulligan-header h3{
+    margin:0 0 6px;
+    font-family:'HSMulligan',Georgia,"Times New Roman",serif;
+    font-size:28px;
+    color:#f8e7b8;
+    letter-spacing:.4px;
+    text-shadow:0 2px 4px rgba(0,0,0,0.7), 0 0 12px rgba(255,180,80,0.25);
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+.hs-mulligan-class-icon{
+    width:36px;height:36px;
+    flex:0 0 36px;
+    display:inline-block;
+    object-fit:contain;
+    pointer-events:none;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.55)) drop-shadow(0 0 6px rgba(255,200,100,0.25));
+}
+.hs-mulligan-title-text{display:inline-block;line-height:1.15;}
+.hs-mulligan-hint{
+    margin:0 0 18px;
+    color:#d8c79a;
+    font-size:14px;
+    font-style:italic;
+    text-shadow:0 1px 2px rgba(0,0,0,0.6);
+}
+.hs-mulligan-hint em{color:#f4cf7a;font-style:italic;}
+
+/* Opponent selector bar */
+.hs-mulligan-opponent-bar{
+    display:flex;flex-direction:column;gap:10px;
+    margin:0 0 18px;padding:14px 16px;
+    background:
+        linear-gradient(180deg, rgba(70,46,22,0.88), rgba(40,24,10,0.92)),
+        radial-gradient(ellipse at 50% 0%, rgba(255,200,120,0.10), transparent 60%);
+    border:1px solid rgba(180,140,90,0.45);
+    border-radius:10px;
+    box-shadow:
+        0 1px 0 rgba(255,220,170,0.12) inset,
+        0 -1px 0 rgba(0,0,0,0.35) inset,
+        0 4px 12px rgba(0,0,0,0.35);
+}
+.hs-mulligan-opponent-row{
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.hs-mulligan-opponent-label{
+    font-family:'HSMulligan',Georgia,serif;
+    font-size:13px;
+    color:#d8c79a;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    text-shadow:0 1px 2px rgba(0,0,0,0.7);
+    flex:0 0 auto;
+}
+.hs-mulligan-opponent-chips{
+    display:flex;flex-wrap:wrap;gap:6px;flex:1 1 auto;
+}
+.hs-mulligan-chip{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 14px;
+    background:linear-gradient(180deg,#3a2a18,#1f1408);
+    color:#e6d3a4;
+    border:1px solid #5a3f20;
+    border-radius:18px;
+    font-family:'HSMulligan',Georgia,serif;font-size:13px;font-weight:600;
+    cursor:pointer;
+    transition:all .18s ease;
+    box-shadow:0 1px 0 rgba(255,220,170,0.08) inset, 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow:0 1px 1px rgba(0,0,0,0.5);
+    line-height:1.1;
+}
+.hs-mulligan-chip:hover{
+    background:linear-gradient(180deg,#4f3a22,#2a1c0c);
+    color:#f8e7b8;
+    border-color:#8a6332;
+    transform:translateY(-1px);
+}
+.hs-mulligan-chip.is-active{
+    background:linear-gradient(180deg,#e0a644 0%,#a86d18 100%);
+    color:#fff8e1;
+    border-color:#f0c068;
+    box-shadow:
+        0 0 0 2px rgba(240,180,80,0.45),
+        0 0 14px rgba(240,170,60,0.5),
+        0 1px 0 rgba(255,235,170,0.4) inset,
+        0 -1px 0 rgba(80,50,10,0.4) inset;
+    text-shadow:0 1px 1px rgba(0,0,0,0.5);
+}
+.hs-mulligan-chip-icon{font-size:14px;line-height:1;}
+.hs-mulligan-chip.is-random.is-active{
+    background:linear-gradient(180deg,#7a55c8 0%,#4a2a8a 100%);
+    border-color:#a888e5;
+    box-shadow:
+        0 0 0 2px rgba(170,130,240,0.45),
+        0 0 14px rgba(150,100,230,0.5),
+        0 1px 0 rgba(220,200,255,0.4) inset,
+        0 -1px 0 rgba(40,15,80,0.4) inset;
+}
+
+.hs-mulligan-opponent-current{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:8px 14px;
+    background:linear-gradient(90deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.2) 100%);
+    border-left:3px solid #f0c068;
+    border-radius:0 6px 6px 0;
+}
+.hs-mulligan-coin-now{font-family:'HSMulligan',Georgia,serif;color:#d8c79a;font-size:13px;font-style:italic;}
+
+/* ----- Coin chips row ----- */
+.hs-mulligan-coin-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.hs-mulligan-coin-label{
+    font-family:'HSMulligan',Georgia,serif;
+    font-size:13px;color:#d8c79a;
+    letter-spacing:1.5px;text-transform:uppercase;
+    text-shadow:0 1px 2px rgba(0,0,0,0.7);
+    flex:0 0 auto;
+}
+.hs-mulligan-coin-chips{display:flex;flex-wrap:wrap;gap:6px;flex:1 1 auto;}
+.hs-mulligan-coin-chip{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 14px;
+    background:linear-gradient(180deg,#3a2a18,#1f1408);
+    color:#e6d3a4;
+    border:1px solid #5a3f20;
+    border-radius:18px;
+    font-family:'HSMulligan',Georgia,serif;font-size:13px;font-weight:600;
+    cursor:pointer;
+    transition:all .18s ease;
+    box-shadow:0 1px 0 rgba(255,220,170,0.08) inset, 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow:0 1px 1px rgba(0,0,0,0.5);
+    line-height:1.1;
+}
+.hs-mulligan-coin-chip:hover{filter:brightness(1.15);transform:translateY(-1px);}
+.hs-mulligan-coin-chip.is-active{
+    background:linear-gradient(180deg,#7a55c8 0%,#4a2a8a 100%);
+    color:#fff;
+    border-color:#a888e5;
+    box-shadow:0 0 0 2px rgba(170,130,240,0.45),0 0 14px rgba(150,100,230,0.5);
+}
+.hs-mulligan-vs-label{
+    font-family:'HSMulligan',Georgia,serif;font-size:12px;
+    color:#bda47a;letter-spacing:1.5px;text-transform:uppercase;
+    text-shadow:0 1px 2px rgba(0,0,0,0.7);
+}
+.hs-mulligan-vs-name{
+    font-family:'HSMulligan',Georgia,serif;font-size:18px;font-weight:700;
+    color:#ffe8a8;
+    text-shadow:0 1px 2px rgba(0,0,0,0.8), 0 0 12px rgba(255,180,80,0.35);
+    letter-spacing:.3px;
+}
+
+/* Cards grid */
+.hs-mulligan-cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+.hs-mulligan-cards.is-size-3{grid-template-columns:repeat(3,1fr);}
+
+.hs-mulligan-card{
+    position:relative;
+    padding:8px 8px 10px;
+    cursor:pointer;
+    border-radius:10px;
+    background:
+        linear-gradient(180deg, #b78a5a 0%, #8b5a3c 50%, #6b3f23 100%);
+    border:1px solid rgba(35,18,6,0.7);
+    box-shadow:
+        0 1px 0 rgba(255,220,180,0.35) inset,
+        0 -2px 6px rgba(0,0,0,0.25) inset,
+        0 4px 10px rgba(45,27,14,0.30);
+    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.hs-mulligan-card:hover{
+    transform:translateY(-3px);
+    box-shadow:
+        0 1px 0 rgba(255,220,180,0.4) inset,
+        0 -2px 6px rgba(0,0,0,0.22) inset,
+        0 8px 18px rgba(45,27,14,0.40);
+}
+.hs-mulligan-card.is-replaced{
+    filter:grayscale(0.55) brightness(0.78);
+}
+.hs-mulligan-card.is-replaced .hs-mulligan-img-wrap{
+    box-shadow:0 2px 6px rgba(0,0,0,0.45) inset;
+}
+
+/* Image — locked from any theme/plugin lightbox */
+.hs-mulligan-img-wrap{
+    border-radius:6px;
+    overflow:hidden;
+    background:rgba(20,10,4,0.35);
+    box-shadow:0 2px 6px rgba(0,0,0,0.35) inset;
+}
+.hs-mulligan-card img{
+    width:100%;height:auto;display:block;border-radius:6px;
+    /* Disable lightbox: clicks bypass the img and reach the card */
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+}
+.hs-mulligan-noimg{
+    padding:30px 8px;text-align:center;font-weight:700;
+    background:rgba(240,225,200,0.85);color:#3a2a1a;border-radius:6px;
+    border:1px solid rgba(76,46,22,0.4);
+}
+
+/* Подпись под картой убрана — стоимость уже на самом арт-файле карты Hearthstone */
+
+/* Big red X over replaced card (like in Hearthstone) */
+.hs-mulligan-cross{
+    position:absolute;
+    inset:0;
+    display:flex;align-items:center;justify-content:center;
+    pointer-events:none;
+    opacity:0;
+    transform:scale(0.5) rotate(-25deg);
+    transition:opacity .18s ease, transform .25s cubic-bezier(.4,1.6,.5,1);
+    z-index:2;
+}
+.hs-mulligan-cross-img,
+.hs-mulligan-cross-fallback{
+    width:88%;height:auto;max-height:88%;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,0.65)) drop-shadow(0 0 14px rgba(220,40,40,0.55));
+    pointer-events:none;user-select:none;
+    transform:rotate(8deg);    /* лёгкий наклон, как у нарисованного X в HS */
+}
+.hs-mulligan-cross-fallback{
+    font-size:140px;line-height:1;color:#d22b2b;font-weight:900;
+    -webkit-text-stroke:3px #fff;text-stroke:3px #fff;
+}
+.hs-mulligan-card.is-replaced .hs-mulligan-cross{
+    opacity:1;transform:scale(1) rotate(0deg);
+}
+
+/* "ЗАМЕНИТЬ" — баннер по центру нижней части карты, как REPLACED в игре */
+.hs-mulligan-replaced-label{
+    position:absolute;left:50%;bottom:14px;
+    transform:translate(-50%, 8px);
+    background:linear-gradient(180deg, #e63b3b 0%, #a31818 100%);
+    color:#fff;
+    font-family:'HSMulligan',Georgia,"Times New Roman",serif;
+    font-weight:800;letter-spacing:1.4px;font-size:13px;
+    padding:6px 16px;border-radius:4px;
+    border:1px solid #5a0a0a;
+    text-shadow:0 1px 0 rgba(0,0,0,0.5);
+    box-shadow:0 4px 12px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.25) inset;
+    opacity:0;
+    transition:opacity .2s ease, transform .25s ease;
+    z-index:3;
+    white-space:nowrap;
+}
+.hs-mulligan-card.is-replaced .hs-mulligan-replaced-label{
+    opacity:1;
+    transform:translate(-50%, 0);
+}
+
+/* Buttons */
+.hs-mulligan-actions{margin:18px 0 0;display:flex;gap:10px;flex-wrap:wrap;}
+.hs-mulligan-actions button{
+    padding:10px 20px;border-radius:6px;cursor:pointer;font-weight:700;
+    font-family:'HSMulligan',Georgia,serif;font-size:14px;letter-spacing:.3px;
+    border:1px solid #3a230f;
+    text-shadow:0 1px 0 rgba(0,0,0,0.25);
+    box-shadow:0 1px 0 rgba(255,255,255,0.25) inset, 0 2px 6px rgba(45,27,14,0.25);
+    transition:filter .15s, transform .15s;
+}
+.hs-mulligan-actions button:hover{filter:brightness(1.07);transform:translateY(-1px);}
+.hs-mulligan-actions button:active{transform:translateY(0);}
+.hs-mulligan-check{
+    background:linear-gradient(180deg,#5b8b3a,#3a6420);color:#fff8e1;
+}
+.hs-mulligan-check[disabled]{opacity:.55;cursor:not-allowed;filter:grayscale(.3);}
+.hs-mulligan-reset{
+    background:linear-gradient(180deg,#b78a5a,#7a4d2a);color:#fff8e1;
+}
+
+/* Result block — parchment with deckle edge */
+.hs-mulligan-result{
+    margin-top:18px;padding:14px 16px;
+    background:
+        radial-gradient(circle at 0% 0%, rgba(0,0,0,0.05), transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(0,0,0,0.06), transparent 45%),
+        linear-gradient(180deg,#fbf2dc,#ecdcb6);
+    border:1px solid rgba(76,46,22,0.55);
+    border-radius:8px;
+    box-shadow:0 2px 8px rgba(45,27,14,0.18), 0 1px 0 rgba(255,255,255,0.55) inset;
+    color:#3a2a1a;
+}
+.hs-mulligan-score{
+    font-family:'HSMulligan',Georgia,serif;font-size:17px;margin-bottom:10px;
+    padding-bottom:8px;border-bottom:1px dashed rgba(76,46,22,0.4);
+}
+.hs-mulligan-lines{list-style:none;margin:0;padding:0;}
+.hs-mulligan-line{
+    padding:8px 12px;border-radius:5px;margin:6px 0;
+    font-size:14px;border:1px solid transparent;
+}
+.hs-mulligan-line-head{line-height:1.3;}
+.hs-mulligan-copies{display:inline-block;padding:1px 8px;margin:0 4px;border-radius:10px;background:rgba(76,46,22,0.18);font-size:11px;font-weight:700;color:#5a4632;text-transform:uppercase;letter-spacing:.5px;vertical-align:middle;}
+.hs-mulligan-note{
+    margin-top:6px;padding:6px 10px;
+    background:rgba(255,255,255,0.45);
+    border-left:3px solid currentColor;
+    border-radius:3px;
+    font-size:13px;line-height:1.4;font-style:italic;
+    color:#3a2a1a;
+}
+.hs-mulligan-line.is-ok{background:rgba(123,172,98,0.22);border-color:rgba(56,107,30,0.45);color:#274d10;}
+.hs-mulligan-line.is-bad{background:rgba(180,60,55,0.18);border-color:rgba(140,30,25,0.45);color:#7a1f1c;}
+.hs-mulligan-line.is-missed{background:rgba(220,160,40,0.22);border-color:rgba(150,95,15,0.45);color:#6b4408;}
+.hs-mulligan-summary{margin-top:10px;color:#5a4632;font-size:13px;font-style:italic;}
+.hs-mulligan-error{color:#7a1f1c;font-weight:600;}
+
+/* ============================================================
+   Mobile adaptation
+   ============================================================ */
+
+/* Tablets and below: 4 columns но более плотная сетка */
+@media (max-width:900px){
+    .hs-mulligan-app{padding:20px 16px 18px;margin:20px auto;}
+    .hs-mulligan-header h3{font-size:24px;gap:10px;}
+    .hs-mulligan-class-icon{width:30px;height:30px;flex-basis:30px;}
+    .hs-mulligan-cards{gap:10px;}
+    .hs-mulligan-replaced-label{font-size:12px;padding:5px 12px;letter-spacing:1px;}
+}
+
+/* Phones — 2 колонки, шапка-селектор в столбик */
+@media (max-width:640px){
+    .hs-mulligan-app{
+        margin:14px 10px !important;       /* отступ от краёв экрана */
+        max-width:calc(100% - 20px);
+        padding:14px 12px;
+        border-radius:10px;
+    }
+    .hs-mulligan-header{padding-bottom:10px;margin-bottom:10px;}
+    .hs-mulligan-header h3{
+        font-size:20px;
+        gap:8px;
+        line-height:1.15;
+    }
+    .hs-mulligan-class-icon{width:26px;height:26px;flex-basis:26px;}
+    .hs-mulligan-hint{font-size:13px;margin-bottom:12px;line-height:1.4;}
+
+    /* Шапка-селектор: лейбл сверху, чипы снизу */
+    .hs-mulligan-opponent-bar{
+        padding:10px 12px;
+        margin-bottom:14px;
+        gap:8px;
+    }
+    .hs-mulligan-opponent-row,
+    .hs-mulligan-coin-row{flex-direction:column;align-items:stretch;gap:6px;}
+    .hs-mulligan-tooltip{width:min(280px, calc(100vw - 32px));}
+    .hs-mulligan-opponent-label{font-size:11px;letter-spacing:1.2px;}
+    .hs-mulligan-opponent-chips{gap:5px;}
+    .hs-mulligan-chip{
+        padding:8px 12px;
+        font-size:13px;
+        border-radius:16px;
+        flex:1 1 auto;             /* чипы тянутся, не сжимаются в ничто */
+        justify-content:center;
+        min-height:36px;            /* tap target */
+    }
+    .hs-mulligan-opponent-current{
+        padding:7px 12px;
+        gap:8px;
+        flex-wrap:wrap;
+    }
+    .hs-mulligan-vs-label{font-size:11px;letter-spacing:1.2px;}
+    .hs-mulligan-vs-name{font-size:16px;}
+
+    /* Карты — 2 в ряд (для 3 и 4 карт) */
+    .hs-mulligan-cards,
+    .hs-mulligan-cards.is-size-3{grid-template-columns:repeat(2,1fr);gap:10px;}
+    .hs-mulligan-card{padding:6px 6px 8px;border-radius:8px;}
+    .hs-mulligan-replaced-label{
+        font-size:11px;
+        padding:4px 10px;
+        letter-spacing:.8px;
+        bottom:10px;
+    }
+    .hs-mulligan-cross-img,.hs-mulligan-cross-fallback{width:80%;}
+
+    /* Действия */
+    .hs-mulligan-actions{margin-top:14px;gap:8px;}
+    .hs-mulligan-actions button{
+        flex:1 1 0;
+        min-height:44px;            /* iOS tap target */
+        padding:11px 14px;
+        font-size:14px;
+    }
+
+    /* Результат */
+    .hs-mulligan-result{padding:12px 12px;}
+    .hs-mulligan-score{font-size:15px;}
+    .hs-mulligan-line{font-size:13px;padding:7px 10px;}
+    .hs-mulligan-note{font-size:12.5px;}
+}
+
+/* Очень маленькие экраны (~360px) — оставляем 2 колонки, ужимаем элементы */
+@media (max-width:380px){
+    .hs-mulligan-app{margin:12px 8px !important;max-width:calc(100% - 16px);padding:12px 10px;}
+    .hs-mulligan-header h3{font-size:18px;}
+    .hs-mulligan-class-icon{width:22px;height:22px;flex-basis:22px;}
+    .hs-mulligan-cards{gap:8px;}
+    .hs-mulligan-card{padding:5px 5px 7px;}
+    .hs-mulligan-replaced-label{font-size:10px;padding:3px 8px;}
+    .hs-mulligan-vs-name{font-size:15px;}
+}
+
+/* Альбомная ориентация мобильного: оставляем 4 колонки */
+@media (max-width:900px) and (orientation:landscape) and (max-height:500px){
+    .hs-mulligan-cards{grid-template-columns:repeat(4,1fr);}
+}
+
+/* Уменьшаем блюр фона на мобильных (экономим GPU) */
+@media (max-width:640px){
+    .hs-mulligan-app::before{filter:blur(4px) brightness(0.5) saturate(0.85);}
+}
+
+/* Экраны с тонкой высотой (telegram webview и т.п.) */
+@media (max-height:600px){
+    .hs-mulligan-app{margin-top:12px;margin-bottom:12px;}
+}
+
+/* ----- Tooltip with full card art + text ----- */
+.hs-mulligan-tooltip{
+    position:absolute;
+    z-index:50;
+    width:320px;
+    pointer-events:none;
+    background:linear-gradient(180deg,#fbf2dc,#ecdcb6);
+    border:1px solid rgba(76,46,22,0.55);
+    border-radius:10px;
+    padding:10px;
+    box-shadow:0 12px 28px rgba(0,0,0,0.55),0 1px 0 rgba(255,255,255,0.55) inset;
+    color:#3a2a1a;
+}
+.hs-mulligan-tt-img{width:100%;height:auto;display:block;border-radius:6px;}
+.hs-mulligan-tt-info{padding:8px 4px 4px;}
+.hs-mulligan-tt-type,.hs-mulligan-tt-rarity{
+    display:inline-block;margin-right:6px;
+    font-size:11px;letter-spacing:1px;text-transform:uppercase;
+    padding:2px 8px;border-radius:10px;background:rgba(76,46,22,0.18);color:#5a4632;font-weight:700;
+}
+.hs-mulligan-tt-text{
+    margin-top:6px;font-size:13px;line-height:1.4;color:#3a2a1a;
+    font-style:normal;
+}
+.hs-mulligan-tt-text b{color:#7a1f1c;}
+
+/* ----- Stats footer ----- */
+.hs-mulligan-stats{
+    margin-top:14px;padding:10px 14px;
+    background:linear-gradient(90deg, rgba(0,0,0,0.30), rgba(0,0,0,0.18));
+    border:1px dashed rgba(180,140,90,0.35);
+    border-radius:8px;
+    font-size:13px;color:#d8c79a;text-align:center;
+    text-shadow:0 1px 2px rgba(0,0,0,0.6);
+}
+.hs-mulligan-stats strong{color:#ffe8a8;}
+
+/* Hover-эффекты выключаем на тач-устройствах — иначе остаются «залипшие» */
+@media (hover:none){
+    .hs-mulligan-card:hover{transform:none;box-shadow:
+        0 1px 0 rgba(255,220,180,0.35) inset,
+        0 -2px 6px rgba(0,0,0,0.25) inset,
+        0 4px 10px rgba(45,27,14,0.30);}
+    .hs-mulligan-chip:hover{transform:none;}
+    .hs-mulligan-actions button:hover{transform:none;filter:none;}
+}

@@ -1,0 +1,315 @@
+/* Matchups infographic — vintage wood + parchment + анимация заполнения */
+
+@font-face{
+    font-family:'HSMulligan';
+    src:url('font/2318-font.otf') format('opentype');
+    font-weight:400 900;
+    font-style:normal;
+    font-display:swap;
+}
+
+.hs-matchups{
+    font-family:'HSMulligan',Georgia,"Times New Roman",serif;
+    --hsm-good:   #2f7a18;
+    --hsm-good2:  #5da046;
+    --hsm-even:   #a4811e;
+    --hsm-even2:  #d8b556;
+    --hsm-tough:  #a45418;
+    --hsm-tough2: #d88a4a;
+    --hsm-bad:    #7a1c1c;
+    --hsm-bad2:   #c04545;
+
+    max-width:980px;
+    margin:32px auto;
+    padding:26px 24px;
+    color:#3a2a1a;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(255,250,235,0.55), transparent 55%),
+        radial-gradient(circle at 88% 82%, rgba(120,80,40,0.20), transparent 60%),
+        linear-gradient(180deg, #f1e4cc 0%, #e8d6b3 100%);
+    border:1px solid rgba(76,46,22,0.45);
+    border-radius:14px;
+    box-shadow:
+        0 2px 0 rgba(76,46,22,0.08) inset,
+        0 -2px 0 rgba(76,46,22,0.10) inset,
+        0 16px 32px rgba(45,27,14,0.25),
+        0 1px 0 rgba(255,255,255,0.5) inset;
+    box-sizing:border-box;
+    width:100%;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    position:relative;
+}
+/* Прошивка-декор по углам */
+.hs-matchups::before,
+.hs-matchups::after{
+    content:"";position:absolute;left:18px;right:18px;height:2px;
+    background:repeating-linear-gradient(90deg, rgba(76,46,22,0.40) 0 6px, transparent 6px 14px);
+    opacity:.55;pointer-events:none;
+}
+.hs-matchups::before{top:10px;}
+.hs-matchups::after{bottom:10px;}
+
+/* ============ Шапка с большим средним винрейтом ============ */
+.hs-matchups-head{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;
+    padding-bottom:18px;margin-bottom:20px;
+    border-bottom:1px solid rgba(76,46,22,0.35);
+    position:relative;
+}
+.hs-matchups-head::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+    background:linear-gradient(90deg, transparent, rgba(180,130,60,0.55) 25%, rgba(180,130,60,0.55) 75%, transparent);
+}
+.hs-matchups-head.is-titleless{justify-content:center;}
+.hs-matchups-title{
+    margin:0;
+    font-family:'HSMulligan',Georgia,"Times New Roman",serif;
+    font-size:28px;
+    color:#3a230f;
+    text-shadow:0 1px 0 rgba(255,255,255,0.5);
+    line-height:1.15;
+}
+
+.hs-matchups-avg{
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    padding:10px 22px;
+    background:linear-gradient(180deg, rgba(255,250,230,0.85), rgba(225,200,150,0.85));
+    border:1px solid rgba(76,46,22,0.5);
+    border-radius:10px;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.7) inset,
+        0 -2px 4px rgba(120,80,40,0.10) inset,
+        0 4px 10px rgba(45,27,14,0.18);
+    min-width:160px;
+    text-align:center;
+}
+.hs-matchups-avg-label{
+    font-family:'HSMulligan',Georgia,serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    color:#6b5034;
+}
+.hs-matchups-avg-value{
+    font-family:'HSMulligan',Georgia,serif;font-size:34px;font-weight:800;line-height:1;
+    text-shadow:0 1px 0 rgba(255,255,255,0.7);
+}
+.hs-matchups-avg-verdict{
+    font-family:'HSMulligan',Georgia,serif;font-size:12px;font-style:italic;color:#5a4632;
+    margin-top:2px;
+}
+
+/* ============ Сетка карточек ============ */
+.hs-matchups-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:16px;
+}
+
+.hs-matchup{
+    position:relative;
+    padding:14px 14px 12px 19px;
+    background:linear-gradient(180deg, rgba(252,245,225,0.97), rgba(232,214,179,0.97));
+    border:1px solid rgba(76,46,22,0.45);
+    border-radius:10px;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.7) inset,
+        0 -2px 6px rgba(120,80,40,0.10) inset,
+        0 4px 10px rgba(45,27,14,0.18);
+    overflow:hidden;
+    transition:transform .18s ease, box-shadow .18s ease;
+}
+.hs-matchup:hover{
+    transform:translateY(-3px);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.7) inset,
+        0 -2px 6px rgba(120,80,40,0.12) inset,
+        0 8px 20px rgba(45,27,14,0.30);
+}
+/* Цветная вертикальная полоса слева */
+.hs-matchup::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+    border-radius:10px 0 0 10px;
+}
+.hs-matchup-good::before {background:linear-gradient(180deg,var(--hsm-good2),var(--hsm-good));}
+.hs-matchup-even::before {background:linear-gradient(180deg,var(--hsm-even2),var(--hsm-even));}
+.hs-matchup-tough::before{background:linear-gradient(180deg,var(--hsm-tough2),var(--hsm-tough));}
+.hs-matchup-bad::before  {background:linear-gradient(180deg,var(--hsm-bad2),var(--hsm-bad));}
+
+/* Цветной блик в углу — мягкая «индикация» */
+.hs-matchup::after{
+    content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;
+    opacity:.18;filter:blur(20px);
+    pointer-events:none;
+}
+.hs-matchup-good::after {background:#5da046;}
+.hs-matchup-even::after {background:#d8b556;}
+.hs-matchup-tough::after{background:#d88a4a;}
+.hs-matchup-bad::after  {background:#c04545;}
+
+/* Шапка карточки */
+.hs-matchup-head{
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;
+}
+.hs-matchup-icon{
+    width:42px;height:42px;flex:0 0 42px;
+    object-fit:contain;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+}
+.hs-matchup-icon-empty{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,#caa365,#8a5e22);
+    color:#fff8e1;border-radius:50%;
+    font-size:20px;font-weight:700;
+    border:1px solid rgba(76,46,22,0.5);
+    box-shadow:0 1px 2px rgba(0,0,0,0.3);
+    width:42px;height:42px;flex:0 0 42px;
+}
+.hs-matchup-label{
+    font-family:'HSMulligan',Georgia,serif;font-weight:700;font-size:17px;
+    color:#3a230f;line-height:1.15;flex:1;min-width:0;
+    word-wrap:break-word;
+    text-shadow:0 1px 0 rgba(255,255,255,0.5);
+}
+
+/* Большое число винрейта */
+.hs-matchup-wr-row{
+    display:flex;align-items:baseline;justify-content:space-between;gap:8px;
+    margin-bottom:8px;
+}
+.hs-matchup-wr{
+    font-family:'HSMulligan',Georgia,serif;font-weight:800;font-size:34px;line-height:1;
+    text-shadow:0 1px 0 rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.08);
+}
+.hs-matchup-verdict{
+    font-family:'HSMulligan',Georgia,serif;font-style:italic;font-size:13px;
+    color:#5a4632;
+    text-align:right;
+    flex:1;
+}
+.hs-matchup-good  .hs-matchup-wr{color:var(--hsm-good);}
+.hs-matchup-even  .hs-matchup-wr{color:var(--hsm-even);}
+.hs-matchup-tough .hs-matchup-wr{color:var(--hsm-tough);}
+.hs-matchup-bad   .hs-matchup-wr{color:var(--hsm-bad);}
+
+/* Прогресс-бар с анимацией заполнения и шкалой 50% */
+.hs-matchup-bar{
+    position:relative;height:12px;border-radius:6px;
+    background:rgba(76,46,22,0.18);
+    border:1px solid rgba(76,46,22,0.40);
+    overflow:hidden;
+    box-shadow:0 1px 2px rgba(0,0,0,0.18) inset;
+}
+.hs-matchup-bar::after{
+    /* отметка 50% — вертикальная пунктирная риска */
+    content:"";position:absolute;left:50%;top:0;bottom:0;width:0;
+    border-left:1px dashed rgba(76,46,22,0.55);
+    pointer-events:none;
+}
+.hs-matchup-bar-fill{
+    height:100%;
+    border-radius:5px 0 0 5px;
+    box-shadow:0 1px 0 rgba(255,255,255,0.4) inset, 0 -1px 0 rgba(0,0,0,0.15) inset;
+    transform-origin:left center;
+    animation:hs-matchup-bar-grow .8s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes hs-matchup-bar-grow{
+    from { transform:scaleX(0); }
+    to   { transform:scaleX(1); }
+}
+@media (prefers-reduced-motion:reduce){
+    .hs-matchup-bar-fill{animation:none;}
+    .hs-matchup:hover{transform:none;}
+}
+.hs-matchup-good  .hs-matchup-bar-fill{background:linear-gradient(180deg,#7bc05d,#3f7a22);}
+.hs-matchup-even  .hs-matchup-bar-fill{background:linear-gradient(180deg,#e6c567,#a4811e);}
+.hs-matchup-tough .hs-matchup-bar-fill{background:linear-gradient(180deg,#e69a55,#a45418);}
+.hs-matchup-bad   .hs-matchup-bar-fill{background:linear-gradient(180deg,#d65555,#902020);}
+
+/* Комментарий */
+.hs-matchup-comment{
+    margin:12px 0 0;
+    font-size:13.5px;line-height:1.5;
+    color:#3a2a1a;
+    padding:9px 12px;
+    background:rgba(255,255,255,0.55);
+    border-left:3px solid currentColor;
+    border-radius:0 4px 4px 0;
+    font-style:italic;
+}
+.hs-matchup-good  .hs-matchup-comment{color:#1f5b14;}
+.hs-matchup-even  .hs-matchup-comment{color:#7a5c0a;}
+.hs-matchup-tough .hs-matchup-comment{color:#8a3e0a;}
+.hs-matchup-bad   .hs-matchup-comment{color:#7a1c1c;}
+.hs-matchup-comment::first-line{color:#3a2a1a;} /* перебиваем currentColor для текста, оставляя цветной только border */
+.hs-matchup-comment{color:#3a2a1a;border-left-color:rgba(76,46,22,0.4);}
+.hs-matchup-good  .hs-matchup-comment{border-left-color:var(--hsm-good);}
+.hs-matchup-even  .hs-matchup-comment{border-left-color:var(--hsm-even);}
+.hs-matchup-tough .hs-matchup-comment{border-left-color:var(--hsm-tough);}
+.hs-matchup-bad   .hs-matchup-comment{border-left-color:var(--hsm-bad);}
+
+/* Цвет среднего винрейта в шапке */
+.hs-matchups-avg-value.good {color:var(--hsm-good);}
+.hs-matchups-avg-value.even {color:var(--hsm-even);}
+.hs-matchups-avg-value.tough{color:var(--hsm-tough);}
+.hs-matchups-avg-value.bad  {color:var(--hsm-bad);}
+
+/* ============================================================
+   Mobile
+   ============================================================ */
+@media (max-width:900px){
+    .hs-matchups{padding:20px 16px;margin:24px auto;}
+    .hs-matchups-title{font-size:24px;}
+    .hs-matchups-avg{padding:8px 18px;min-width:140px;}
+    .hs-matchups-avg-value{font-size:28px;}
+    .hs-matchups-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+}
+@media (max-width:640px){
+    .hs-matchups{
+        padding:16px 12px;
+        margin:14px 10px !important;       /* отступ от краёв экрана */
+        max-width:calc(100% - 20px);
+        border-radius:10px;
+    }
+    .hs-matchups::before,.hs-matchups::after{left:10px;right:10px;}
+    .hs-matchups-head{
+        flex-direction:column;align-items:stretch;gap:12px;
+        padding-bottom:14px;margin-bottom:14px;
+    }
+    .hs-matchups-title{font-size:20px;text-align:center;}
+    .hs-matchups-avg{
+        flex-direction:row;justify-content:center;align-items:baseline;gap:10px;
+        padding:8px 14px;min-width:0;
+    }
+    .hs-matchups-avg-label{font-size:10px;}
+    .hs-matchups-avg-value{font-size:24px;}
+    .hs-matchups-avg-verdict{font-size:11px;}
+
+    .hs-matchups-grid{grid-template-columns:1fr 1fr;gap:10px;}
+    .hs-matchup{padding:11px 11px 10px 16px;}
+    .hs-matchup-head{gap:8px;margin-bottom:8px;}
+    .hs-matchup-icon,.hs-matchup-icon-empty{width:32px;height:32px;flex-basis:32px;font-size:16px;}
+    .hs-matchup-label{font-size:14px;}
+    .hs-matchup-wr{font-size:26px;}
+    .hs-matchup-verdict{font-size:11px;}
+    .hs-matchup-bar{height:9px;}
+    .hs-matchup-comment{font-size:12px;padding:7px 9px;margin-top:9px;}
+}
+@media (max-width:380px){
+    .hs-matchups{margin:12px 8px !important;max-width:calc(100% - 16px);}
+    .hs-matchups-grid{grid-template-columns:1fr;}
+    .hs-matchup-icon,.hs-matchup-icon-empty{width:36px;height:36px;flex-basis:36px;}
+    .hs-matchup-wr{font-size:30px;}
+}
+
+/* Hover off на тач-устройствах */
+@media (hover:none){
+    .hs-matchup:hover{transform:none;box-shadow:
+        0 1px 0 rgba(255,255,255,0.7) inset,
+        0 -2px 6px rgba(120,80,40,0.10) inset,
+        0 4px 10px rgba(45,27,14,0.18);}
+}
+
+/* RTL */
+[dir="rtl"] .hs-matchup{padding:14px 19px 12px 14px;}
+[dir="rtl"] .hs-matchup::before{left:auto;right:0;border-radius:0 10px 10px 0;}
+[dir="rtl"] .hs-matchup-bar-fill{transform-origin:right center;border-radius:0 5px 5px 0;}
+[dir="rtl"] .hs-matchup-comment{border-left:0;border-right:3px solid;border-radius:4px 0 0 4px;}

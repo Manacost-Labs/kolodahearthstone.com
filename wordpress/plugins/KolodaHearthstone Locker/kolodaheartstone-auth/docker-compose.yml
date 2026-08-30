@@ -1,0 +1,11 @@
+services:
+  bot:
+    build: ./bot
+    container_name: kha-vip-bot
+    restart: unless-stopped
+    env_file: ./bot/.env
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blocksy theme"
+  short_description: "Safe Blocksy child-theme and Customizer changes"
+  default_prompt: "Use $blocksy-theme to review or implement a safe Blocksy theme change."

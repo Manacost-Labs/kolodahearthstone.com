@@ -1,0 +1,215 @@
+/* ============================================
+   ИСПРАВЛЕНИЯ ДЛЯ МОДАЛЬНЫХ ОКОН TINYMCE
+   ============================================ */
+
+/* Базовый box-sizing для всех элементов */
+.mce-window * {
+    box-sizing: border-box;
+}
+
+/* Исправления для контейнера - НЕ меняем фон стандартных окон */
+.mce-window .mce-container-body {
+    overflow-x: hidden !important;
+}
+
+/* Исправления для input, select, textarea - только если они выходят за границы */
+.mce-window input[type="text"],
+.mce-window input[type="number"],
+.mce-window input[type="email"],
+.mce-window input[type="url"],
+.mce-window select,
+.mce-window textarea {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Исправления для кнопок - только если они выходят за границы */
+.mce-window button {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
+}
+
+/* Кнопки с width: 100% */
+.mce-window button[style*="width:100%"],
+.mce-window button[style*="width: 100%"],
+.mce-window button[style*="width:calc"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Flex контейнеры - исправляем только наши */
+.mce-window [style*="display:flex"] button,
+.mce-window [style*="display: flex"] button {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* ============================================
+   ФОРМА ШАБЛОНОВ - СПЕЦИАЛЬНЫЕ СТИЛИ
+   ============================================ */
+
+/* Форма шаблонов - белый фон, видна на любом фоне */
+.mce-window #mtp-save-form {
+    background: #fff !important;
+    padding: 20px !important;
+    border-radius: 6px !important;
+    margin-bottom: 20px !important;
+    border: 2px solid #e0e0e0 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    position: relative !important;
+    z-index: 10 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.mce-window #mtp-save-form[style*="display:none"] {
+    display: none !important;
+}
+
+.mce-window #mtp-save-form[style*="display: block"],
+.mce-window #mtp-save-form[style*="display:block"] {
+    display: block !important;
+}
+
+/* Элементы внутри формы шаблонов */
+.mce-window #mtp-save-form > div {
+    margin-bottom: 15px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.mce-window #mtp-save-form label {
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    color: #23282d !important;
+    box-sizing: border-box !important;
+}
+
+.mce-window #mtp-save-form input[type="text"],
+.mce-window #mtp-save-form select,
+.mce-window #mtp-save-form textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    background: #fff !important;
+    border: 1px solid #ccc !important;
+    padding: 10px 12px !important;
+    font-size: 14px !important;
+}
+
+.mce-window #mtp-save-form button {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+}
+
+/* Заголовок формы */
+.mce-window #mtp-save-form > div:first-child {
+    font-weight: bold !important;
+    font-size: 16px !important;
+    color: #23282d !important;
+    margin-bottom: 15px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+
+/* ============================================
+   СПЕЦИАЛЬНЫЕ КНОПКИ
+   ============================================ */
+
+.mce-window #mtp-show-save-form {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.mce-window #mtp-save-template-btn,
+.mce-window #mtp-cancel-save-btn {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.mce-window #mtp-insert-deck-btn,
+.mce-window #mtp-create-deck-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.mce-window #mtp-add-row-btn,
+.mce-window #mtp-add-row-btn-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* ============================================
+   СПИСОК ШАБЛОНОВ
+   ============================================ */
+
+.mce-window #mtp-templates-list {
+    max-height: 350px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+    background: #fff !important;
+}
+
+.mce-window .mtp-template-item {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.mce-window .mtp-delete-template {
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+}
+
+/* ============================================
+   ИСПРАВЛЕНИЯ ДЛЯ КОНТЕЙНЕРОВ
+   ============================================ */
+
+/* Убираем overflow:hidden только у наших контейнеров */
+.mce-window [style*="overflow:hidden"]:not(.mce-container):not(.mce-container-body) {
+    overflow: visible !important;
+}
+
+/* Flex контейнеры */
+.mce-window [style*="display:flex"],
+.mce-window [style*="display: flex"] {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.mce-window [style*="display:flex"] > *,
+.mce-window [style*="display: flex"] > * {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+}
+
+/* ============================================
+   FIX ДЛЯ Z-INDEX TINYMCE
+   ============================================ */
+
+.tox-tinymce-aux {
+    z-index: 999999 !important;
+}
+

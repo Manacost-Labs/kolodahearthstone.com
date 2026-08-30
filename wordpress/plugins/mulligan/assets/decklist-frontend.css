@@ -1,0 +1,366 @@
+/* Decklist — карточка колоды в стиле HearthstoneJSON-обзоров */
+
+@font-face{
+    font-family:'HSMulligan';
+    src:url('font/2318-font.otf') format('opentype');
+    font-weight:400 900;
+    font-style:normal;
+    font-display:swap;
+}
+
+.hs-decklist{
+    --hsd-rarity-common:    #d6d6d6;
+    --hsd-rarity-free:      #d6d6d6;
+    --hsd-rarity-rare:      #4a8fd6;
+    --hsd-rarity-epic:      #a347e6;
+    --hsd-rarity-legendary: #f0a020;
+
+    font-family:'HSMulligan',Georgia,"Times New Roman",serif;
+    width:100%;
+    max-width:1100px;
+    margin:24px auto;
+    padding:0;
+    color:#3a2a1a;
+    background:transparent;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+    box-sizing:border-box;
+}
+/* Все потомки нашего контейнера — без темовых margin/padding/list-style.
+   Защита от .entry-content li { margin: 0.5em 0 } и подобного. */
+.hs-decklist *,
+.hs-decklist *::before,
+.hs-decklist *::after{
+    box-sizing:border-box;
+}
+.hs-decklist .hs-decklist-cards,
+.hs-decklist .hs-decklist-card{
+    list-style:none !important;
+}
+
+/* Шапка — только название по центру */
+.hs-decklist-head{
+    text-align:center;
+    padding:0 2px 14px;
+    margin-bottom:10px;
+    border-bottom:1px solid rgba(76,46,22,0.25);
+}
+.hs-decklist-title{
+    display:inline-block;
+    font-size:22px;font-weight:700;color:#3a230f;
+    text-shadow:0 1px 0 rgba(255,255,255,0.55);
+    letter-spacing:.5px;
+}
+
+/* Колонки */
+.hs-decklist-cols{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    width:100%;
+    margin:0 !important;
+    padding:0 !important;
+    box-sizing:border-box;
+}
+.hs-decklist-col{
+    width:100% !important;
+    min-width:0;                 /* grid: иначе содержимое распирает колонку */
+    margin:0 !important;
+    padding:0 !important;
+    box-sizing:border-box;
+}
+.hs-decklist-col-head{
+    background:#fff;color:#1a120a;
+    font-weight:700;font-size:14px;
+    padding:8px 12px;
+    border-radius:4px 4px 0 0;
+    border:1px solid rgba(76,46,22,0.20);
+    border-bottom:0;
+    margin-bottom:0;       /* впритык к первой строке */
+    box-shadow:0 -1px 2px rgba(0,0,0,0.06);
+}
+
+/* Список карт — div-блок, защищённый от темовых ul/li стилей */
+.hs-decklist-cards{
+    margin:0 !important;
+    padding:0 !important;
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    border-radius:0 0 4px 4px;
+    overflow:hidden;
+    background:#1a1a1a;
+    box-shadow:0 2px 8px rgba(0,0,0,0.18);
+    width:100%;
+    box-sizing:border-box;
+}
+.hs-decklist-cards > *{
+    margin:0 !important;            /* перебиваем темовые .entry-content > * */
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* Каждая строка — рарити-цвет + арт через два background-слоя на одном элементе.
+   Никаких отдельных span-слоёв, никаких mask-image — всё edges-clean. */
+.hs-decklist-card{
+    --row-bg:    #3f4047;   /* common */
+    --cost-bg:   #5e6068;
+    --count-bg:  #25272b;
+    --row-text:  #fff;
+
+    position:relative;
+    display:flex !important;
+    align-items:stretch;
+    height:40px;
+    width:100% !important;
+    margin:0 !important;
+    padding:0 !important;
+    list-style:none !important;
+    overflow:hidden;
+    box-sizing:border-box;
+    cursor:default;
+    transition:filter .15s ease;
+    color:var(--row-text);
+    background:var(--row-bg) !important;
+    border-bottom:1px solid rgba(0,0,0,0.45);
+}
+.hs-decklist-card:last-child{border-bottom:0;}
+.hs-decklist-card:hover{filter:brightness(1.08) saturate(1.05);z-index:2;}
+
+/* Палитра по редкости */
+.hs-decklist-rarity-rare      {--row-bg:#1f4d8e; --cost-bg:#2c5e9c; --count-bg:#15355c;}
+.hs-decklist-rarity-epic      {--row-bg:#4d1d7e; --cost-bg:#6e2db0; --count-bg:#36145a;}
+.hs-decklist-rarity-legendary {--row-bg:#8e5408; --cost-bg:#b46e10; --count-bg:#5a3505;}
+
+/* Арт-картинка — реальный <img>, сидит на всём контейнере под градиентом */
+.hs-decklist-art{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    max-width:none !important;
+    max-height:none !important;
+    object-fit:cover;
+    object-position:center 22%;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    z-index:0;
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+}
+/* Градиент-вуаль поверх арта: левая часть row-color, правая прозрачная */
+.hs-decklist-card::before{
+    content:"" !important;
+    display:block !important;
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,
+        var(--row-bg) 0%,
+        var(--row-bg) 48%,
+        rgba(0,0,0,0) 72%);
+    z-index:1;
+    pointer-events:none;
+}
+
+/* Левая «таблетка» с маной — solid цвет редкости */
+.hs-decklist-cost{
+    position:relative;
+    z-index:2;
+    background:var(--cost-bg) !important;
+    color:#fff;
+    font-weight:800;font-size:18px;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 40px;
+    width:40px;
+    height:auto;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    text-shadow:0 1px 2px rgba(0,0,0,0.55);
+}
+.hs-decklist-rarity-legendary .hs-decklist-cost{
+    background:linear-gradient(180deg,#f4c25d,#d68a14);
+    color:#3a230f;
+    text-shadow:0 1px 0 rgba(255,255,255,0.45);
+    box-shadow:0 0 6px rgba(240,160,32,0.55) inset;
+}
+
+/* Имя карты — сидит в левой солидной зоне */
+.hs-decklist-name{
+    position:relative;
+    z-index:2;
+    flex:1 1 auto;
+    min-width:0;
+    display:flex;align-items:center;
+    padding:0 12px !important;
+    margin:0 !important;
+    color:#fff;
+    font-family:'HSMulligan',Georgia,serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    font-size:13.5px;
+    line-height:1.1;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    text-shadow:0 1px 2px rgba(0,0,0,0.85), 0 0 4px rgba(0,0,0,0.6);
+    pointer-events:none;
+}
+
+/* Кол-во копий — сплошной solid цвет (тёмная версия rarity-color), без
+   полупрозрачных слоёв над артом. Никаких щелей, никаких просвечиваний. */
+.hs-decklist-count{
+    position:relative;
+    z-index:2;
+    background:var(--count-bg) !important;
+    color:#fff;
+    font-weight:700;font-size:12px;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 40px;
+    width:40px;
+    height:auto;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    text-shadow:0 1px 1px rgba(0,0,0,0.6);
+}
+
+/* Нижняя плашка — кнопка слева, рейтинг справа */
+.hs-decklist-bottom{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    margin-top:12px;
+    padding-top:8px;
+}
+
+/* Кнопка «Копировать» — компактная */
+.hs-decklist-copy{
+    display:inline-flex;align-items:center;gap:6px;
+    margin:14px 0 0;
+    padding:8px 18px;
+    background:linear-gradient(180deg,#3a2a18,#1f1408);
+    color:#f1e4cc;
+    border:1px solid rgba(180,140,90,0.5);
+    border-radius:18px;
+    font-family:'HSMulligan',Georgia,serif;
+    font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    cursor:pointer;
+    transition:background .15s, transform .15s, box-shadow .15s;
+    text-shadow:0 1px 2px rgba(0,0,0,0.6);
+    box-shadow:0 2px 6px rgba(0,0,0,0.25);
+}
+.hs-decklist-copy::before{content:"⧉";margin-right:2px;font-size:14px;}
+.hs-decklist-copy:hover{
+    background:linear-gradient(180deg,#4f3a22,#2a1c0c);
+    transform:translateY(-1px);
+    box-shadow:0 4px 10px rgba(0,0,0,0.35);
+}
+.hs-decklist-copy.is-copied{background:linear-gradient(180deg,#3a6420,#1f4a14);border-color:#5a8a30;}
+
+/* ===== Рейтинг колоды ===== */
+.hs-decklist-rating{
+    display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;
+    margin:0;
+    padding:6px 12px;
+    background:rgba(255,255,255,0.45);
+    border:1px solid rgba(76,46,22,0.30);
+    border-radius:18px;
+    color:#3a2a1a;
+    font-size:13px;
+}
+.hs-decklist-rate-label{
+    color:#5a4632;font-weight:600;
+}
+.hs-decklist-stars{
+    display:inline-flex;gap:2px;
+}
+.hs-decklist-star{
+    background:none;border:0;padding:0;margin:0;cursor:pointer;
+    font-size:20px;line-height:1;
+    color:rgba(76,46,22,0.30);
+    transition:color .12s, transform .12s;
+}
+.hs-decklist-star:hover{transform:scale(1.18);}
+.hs-decklist-star.is-on{color:#f0a020;}
+.hs-decklist-stars:hover .hs-decklist-star.is-on{color:rgba(76,46,22,0.30);} /* при наведении сбрасываем «свои» звёзды */
+.hs-decklist-star.is-hover,
+.hs-decklist-stars:hover .hs-decklist-star.is-hover{color:#f0a020;}
+.hs-decklist-rate-summary{
+    display:inline-flex;align-items:baseline;gap:4px;
+    color:#3a2a1a;
+}
+.hs-decklist-rate-avg{
+    font-weight:800;font-size:15px;color:#7a5c0a;
+}
+.hs-decklist-rate-count{
+    color:#6b5034;font-size:12px;
+}
+.hs-decklist-rating.is-thanks{
+    background:rgba(123,172,98,0.22);border-color:rgba(56,107,30,0.45);
+}
+.hs-decklist-rating.is-thanks::after{
+    content:" Спасибо!";font-size:12px;color:#274d10;font-style:italic;
+}
+.hs-decklist-rating.is-thanks .hs-decklist-star{cursor:default;pointer-events:none;}
+.hs-decklist-rating.is-already{
+    background:rgba(220,160,40,0.22);border-color:rgba(150,95,15,0.45);
+}
+.hs-decklist-rating.is-already .hs-decklist-star{cursor:default;pointer-events:none;}
+
+/* Тултип с полной картой при наведении */
+.hs-decklist-tooltip{
+    position:absolute;
+    z-index:99999;
+    pointer-events:none;
+    background:transparent;
+    filter:drop-shadow(0 12px 28px rgba(0,0,0,0.65));
+}
+.hs-decklist-tooltip img{
+    width:100%;height:auto;display:block;
+    border-radius:14px;
+}
+
+/* Ошибка */
+.hs-decklist-error{
+    padding:12px;border-radius:6px;
+    background:#fdecea;color:#7a1f1c;
+    font-weight:600;
+}
+
+/* ===================== Mobile ===================== */
+@media (max-width:900px){
+    .hs-decklist{margin:20px auto;}
+    .hs-decklist-cols{gap:12px;}
+    .hs-decklist-name{font-size:12.5px;letter-spacing:.4px;padding:0 10px;}
+    .hs-decklist-card{height:36px;}
+    .hs-decklist-cost{font-size:16px;flex:0 0 36px;}
+    .hs-decklist-count{flex:0 0 36px;font-size:11px;}
+}
+@media (max-width:640px){
+    .hs-decklist{
+        margin:14px 10px;             /* отступ от краёв экрана */
+        max-width:calc(100% - 20px);
+    }
+    .hs-decklist-head{padding-bottom:10px;margin-bottom:8px;}
+    .hs-decklist-title{font-size:18px;letter-spacing:.3px;}
+    .hs-decklist-cols{grid-template-columns:1fr;gap:14px;}
+    .hs-decklist-col-head{font-size:13px;padding:7px 10px;}
+    .hs-decklist-name{font-size:12.5px;letter-spacing:.3px;padding:0 8px;}
+    .hs-decklist-card{height:38px;}
+    .hs-decklist-cost{font-size:15px;flex:0 0 34px;}
+    .hs-decklist-count{flex:0 0 34px;font-size:11px;}
+    .hs-decklist-art{width:55%;}
+    .hs-decklist-bottom{flex-direction:column;align-items:stretch;gap:10px;margin-top:14px;}
+    .hs-decklist-copy{justify-content:center;font-size:13px;padding:10px 14px;}
+    .hs-decklist-rating{justify-content:center;padding:8px 12px;}
+    .hs-decklist-star{font-size:24px;padding:0 2px;}  /* крупнее тач-таргет */
+}
+@media (max-width:380px){
+    .hs-decklist{margin:12px 8px;max-width:calc(100% - 16px);}
+    .hs-decklist-title{font-size:16px;}
+    .hs-decklist-name{font-size:11.5px;}
+    .hs-decklist-cost{font-size:14px;flex:0 0 30px;}
+    .hs-decklist-count{flex:0 0 30px;}
+}

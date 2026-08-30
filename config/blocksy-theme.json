@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "theme": {
+    "slug": "blocksy",
+    "version": "2.1.40",
+    "companion_version": "2.1.40",
+    "child_theme": "wordpress/themes/blocksy-child",
+    "parent_files_are_source": false
+  },
+  "settings_export": {
+    "source_option": "theme_mods_blocksy",
+    "allowlist": [
+      "colorPalette",
+      "fontColor",
+      "linkColor",
+      "formBackgroundColor",
+      "maxSiteWidth",
+      "sidebarWidth",
+      "sidebarGap",
+      "header_placements",
+      "footer_placements",
+      "blog_structure",
+      "blog_columns",
+      "blog_has_sidebar",
+      "single_blog_post_structure",
+      "single_blog_post_has_featured_image",
+      "single_blog_post_has_related_posts",
+      "single_blog_post_has_share_box",
+      "single_blog_post_content_area_spacing",
+      "pagination_global_type",
+      "mobile_menu_modal_behavior",
+      "has_back_top"
+    ],
+    "excluded": [
+      "credentials",
+      "license_keys",
+      "telegram_tokens",
+      "s3_credentials",
+      "cloudflare_tokens",
+      "cookies",
+      "personal_data",
+      "arbitrary_options"
+    ]
+  }
+}

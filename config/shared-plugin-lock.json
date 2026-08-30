@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "policy": "Every consumer receives the exact same source tree and fails verification on a digest mismatch.",
+  "hash_algorithm": "sha256(path\\0sha256(file)\\0 for sorted files)",
+  "plugins": {
+    "hs-tooltip": {
+      "version": "1.1.8",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_path": "wordpress/plugins/hs-tooltip",
+      "source_commit": "c96638146fdce579ecd692c7327a847ac6a8fa60",
+      "tree_sha256": "667799a5b2d0c241d23967346104411a12c4b1da065c0adb631fd6870564b125",
+      "entrypoints": [
+        "hs-smart-tooltip.php",
+        "assets/hs-tooltip.js",
+        "assets/hs-tooltip.css",
+        "assets/hs-tooltip-v115.js"
+      ],
+      "consumers": [
+        "Manacost-Labs/hs-manacost.ru",
+        "Manacost-Labs/kolodahearthstone.com"
+      ]
+    }
+  }
+}

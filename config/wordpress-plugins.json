@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-30",
+  "source": "production WP-CLI active regular plugin inventory",
+  "selection_policy": "Track active regular plugins and first-party source. Third-party packages are provisioned by pinned slug/version; settings and licenses stay outside Git.",
+  "plugins": [
+    {"slug": "tinymce-advanced", "status": "active", "version": "5.9.2", "origin": "wordpress.org"},
+    {"slug": "blocksy-companion", "status": "active", "version": "2.1.40", "origin": "wordpress.org"},
+    {"slug": "classic-editor", "status": "active", "version": "1.6.7", "origin": "wordpress.org"},
+    {"slug": "cyr2lat", "status": "active", "version": "6.7.0", "origin": "wordpress.org"},
+    {"slug": "disable-comments-rb", "status": "active", "version": "1.0.26", "origin": "wordpress.org"},
+    {"slug": "hs-parses-graphs-wp", "status": "active", "version": "1.1.14", "origin": "custom", "source_status": "tracked-separately"},
+    {"slug": "hs-tooltip", "status": "active", "version": "1.1.8", "origin": "shared-custom", "source": "config/shared-plugin-lock.json"},
+    {"slug": "wp-kolodahearthstone-shortcodes", "status": "active", "version": "2.0", "origin": "custom"},
+    {"slug": "wp-kolodahearthstone-decks", "status": "active", "version": "2.8.2", "origin": "custom"},
+    {"slug": "mulligan", "status": "active", "version": "1.11.1", "origin": "custom", "source_status": "captured-from-production-runtime"},
+    {"slug": "redis-cache", "status": "active", "version": "2.8.0", "origin": "wordpress.org"},
+    {"slug": "separator-placeholder-quick-insert", "status": "active", "version": "0.2.0", "origin": "custom", "source_status": "captured-from-production-runtime"},
+    {"slug": "shortcodes-ultimate", "status": "active", "version": "7.5.0", "origin": "wordpress.org"},
+    {"slug": "KolodaHearthstone Locker", "status": "active", "version": "3.1", "origin": "custom", "source_status": "captured-from-production-runtime"},
+    {"slug": "w3-total-cache", "status": "active", "version": "2.9.4", "origin": "wordpress.org"},
+    {"slug": "wordfence", "status": "active", "version": "9.0.0", "origin": "wordpress.org"}
+  ],
+  "excluded": [
+    "inactive regular plugins",
+    "MU-plugins and runtime drop-ins until their source ownership is recorded",
+    "plugin settings, license keys, credentials and database state",
+    "uploads, caches, logs, backups, temporary files and nested .git metadata"
+  ]
+}

@@ -98,20 +98,15 @@ final class Manacost_Media_Upload_Accelerator
 			return;
 		}
 
-		$result = wp_update_image_subsizes($attachment_id);
-		if (is_wp_error($result) && $attempt + 1 < self::MAX_ATTEMPTS) {
-			self::enqueue($attachment_id, $attempt + 1, 60);
+		try {
+			$result = wp_update_image_subsizes($attachment_id);
+		} catch (Throwable $error) {
+			self::retryOrRecordError($attachment_id, $attempt, $error->getMessage());
 			return;
 		}
 
 		if (is_wp_error($result)) {
-			error_log(
-				sprintf(
-					'[manacost-media-upload-accelerator] attachment=%d failed: %s',
-					$attachment_id,
-					$result->get_error_message()
-				)
-			);
+			self::retryOrRecordError($attachment_id, $attempt, $result->get_error_message());
 		}
 	}
 
@@ -140,6 +135,20 @@ final class Manacost_Media_Upload_Accelerator
 		}
 
 		wp_schedule_single_event(time() + max(1, $delay), self::HOOK, $args);
+	}
+
+	private static function retryOrRecordError(int $attachment_id, int $attempt, string $message): void
+	{
+		if ($attempt + 1 < self::MAX_ATTEMPTS) {
+			self::enqueue($attachment_id, $attempt + 1, 60);
+			return;
+		}
+
+		update_post_meta(
+			$attachment_id,
+			'_manacost_media_upload_accelerator_error',
+			substr($message, 0, 500)
+		);
 	}
 
 	private static function has_deferred_sizes_missing(array $metadata): bool

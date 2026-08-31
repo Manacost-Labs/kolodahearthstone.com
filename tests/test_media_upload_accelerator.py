@@ -169,6 +169,64 @@ class MediaUploadAcceleratorTest(unittest.TestCase):
             ],
         )
 
+    def test_optimizer_waits_for_deferred_sizes_and_is_queued_once_afterward(self) -> None:
+        script = f"""
+        define('ABSPATH', '/');
+        function add_filter($tag, $callback, $priority = 10, $accepted_args = 1) {{}}
+        function add_action($tag, $callback, $priority = 10, $accepted_args = 1) {{}}
+        function wp_doing_ajax() {{ return false; }}
+        function wp_attachment_is_image($id) {{ return true; }}
+        function wp_get_registered_image_subsizes() {{ return [
+            'thumbnail' => ['width' => 150],
+            '1536x1536' => ['width' => 1536],
+        ]; }}
+        function wp_update_image_subsizes($id) {{
+            $GLOBALS['optimizer_during_worker'] =
+                Manacost_Media_Upload_Accelerator::filterLocalOptimizerQueue(true, [], $id, 'update');
+            return ['sizes' => ['thumbnail' => [], '1536x1536' => []]];
+        }}
+        function is_wp_error($value) {{ return false; }}
+        final class HS_Local_Image_Optimizer_WordPress {{
+            public static function queue_attachment($id) {{ $GLOBALS['optimized'][] = $id; }}
+        }}
+        require {json.dumps(str(PLUGIN))};
+        $_SERVER['SCRIPT_FILENAME'] = '/srv/www/wp-admin/async-upload.php';
+        $metadata = ['sizes' => ['thumbnail' => []]];
+        Manacost_Media_Upload_Accelerator::filter_sizes(
+            ['thumbnail' => [], '1536x1536' => []],
+            [],
+            42
+        );
+        $initial_decision = Manacost_Media_Upload_Accelerator::filterLocalOptimizerQueue(
+            true,
+            $metadata,
+            42,
+            'create'
+        );
+        Manacost_Media_Upload_Accelerator::queue_after_metadata($metadata, 42, 'create');
+        Manacost_Media_Upload_Accelerator::generate_deferred_subsizes(42);
+        echo json_encode([
+            'initial_decision' => $initial_decision,
+            'optimizer_during_worker' => $GLOBALS['optimizer_during_worker'] ?? null,
+            'decision_after_worker' => Manacost_Media_Upload_Accelerator::filterLocalOptimizerQueue(
+                true,
+                [],
+                42,
+                'update'
+            ),
+            'optimized' => $GLOBALS['optimized'] ?? [],
+        ]);
+        """
+        self.assertEqual(
+            self.run_php(script),
+            {
+                "initial_decision": False,
+                "optimizer_during_worker": False,
+                "decision_after_worker": True,
+                "optimized": [42],
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

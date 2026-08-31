@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "defaults": {
+    "risk": "low",
+    "domains": ["test.kolodahearthstone.com"],
+    "skills": [
+      "kolodahearthstone-project",
+      "wordpress-change-impact",
+      "wordpress-clean-code",
+      "agent-test-driven-development",
+      "agent-code-review-and-quality",
+      "agent-code-simplification",
+      "agent-security-and-hardening",
+      "agent-git-workflow-and-versioning"
+    ],
+    "checks": [
+      "make check",
+      "/home/debian/server/tools/ai-quality/bin/ai-security-check staged"
+    ]
+  },
+  "rules": [
+    {
+      "patterns": ["wordpress/mu-plugins/hs-media-upload-accelerator.php"],
+      "owner": "media-upload-performance",
+      "classified": true,
+      "risk": "high",
+      "surfaces": ["media", "wp-admin", "performance"],
+      "domains": [
+        "kolodahearthstone.com",
+        "kolodahearthstone.ru",
+        "test.kolodahearthstone.com",
+        "origin",
+        "ru-moscow",
+        "ru-novosibirsk"
+      ],
+      "skills": [
+        "wordpress-media-integrity",
+        "wordpress-admin-performance",
+        "wordpress-runtime-stack",
+        "wordpress-plugin-dev"
+      ],
+      "checks": [
+        "make check",
+        "make blocksy-audit",
+        "staging upload benchmark"
+      ]
+    },
+    {
+      "patterns": ["wordpress/mu-plugins/**"],
+      "owner": "first-party-generic",
+      "classified": false,
+      "risk": "medium",
+      "surfaces": ["wordpress-runtime"],
+      "domains": ["kolodahearthstone.com", "kolodahearthstone.ru"],
+      "skills": ["wp-project-triage", "wp-plugin-development"],
+      "checks": ["make check"]
+    }
+  ]
+}

@@ -22,10 +22,14 @@ final class Manacost_Media_Upload_Accelerator
 	/** @var array<int, int> */
 	private static array $pending_attachments = [];
 
+	/** @var array<int, bool> */
+	private static array $deferred_attachments = [];
+
 	public static function boot(): void
 	{
 		add_filter('intermediate_image_sizes_advanced', [__CLASS__, 'filter_sizes'], 10, 3);
 		add_filter('wp_generate_attachment_metadata', [__CLASS__, 'queue_after_metadata'], 100, 3);
+		add_filter('hs_local_image_optimizer_should_queue', [__CLASS__, 'filterLocalOptimizerQueue'], 10, 4);
 		add_action('shutdown', [__CLASS__, 'flush_pending_queue'], 30);
 		add_action(self::HOOK, [__CLASS__, 'generate_deferred_subsizes'], 10, 2);
 	}
@@ -39,14 +43,21 @@ final class Manacost_Media_Upload_Accelerator
 	 */
 	public static function filter_sizes($sizes, array $metadata = [], int $attachment_id = 0)
 	{
-		unset($metadata, $attachment_id);
+		unset($metadata);
 
 		if (!self::is_upload_request() || !is_array($sizes)) {
 			return $sizes;
 		}
 
+		$has_deferred_sizes = false;
 		foreach (self::DEFERRED_SIZES as $size_name) {
+			if (isset($sizes[$size_name])) {
+				$has_deferred_sizes = true;
+			}
 			unset($sizes[$size_name]);
+		}
+		if ($has_deferred_sizes && $attachment_id > 0) {
+			self::$deferred_attachments[$attachment_id] = true;
 		}
 
 		return $sizes;
@@ -72,9 +83,26 @@ final class Manacost_Media_Upload_Accelerator
 			return $metadata;
 		}
 
+		self::$deferred_attachments[$attachment_id] = true;
 		self::$pending_attachments[$attachment_id] = $attachment_id;
 
 		return $metadata;
+	}
+
+	/**
+	 * Keep the local optimizer out of the request until every size exists.
+	 *
+	 * @param mixed $should_queue
+	 */
+	public static function filterLocalOptimizerQueue(
+		$should_queue,
+		array $metadata,
+		int $attachment_id,
+		string $context = 'create'
+	): bool {
+		unset($metadata, $context);
+
+		return isset(self::$deferred_attachments[$attachment_id]) ? false : (bool) $should_queue;
 	}
 
 	public static function flush_pending_queue(): void
@@ -98,15 +126,24 @@ final class Manacost_Media_Upload_Accelerator
 			return;
 		}
 
+		self::$deferred_attachments[$attachment_id] = true;
+
 		try {
 			$result = wp_update_image_subsizes($attachment_id);
 		} catch (Throwable $error) {
 			self::retryOrRecordError($attachment_id, $attempt, $error->getMessage());
 			return;
+		} finally {
+			unset(self::$deferred_attachments[$attachment_id]);
 		}
 
 		if (is_wp_error($result)) {
 			self::retryOrRecordError($attachment_id, $attempt, $result->get_error_message());
+			return;
+		}
+
+		if (class_exists('HS_Local_Image_Optimizer_WordPress')) {
+			HS_Local_Image_Optimizer_WordPress::queue_attachment($attachment_id);
 		}
 	}
 

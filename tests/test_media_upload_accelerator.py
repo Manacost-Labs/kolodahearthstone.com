@@ -61,9 +61,38 @@ class MediaUploadAcceleratorTest(unittest.TestCase):
                 "manacost_media_upload_accelerator_generate_subsizes",
                 [42, 0],
                 "manacost-media-upload-accelerator",
-                True,
+                False,
             ],
         )
+
+    def test_burst_upload_queues_every_attachment(self) -> None:
+        script = f"""
+        define('ABSPATH', '/');
+        $queued = [];
+        function add_filter($tag, $callback, $priority = 10, $accepted_args = 1) {{}}
+        function add_action($tag, $callback, $priority = 10, $accepted_args = 1) {{}}
+        function wp_doing_ajax() {{ return false; }}
+        function wp_get_registered_image_subsizes() {{ return [
+            'thumbnail' => ['width' => 150],
+            '1536x1536' => ['width' => 1536],
+        ]; }}
+        function wp_attachment_is_image($id) {{ return true; }}
+        function as_enqueue_async_action($hook, $args, $group, $unique) {{
+            $GLOBALS['queued'][] = [$hook, $args, $group, $unique];
+            return count($GLOBALS['queued']);
+        }}
+        require {json.dumps(str(PLUGIN))};
+        $_SERVER['SCRIPT_FILENAME'] = '/srv/www/wp-admin/async-upload.php';
+        $metadata = ['sizes' => ['thumbnail' => []]];
+        Manacost_Media_Upload_Accelerator::queue_after_metadata($metadata, 42, 'create');
+        Manacost_Media_Upload_Accelerator::queue_after_metadata($metadata, 43, 'create');
+        Manacost_Media_Upload_Accelerator::flush_pending_queue();
+        echo json_encode($GLOBALS['queued']);
+        """
+        result = self.run_php(script)
+        self.assertEqual(len(result), 2)
+        self.assertEqual([action[1][0] for action in result], [42, 43])
+        self.assertTrue(all(action[3] is False for action in result))
 
     def test_non_upload_requests_keep_all_sizes(self) -> None:
         script = f"""

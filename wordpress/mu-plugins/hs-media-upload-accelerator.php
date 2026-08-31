@@ -120,12 +120,14 @@ final class Manacost_Media_Upload_Accelerator
 		$args = [$attachment_id, $attempt];
 
 		if (function_exists('as_enqueue_async_action') && 0 === $delay) {
-			as_enqueue_async_action(self::HOOK, $args, self::GROUP, true);
+			// Action Scheduler uniqueness is scoped to hook and group in the DB
+			// store, so it would collapse different attachment IDs in a burst.
+			as_enqueue_async_action(self::HOOK, $args, self::GROUP, false);
 			return;
 		}
 
 		if (function_exists('as_schedule_single_action')) {
-			as_schedule_single_action(time() + $delay, self::HOOK, $args, self::GROUP, true);
+			as_schedule_single_action(time() + $delay, self::HOOK, $args, self::GROUP, false);
 			return;
 		}
 

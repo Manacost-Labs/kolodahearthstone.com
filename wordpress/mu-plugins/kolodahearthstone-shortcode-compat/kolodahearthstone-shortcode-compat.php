@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: KolodaHearthstone Shortcode Formatting Compatibility
- * Description: Preserves hs-tooltip paragraphs while Shortcodes Ultimate custom formatting is enabled.
- * Version: 1.0.0
+ * Description: Preserves inline Hearthstone shortcode paragraphs while Shortcodes Ultimate custom formatting is enabled.
+ * Version: 1.0.1
  * Requires PHP: 7.4
  */
 
@@ -12,12 +12,12 @@ if (!defined('ABSPATH')) {
 
 /**
  * Run the Shortcodes Ultimate formatter without letting it unwrap inline
- * hs-tooltip paragraphs.
+ * Hearthstone shortcode paragraphs.
  *
  * Shortcodes Ultimate replaces every `<p>[` sequence, including shortcodes
- * owned by other plugins. An hs_card or hs_bg shortcode renders as an inline
- * span, so removing its paragraph makes Blocksy treat the text as a loose node
- * outside the constrained content flow.
+ * owned by other plugins. The hs_card, hs_bg and hs_deck_link shortcodes render
+ * inline content, so removing their paragraph makes Blocksy treat the text as
+ * a loose node outside the constrained content flow.
  *
  * @param string $content Filtered post content.
  * @return string
@@ -28,7 +28,11 @@ function khs_shortcode_compat_format_content($content)
         return $content;
     }
 
-    if (strpos($content, '[hs_bg') === false && strpos($content, '[hs_card') === false) {
+    if (
+        strpos($content, '[hs_bg') === false &&
+        strpos($content, '[hs_card') === false &&
+        strpos($content, '[hs_deck_link') === false
+    ) {
         return su_filter_custom_formatting($content);
     }
 
@@ -38,7 +42,7 @@ function khs_shortcode_compat_format_content($content)
     $protected_content = preg_replace_callback(
         '~<p(?:\s[^>]*)?>.*?</p>~is',
         static function ($matches) use (&$protected_paragraphs, $token_prefix) {
-            if (!preg_match('~\[hs_(?:bg|card)\b~i', $matches[0])) {
+            if (!preg_match('~\[hs_(?:bg|card|deck_link)\b~i', $matches[0])) {
                 return $matches[0];
             }
 

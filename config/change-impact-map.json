@@ -46,6 +46,28 @@
       ]
     },
     {
+      "patterns": ["wordpress/mu-plugins/kolodahearthstone-shortcode-compat/**"],
+      "owner": "shortcode-formatting-compatibility",
+      "classified": true,
+      "risk": "high",
+      "surfaces": ["content-rendering", "shortcodes", "blocksy"],
+      "domains": [
+        "kolodahearthstone.com",
+        "kolodahearthstone.ru",
+        "test.kolodahearthstone.com"
+      ],
+      "skills": [
+        "wordpress-article-editor",
+        "wordpress-content-integrity",
+        "wordpress-plugin-dev"
+      ],
+      "checks": [
+        "make check",
+        "shortcode formatting compatibility regression",
+        "staging desktop/mobile article preview"
+      ]
+    },
+    {
       "patterns": ["wordpress/mu-plugins/**"],
       "owner": "first-party-generic",
       "classified": false,

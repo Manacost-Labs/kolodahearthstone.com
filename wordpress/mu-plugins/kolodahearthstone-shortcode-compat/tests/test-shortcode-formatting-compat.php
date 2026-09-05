@@ -119,6 +119,14 @@ khs_test_assert_same(
     'Tooltip paragraphs must keep their opening and closing paragraph tags.'
 );
 
+$inline_deck_content = '<p>[hs_deck_link image_id="6738"]Ренатал Хайлендер Воин[/hs_deck_link]<br />Победы: 54,2% | Популярность: 9,1%</p>';
+
+khs_test_assert_same(
+    $inline_deck_content,
+    (string) khs_test_run_hook('the_content', $inline_deck_content),
+    'Inline deck link paragraphs must keep their opening and closing paragraph tags.'
+);
+
 $shortcodes_ultimate_content = '<p>[su_box]Содержимое[/su_box]</p>';
 
 khs_test_assert_same(

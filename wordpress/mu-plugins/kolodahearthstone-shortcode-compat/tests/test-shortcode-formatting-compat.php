@@ -82,6 +82,46 @@ function su_filter_custom_formatting(string $content): string
     );
 }
 
+function get_shortcode_regex(?array $tagnames = null): string
+{
+    $tagnames = $tagnames ?? ['hs_bg', 'hs_card', 'hs_deck_link', 'su_box'];
+    $tagregexp = implode('|', array_map('preg_quote', $tagnames));
+
+    return '\\['
+        . '(\\[?)'
+        . "($tagregexp)"
+        . '(?![\\w-])'
+        . '('
+        . '[^\\]\\/]*'
+        . '(?:\\/(?!\\])[^\\]\\/]*)*?'
+        . ')'
+        . '(?:'
+        . '(\\/)'
+        . '\\]'
+        . '|'
+        . '\\]'
+        . '(?:'
+        . '('
+        . '[^\\[]*+'
+        . '(?:\\[(?!\\/\\2\\])[^\\[]*+)*+'
+        . ')'
+        . '\\[\\/\\2\\]'
+        . ')?'
+        . ')'
+        . '(\\]?)';
+}
+
+function shortcode_unautop(string $content): string
+{
+    $tagregexp = 'hs_bg|hs_card|hs_deck_link|su_box';
+
+    return (string) preg_replace(
+        '~<p>\s*(\[(' . $tagregexp . ')(?![\w-])[^\]\/]*(?:\/(?!\])[^\]\/]*)*?(?:\/\]|\](?:[^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+\[\/\2\])?))\s*</p>~is',
+        '$1',
+        $content
+    );
+}
+
 function khs_test_assert_same(string $expected, string $actual, string $message): void
 {
     if ($expected === $actual) {
@@ -95,6 +135,7 @@ function khs_test_assert_same(string $expected, string $actual, string $message)
 add_action(
     'init',
     static function (): void {
+        add_filter('the_content', 'shortcode_unautop', 10);
         add_filter('the_content', 'su_filter_custom_formatting', 10);
     },
     1
@@ -125,6 +166,43 @@ khs_test_assert_same(
     $inline_deck_content,
     (string) khs_test_run_hook('the_content', $inline_deck_content),
     'Inline deck link paragraphs must keep their opening and closing paragraph tags.'
+);
+
+$standalone_deck_content = implode(
+    "\n",
+    [
+        '<p><img class="aligncenter" src="separator.png" alt="" /></p>',
+        '<p>[hs_deck_link image_id="6771"]Хостедж Разбойник[/hs_deck_link]</p>',
+        '<p>Победы: 48,8% | Популярность: 0,6%</p>',
+    ]
+);
+
+khs_test_assert_same(
+    $standalone_deck_content,
+    (string) khs_test_run_hook('the_content', $standalone_deck_content),
+    'Standalone deck link paragraphs removed by shortcode_unautop must remain constrained.'
+);
+
+$loose_inline_shortcode_content = implode(
+    "\n",
+    [
+        '<p>[hs_card id="EX1_001"]</p>',
+        '<p>[hs_bg id="BG36_HERO_105" /]</p>',
+    ]
+);
+
+khs_test_assert_same(
+    $loose_inline_shortcode_content,
+    (string) khs_test_run_hook('the_content', $loose_inline_shortcode_content),
+    'Opening-only and self-closing inline shortcodes must keep their paragraphs.'
+);
+
+$block_shortcode_with_deck_content = '<p>[su_box]Блок с [hs_deck_link image_id="6771"]колодой[/hs_deck_link][/su_box]</p>';
+
+khs_test_assert_same(
+    '[su_box]Блок с [hs_deck_link image_id="6771"]колодой[/hs_deck_link][/su_box]',
+    (string) khs_test_run_hook('the_content', $block_shortcode_with_deck_content),
+    'A block shortcode containing an inline deck link must still be unwrapped.'
 );
 
 $shortcodes_ultimate_content = '<p>[su_box]Содержимое[/su_box]</p>';

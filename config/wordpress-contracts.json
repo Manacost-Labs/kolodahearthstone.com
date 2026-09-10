@@ -27,7 +27,7 @@
     "dynamic_contracts": "Unresolved hooks and options require an integration test before release."
   },
   "contracts": {
-    "post_meta": ["_hs_article_versions", "_hs_article_versions_active"],
+    "post_meta": ["_hs_article_versions", "_hs_article_versions_active", "_hs_article_versions_state"],
     "options": [],
     "shortcodes": ["hs_card", "hs_bg", "khs_poll"],
     "ajax_actions": [],

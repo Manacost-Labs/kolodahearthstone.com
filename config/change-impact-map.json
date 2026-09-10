@@ -68,6 +68,35 @@
       ]
     },
     {
+      "patterns": ["wordpress/mu-plugins/hs-article-versions.php", "tests/test_article_versions.py", "config/wordpress-contracts.json"],
+      "owner": "article-editorial-versions",
+      "classified": true,
+      "risk": "high",
+      "surfaces": ["wp-admin", "editor", "frontend", "blocksy", "rest-api", "content-integrity"],
+      "domains": [
+        "kolodahearthstone.com",
+        "kolodahearthstone.ru",
+        "test.kolodahearthstone.com",
+        "origin",
+        "ru-moscow",
+        "ru-novosibirsk"
+      ],
+      "skills": [
+        "wordpress-admin-ui",
+        "wordpress-article-editor",
+        "wordpress-content-integrity",
+        "blocksy-theme",
+        "wp-rest-api",
+        "wordpress-accessibility",
+        "wp-plugin-development"
+      ],
+      "checks": [
+        "make check",
+        "make blocksy-audit",
+        "staging desktop/mobile editor and article-version flow"
+      ]
+    },
+    {
       "patterns": ["wordpress/mu-plugins/**"],
       "owner": "first-party-generic",
       "classified": false,

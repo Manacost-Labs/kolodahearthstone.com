@@ -18,6 +18,7 @@
       "wordpress/mu-plugins/google-site-verification.php",
       "wordpress/mu-plugins/hs-belwe-font.php",
       "wordpress/mu-plugins/hs-local-image-optimizer.php",
+      "wordpress/mu-plugins/hs-article-versions.php",
       "wordpress/mu-plugins/manacost-cache-purge.php",
       "wordpress/mu-plugins/manacost-media-unique-filenames.php",
       "wordpress/mu-plugins/plausible-analytics.php",
@@ -26,12 +27,12 @@
     "dynamic_contracts": "Unresolved hooks and options require an integration test before release."
   },
   "contracts": {
-    "post_meta": [],
+    "post_meta": ["_hs_article_versions"],
     "options": [],
     "shortcodes": ["hs_card", "hs_bg", "khs_poll"],
     "ajax_actions": [],
-    "rest_routes": [],
+    "rest_routes": ["manacost/v1/article-versions"],
     "cron_hooks": [],
-    "capabilities": []
+    "capabilities": ["edit_post"]
   }
 }

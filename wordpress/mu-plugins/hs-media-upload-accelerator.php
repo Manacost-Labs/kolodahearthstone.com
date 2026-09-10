@@ -121,7 +121,6 @@ final class Manacost_Media_Upload_Accelerator
 			$attachment_id <= 0
 			|| !function_exists('wp_attachment_is_image')
 			|| !wp_attachment_is_image($attachment_id)
-			|| !function_exists('wp_update_image_subsizes')
 		) {
 			return;
 		}
@@ -129,6 +128,9 @@ final class Manacost_Media_Upload_Accelerator
 		self::$deferred_attachments[$attachment_id] = true;
 
 		try {
+			if (!function_exists('wp_update_image_subsizes')) {
+				require_once ABSPATH . 'wp-admin/includes/image.php';
+			}
 			$result = wp_update_image_subsizes($attachment_id);
 		} catch (Throwable $error) {
 			self::retryOrRecordError($attachment_id, $attempt, $error->getMessage());
@@ -139,6 +141,13 @@ final class Manacost_Media_Upload_Accelerator
 
 		if (is_wp_error($result)) {
 			self::retryOrRecordError($attachment_id, $attempt, $result->get_error_message());
+			return;
+		}
+
+		// Core can return metadata despite failed individual sizes. Its missing
+		// size calculation excludes dimensions that would require upscaling.
+		if (!is_array($result) || (function_exists('wp_get_missing_image_subsizes') && wp_get_missing_image_subsizes($attachment_id))) {
+			self::retryOrRecordError($attachment_id, $attempt, 'Image sub-sizes are still incomplete.');
 			return;
 		}
 

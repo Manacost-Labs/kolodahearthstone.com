@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -11,6 +12,23 @@ PLUGIN = ROOT / "wordpress/mu-plugins/hs-media-upload-accelerator.php"
 
 
 class MediaUploadAcceleratorTest(unittest.TestCase):
+    def test_silent_partial_size_failure_is_retried_without_optimizer_handoff(self) -> None:
+        result = self.run_php(f"""
+        define('ABSPATH', '/');
+        function add_filter(...$args) {{}}
+        function add_action(...$args) {{}}
+        function wp_attachment_is_image($id) {{ return true; }}
+        function wp_update_image_subsizes($id) {{ return ['sizes' => []]; }}
+        function wp_get_missing_image_subsizes($id) {{ return ['2048x2048' => []]; }}
+        function is_wp_error($value) {{ return false; }}
+        function as_schedule_single_action($time, $hook, $args, $group, $unique) {{ $GLOBALS['retry'] = $args; }}
+        class HS_Local_Image_Optimizer_WordPress {{ public static function queue_attachment($id) {{ $GLOBALS['optimized'] = true; }} }}
+        require {json.dumps(str(PLUGIN))};
+        Manacost_Media_Upload_Accelerator::generate_deferred_subsizes(42);
+        echo json_encode(['retry' => $GLOBALS['retry'] ?? null, 'optimized' => $GLOBALS['optimized'] ?? false]);
+        """)
+        self.assertEqual(result, {'retry': [42, 1], 'optimized': False})
+
     def run_php(self, script: str) -> dict:
         completed = subprocess.run(
             ["/opt/php84/bin/php", "-r", script],
@@ -21,7 +39,7 @@ class MediaUploadAcceleratorTest(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         return json.loads(completed.stdout)
 
-    def test_async_upload_defers_only_heavy_sizes_and_queues_background_work(self) -> None:
+    def test_async_upload_defers_all_non_thumbnail_sizes_and_queues_background_work(self) -> None:
         script = f"""
         define('ABSPATH', '/');
         $hooks = [];
@@ -30,7 +48,10 @@ class MediaUploadAcceleratorTest(unittest.TestCase):
         function wp_doing_ajax() {{ return defined('DOING_AJAX') && DOING_AJAX; }}
         function wp_get_registered_image_subsizes() {{ return [
             'thumbnail' => ['width' => 150],
+            'medium' => ['width' => 300],
+            'medium_large' => ['width' => 768],
             'large' => ['width' => 1024],
+            'svl_seo_og' => ['width' => 1200, 'height' => 630],
             '1536x1536' => ['width' => 1536],
             '2048x2048' => ['width' => 2048],
         ]; }}
@@ -43,18 +64,21 @@ class MediaUploadAcceleratorTest(unittest.TestCase):
         $_SERVER['SCRIPT_FILENAME'] = '/srv/www/wp-admin/async-upload.php';
         $sizes = [
             'thumbnail' => ['width' => 150],
+            'medium' => ['width' => 300],
+            'medium_large' => ['width' => 768],
             'large' => ['width' => 1024],
+            'svl_seo_og' => ['width' => 1200, 'height' => 630],
             '1536x1536' => ['width' => 1536],
             '2048x2048' => ['width' => 2048],
         ];
         $filtered = Manacost_Media_Upload_Accelerator::filter_sizes($sizes, [], 42);
-        $metadata = ['width' => 2400, 'height' => 1800, 'sizes' => ['thumbnail' => [], 'large' => []]];
+        $metadata = ['width' => 2400, 'height' => 1800, 'sizes' => ['thumbnail' => []]];
         Manacost_Media_Upload_Accelerator::queue_after_metadata($metadata, 42, 'create');
         Manacost_Media_Upload_Accelerator::flush_pending_queue();
         echo json_encode(['sizes' => array_keys($filtered), 'queued' => $GLOBALS['queued'] ?? null]);
         """
         result = self.run_php(script)
-        self.assertEqual(result["sizes"], ["thumbnail", "large"])
+        self.assertEqual(result["sizes"], ["thumbnail"])
         self.assertEqual(
             result["queued"],
             [
@@ -167,6 +191,56 @@ class MediaUploadAcceleratorTest(unittest.TestCase):
                     False,
                 ]
             ],
+        )
+
+    def test_deferred_worker_loads_core_image_helper_before_optimizer_handoff(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            helper = Path(temp_dir) / "wp-admin/includes/image.php"
+            helper.parent.mkdir(parents=True)
+            helper.write_text(
+                "<?php\n"
+                "$GLOBALS['image_helper_loaded'] = true;\n"
+                "function wp_update_image_subsizes($id) { return ['sizes' => ['1536x1536' => []]]; }\n",
+                encoding="utf-8",
+            )
+            script = f"""
+            define('ABSPATH', {json.dumps(str(Path(temp_dir)) + '/')});
+            function add_filter($tag, $callback, $priority = 10, $accepted_args = 1) {{}}
+            function add_action($tag, $callback, $priority = 10, $accepted_args = 1) {{}}
+            function wp_doing_ajax() {{ return false; }}
+            function wp_attachment_is_image($id) {{ return true; }}
+            function is_wp_error($value) {{ return false; }}
+            final class HS_Local_Image_Optimizer_WordPress {{
+                public static function queue_attachment($id) {{ $GLOBALS['optimized'][] = $id; }}
+            }}
+            require {json.dumps(str(PLUGIN))};
+            Manacost_Media_Upload_Accelerator::generate_deferred_subsizes(42);
+            echo json_encode([
+                'helper_loaded' => $GLOBALS['image_helper_loaded'] ?? false,
+                'optimized' => $GLOBALS['optimized'] ?? [],
+            ]);
+            """
+            self.assertEqual(
+                self.run_php(script),
+                {"helper_loaded": True, "optimized": [42]},
+            )
+
+    def test_deferred_worker_records_final_image_editor_failure(self) -> None:
+        script = f"""
+        define('ABSPATH', '/');
+        function add_filter($tag, $callback, $priority = 10, $accepted_args = 1) {{}}
+        function add_action($tag, $callback, $priority = 10, $accepted_args = 1) {{}}
+        function wp_doing_ajax() {{ return false; }}
+        function wp_attachment_is_image($id) {{ return true; }}
+        function wp_update_image_subsizes($id) {{ throw new RuntimeException('image editor unavailable'); }}
+        function update_post_meta($id, $key, $message) {{ $GLOBALS['recorded'] = [$id, $key, $message]; }}
+        require {json.dumps(str(PLUGIN))};
+        Manacost_Media_Upload_Accelerator::generate_deferred_subsizes(42, 2);
+        echo json_encode($GLOBALS['recorded'] ?? null);
+        """
+        self.assertEqual(
+            self.run_php(script),
+            [42, "_manacost_media_upload_accelerator_error", "image editor unavailable"],
         )
 
     def test_optimizer_waits_for_deferred_sizes_and_is_queued_once_afterward(self) -> None:

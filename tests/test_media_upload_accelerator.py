@@ -39,7 +39,7 @@ class MediaUploadAcceleratorTest(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         return json.loads(completed.stdout)
 
-    def test_async_upload_defers_only_heavy_sizes_and_queues_background_work(self) -> None:
+    def test_async_upload_defers_all_non_thumbnail_sizes_and_queues_background_work(self) -> None:
         script = f"""
         define('ABSPATH', '/');
         $hooks = [];
@@ -48,7 +48,10 @@ class MediaUploadAcceleratorTest(unittest.TestCase):
         function wp_doing_ajax() {{ return defined('DOING_AJAX') && DOING_AJAX; }}
         function wp_get_registered_image_subsizes() {{ return [
             'thumbnail' => ['width' => 150],
+            'medium' => ['width' => 300],
+            'medium_large' => ['width' => 768],
             'large' => ['width' => 1024],
+            'svl_seo_og' => ['width' => 1200, 'height' => 630],
             '1536x1536' => ['width' => 1536],
             '2048x2048' => ['width' => 2048],
         ]; }}
@@ -61,18 +64,21 @@ class MediaUploadAcceleratorTest(unittest.TestCase):
         $_SERVER['SCRIPT_FILENAME'] = '/srv/www/wp-admin/async-upload.php';
         $sizes = [
             'thumbnail' => ['width' => 150],
+            'medium' => ['width' => 300],
+            'medium_large' => ['width' => 768],
             'large' => ['width' => 1024],
+            'svl_seo_og' => ['width' => 1200, 'height' => 630],
             '1536x1536' => ['width' => 1536],
             '2048x2048' => ['width' => 2048],
         ];
         $filtered = Manacost_Media_Upload_Accelerator::filter_sizes($sizes, [], 42);
-        $metadata = ['width' => 2400, 'height' => 1800, 'sizes' => ['thumbnail' => [], 'large' => []]];
+        $metadata = ['width' => 2400, 'height' => 1800, 'sizes' => ['thumbnail' => []]];
         Manacost_Media_Upload_Accelerator::queue_after_metadata($metadata, 42, 'create');
         Manacost_Media_Upload_Accelerator::flush_pending_queue();
         echo json_encode(['sizes' => array_keys($filtered), 'queued' => $GLOBALS['queued'] ?? null]);
         """
         result = self.run_php(script)
-        self.assertEqual(result["sizes"], ["thumbnail", "large"])
+        self.assertEqual(result["sizes"], ["thumbnail"])
         self.assertEqual(
             result["queued"],
             [

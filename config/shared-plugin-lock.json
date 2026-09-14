@@ -7,8 +7,8 @@
       "version": "1.1.8",
       "source_repository": "Manacost-Labs/hs-manacost.ru",
       "source_path": "wordpress/plugins/hs-tooltip",
-      "source_commit": "c96638146fdce579ecd692c7327a847ac6a8fa60",
-      "tree_sha256": "667799a5b2d0c241d23967346104411a12c4b1da065c0adb631fd6870564b125",
+      "source_commit": "a5186a63ade592197fcc57c877e86a9d64471a2a",
+      "tree_sha256": "7b71c9af83c978119b5e907f69457e66fcf1faf4378be2b6a0b1c01ae7bbcd67",
       "entrypoints": [
         "hs-smart-tooltip.php",
         "assets/hs-tooltip.js",

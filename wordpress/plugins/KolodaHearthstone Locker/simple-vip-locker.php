@@ -1864,8 +1864,6 @@ function svl_render_locker($atts, $content = null) {
     wp_enqueue_script('jquery');
     svl_enqueue_front_styles();
 
-    // Ищем баннер: явный атрибут или файл wallpaper.* в каталоге плагина
-    $banner_url = svl_resolve_banner_url($atts['image']);
     $ui_asset_url = plugin_dir_url(__FILE__) . 'assets/home-redesign/img/';
 
     // --- НАЧАЛО БУФЕРИЗАЦИИ ---
@@ -1902,12 +1900,6 @@ function svl_render_locker($atts, $content = null) {
         <?php echo $teaser_html; ?>
 
         <div class="svl-form-container svl-card">
-            <?php if ($banner_url): ?>
-                <div class="svl-banner">
-                    <img src="<?php echo esc_url($banner_url); ?>" alt="" loading="lazy" />
-                </div>
-            <?php endif; ?>
-
             <div class="svl-body">
                 <div class="svl-paywall-heading">
                     <span class="svl-paywall-heading-icon" aria-hidden="true">
@@ -1950,33 +1942,31 @@ function svl_render_locker($atts, $content = null) {
                     >
                 </a>
 
-                <div class="svl-code-divider">
-                    <span>или введите код доступа</span>
-                </div>
-
-                <div class="svl-code-panel">
-                    <div class="svl-code-panel-heading">
+                <details class="svl-code-panel">
+                    <summary class="svl-code-panel-heading">
                         <span class="svl-code-panel-icon" aria-hidden="true">
                             <img src="<?php echo esc_url($ui_asset_url . 'key-round.svg'); ?>" alt="">
                         </span>
-                        <span>Есть код от подписки?</span>
-                    </div>
+                        <span>У меня есть код доступа</span>
+                    </summary>
 
-                    <div class="svl-input-wrap">
-                        <svg class="svl-lock-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                    <div class="svl-code-panel-body">
+                        <div class="svl-input-wrap">
+                            <svg class="svl-lock-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
                             <path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm0 2a3 3 0 0 1 3 3v3H9V7a3 3 0 0 1 3-3zm0 9a2 2 0 0 1 1 3.732V18a1 1 0 1 1-2 0v-1.268A2 2 0 0 1 12 13z"/>
-                        </svg>
-                        <input type="text" class="svl-input" placeholder="Введите код доступа" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Код доступа">
-                        <span class="svl-input-len" aria-hidden="true"></span>
-                    </div>
+                            </svg>
+                            <input type="text" class="svl-input" placeholder="Введите код доступа" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Код доступа">
+                            <span class="svl-input-len" aria-hidden="true"></span>
+                        </div>
 
-                    <div class="svl-row">
-                        <button type="button" class="svl-btn svl-btn-primary svl-btn-submit">
-                            <span class="svl-btn-label">Разблокировать статью</span>
-                            <span class="svl-btn-loader" aria-hidden="true"></span>
-                        </button>
+                        <div class="svl-row">
+                            <button type="button" class="svl-btn svl-btn-primary svl-btn-submit">
+                                <span class="svl-btn-label">Разблокировать статью</span>
+                                <span class="svl-btn-loader" aria-hidden="true"></span>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </details>
 
                 <details class="svl-why">
                     <summary>

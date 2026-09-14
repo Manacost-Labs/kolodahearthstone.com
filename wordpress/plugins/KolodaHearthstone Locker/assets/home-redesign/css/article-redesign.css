@@ -77,8 +77,8 @@ body.single-post .svl-wrapper {
 }
 
 body.single-post .svl-wrapper .svl-card {
-    padding: 18px !important;
-    border: 5px solid var(--kh-wood-soft) !important;
+    padding: 14px !important;
+    border: 3px solid var(--kh-wood-soft) !important;
     border-radius: 6px !important;
     background: var(--kh-article-surface) !important;
     box-shadow:
@@ -95,50 +95,29 @@ body.single-post .svl-wrapper .svl-garland {
     display: none !important;
 }
 
-body.single-post .svl-wrapper .svl-banner {
-    width: 100%;
-    aspect-ratio: 5.25 / 1;
-    margin: 0 0 22px !important;
-    border: 2px solid var(--kh-wood-soft) !important;
-    border-radius: 4px !important;
-    background: #3f2515;
-    box-shadow:
-        0 0 0 1px rgba(201, 148, 62, 0.7),
-        0 7px 18px rgba(63, 36, 14, 0.2) !important;
-}
-
-body.single-post .svl-wrapper .svl-banner img {
-    width: 100%;
-    height: 100% !important;
-    object-fit: cover;
-    object-position: center;
-}
-
 body.single-post .svl-wrapper .svl-body {
     padding: 0 !important;
 }
 
 body.single-post .svl-paywall-heading {
     display: grid;
-    grid-template-columns: 52px minmax(0, 1fr);
-    gap: 14px;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 11px;
     align-items: start;
-    margin: 0 4px 20px;
+    margin: 0 2px 15px;
 }
 
 body.single-post .svl-paywall-heading-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 52px;
-    height: 52px;
+    width: 40px;
+    height: 40px;
     color: #fff5dc;
     border: 1px solid #5d0d13;
     border-radius: 6px;
     background: linear-gradient(180deg, var(--kh-red), var(--kh-red-dark));
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        0 4px 10px rgba(93, 13, 19, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 body.single-post .svl-paywall-heading-icon img,
@@ -146,8 +125,8 @@ body.single-post .svl-code-panel-icon img,
 body.single-post .svl-why-icon img,
 body.single-post .svl-social-proof-icon img {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
 }
 
 body.single-post .svl-paywall-heading-icon img {
@@ -155,7 +134,7 @@ body.single-post .svl-paywall-heading-icon img {
 }
 
 body.single-post .svl-paywall-kicker {
-    margin: 1px 0 5px !important;
+    margin: 0 0 3px !important;
     color: var(--kh-red) !important;
     font-family: Arial, sans-serif;
     font-size: 12px;
@@ -168,9 +147,9 @@ body.single-post .svl-paywall-kicker {
 body.single-post .svl-wrapper .svl-message {
     margin: 0 !important;
     color: var(--kh-ink) !important;
-    font-size: clamp(17px, 1.55vw, 22px) !important;
-    font-weight: 700 !important;
-    line-height: 1.42 !important;
+    font-size: clamp(15px, 1.2vw, 18px) !important;
+    font-weight: 600 !important;
+    line-height: 1.36 !important;
     text-shadow: none !important;
 }
 
@@ -179,16 +158,16 @@ body.single-post .svl-bot-login {
     grid-template-columns: 48px minmax(0, 1fr) auto;
     gap: 14px;
     align-items: center;
-    min-height: 78px;
-    margin: 0 0 19px;
-    padding: 13px 18px 13px 14px;
+    min-height: 68px;
+    margin: 0 0 14px;
+    padding: 10px 16px 10px 12px;
     color: #fff !important;
     border: 1px solid #0f6f9f;
     border-radius: 7px;
     background: linear-gradient(180deg, var(--kh-telegram), var(--kh-telegram-dark));
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.25),
-        0 6px 15px rgba(20, 127, 179, 0.22);
+        0 4px 10px rgba(20, 127, 179, 0.18);
     text-decoration: none !important;
     transition:
         transform 160ms ease,
@@ -282,29 +261,10 @@ body.single-post .svl-subscribe-cta:hover img {
     transform: translateY(-1px);
 }
 
-body.single-post .svl-code-divider {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 12px;
-    align-items: center;
-    margin: 0 3px 16px;
-    color: var(--kh-muted);
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-}
-
-body.single-post .svl-code-divider::before,
-body.single-post .svl-code-divider::after {
-    content: "";
-    height: 1px;
-    background: var(--kh-article-line);
-}
-
 body.single-post .svl-code-panel {
-    padding: 16px;
+    margin: 14px 0 0;
+    overflow: hidden;
+    padding: 0;
     border: 1px solid rgba(100, 58, 26, 0.28);
     border-radius: 7px;
     background: rgba(255, 246, 216, 0.62);
@@ -312,14 +272,42 @@ body.single-post .svl-code-panel {
 }
 
 body.single-post .svl-code-panel-heading {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     gap: 8px;
     align-items: center;
-    margin: 0 0 11px;
+    min-height: 50px;
+    margin: 0;
+    padding: 12px 16px;
     color: var(--kh-ink);
     font-family: Arial, sans-serif;
     font-size: 13px;
     font-weight: 800;
+    list-style: none;
+    cursor: pointer;
+}
+
+body.single-post .svl-code-panel-heading::-webkit-details-marker {
+    display: none;
+}
+
+body.single-post .svl-code-panel-heading::after {
+    color: var(--kh-red);
+    content: '+';
+    font-size: 19px;
+    line-height: 1;
+}
+
+body.single-post .svl-code-panel[open] .svl-code-panel-heading {
+    margin-bottom: 11px;
+}
+
+body.single-post .svl-code-panel[open] .svl-code-panel-heading::after {
+    content: '−';
+}
+
+body.single-post .svl-code-panel-body {
+    padding: 0 16px 16px;
 }
 
 body.single-post .svl-code-panel-icon,
@@ -1468,40 +1456,35 @@ body.single-post .ct-back-to-top {
     }
 
     body.single-post .svl-wrapper .svl-card {
-        padding: 11px !important;
-        border-width: 4px !important;
-    }
-
-    body.single-post .svl-wrapper .svl-banner {
-        aspect-ratio: 3.4 / 1;
-        margin-bottom: 17px !important;
+        padding: 10px !important;
+        border-width: 3px !important;
     }
 
     body.single-post .svl-paywall-heading {
-        grid-template-columns: 42px minmax(0, 1fr);
-        gap: 11px;
-        margin: 0 2px 17px;
+        grid-template-columns: 36px minmax(0, 1fr);
+        gap: 9px;
+        margin: 0 1px 13px;
     }
 
     body.single-post .svl-paywall-heading-icon {
-        width: 42px;
-        height: 42px;
+        width: 36px;
+        height: 36px;
     }
 
     body.single-post .svl-paywall-heading-icon img {
-        width: 21px;
-        height: 21px;
+        width: 18px;
+        height: 18px;
     }
 
     body.single-post .svl-wrapper .svl-message {
-        font-size: 16px !important;
+        font-size: 15px !important;
     }
 
     body.single-post .svl-bot-login {
         grid-template-columns: 42px minmax(0, 1fr) auto;
         gap: 10px;
-        min-height: 72px;
-        padding: 12px 11px;
+        min-height: 64px;
+        padding: 10px 11px;
     }
 
     body.single-post .svl-bot-login .svl-brand-icon {
@@ -1521,13 +1504,17 @@ body.single-post .ct-back-to-top {
         font-size: 21px;
     }
 
-    body.single-post .svl-code-divider {
-        gap: 7px;
-        font-size: 10px;
+    body.single-post .svl-code-panel {
+        padding: 0;
     }
 
-    body.single-post .svl-code-panel {
-        padding: 12px;
+    body.single-post .svl-code-panel-heading {
+        min-height: 46px;
+        padding: 10px 12px;
+    }
+
+    body.single-post .svl-code-panel-body {
+        padding: 0 12px 12px;
     }
 
     body.single-post .svl-wrapper .svl-row {

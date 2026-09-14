@@ -1906,8 +1906,9 @@ function svl_render_locker($atts, $content = null) {
                         <img src="<?php echo esc_url($ui_asset_url . 'shield-check.svg'); ?>" alt="">
                     </span>
                     <div>
-                        <p class="svl-paywall-kicker">Материал для подписчиков</p>
-                        <p class="svl-message"><?php echo esc_html($atts['message']); ?></p>
+                        <p class="svl-paywall-kicker">Доступ по подписке</p>
+                        <p class="svl-message">Статья доступна на Boosty и Tribute</p>
+                        <p class="svl-paywall-note">Ваша поддержка помогает выпускать новые гайды и мета-отчёты.</p>
                     </div>
                 </div>
 

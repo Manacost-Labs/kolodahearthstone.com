@@ -85,9 +85,13 @@ class ArticleTailControlsTest(unittest.TestCase):
         self.assertIn('<div class="svl-code-panel">', plugin)
         self.assertIn('<div class="svl-code-panel-heading">', plugin)
         self.assertIn('class="svl-code-panel-body"', plugin)
+        self.assertIn("Доступ по подписке", plugin)
+        self.assertIn("Статья доступна на Boosty и Tribute", plugin)
+        self.assertIn("svl-paywall-note", plugin)
         self.assertIn("width: min(100%, 365px);", styles)
         self.assertIn(".svl-subscribe-cta:focus-visible", styles)
         self.assertNotIn(".svl-code-panel-heading::after", styles)
+        self.assertIn(".svl-paywall-note", styles)
 
 
 if __name__ == "__main__":

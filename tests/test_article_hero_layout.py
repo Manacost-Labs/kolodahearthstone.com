@@ -15,6 +15,9 @@ class ArticleHeroLayoutTests(unittest.TestCase):
 
         self.assertIn(hero + " > figure", css)
         self.assertIn("position: relative;", css)
+        self.assertIn("margin: 0;", css)
+        self.assertIn(".ct-media-container::after", css)
+        self.assertIn("background-color: transparent;", css)
         self.assertIn(hero + " > .entry-header", css)
         self.assertIn("--theme-text-transform: none;", css)
         self.assertIn("text-transform: none;", css)

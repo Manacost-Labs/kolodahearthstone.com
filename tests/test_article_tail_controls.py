@@ -88,6 +88,7 @@ class ArticleTailControlsTest(unittest.TestCase):
         self.assertIn("Доступ по подписке", plugin)
         self.assertIn("Статья доступна на Boosty и Tribute", plugin)
         self.assertIn("svl-paywall-note", plugin)
+        self.assertIn("subscription-shield.svg", plugin)
         self.assertIn("width: min(100%, 365px);", styles)
         self.assertIn(".svl-subscribe-cta:focus-visible", styles)
         self.assertNotIn(".svl-code-panel-heading::after", styles)

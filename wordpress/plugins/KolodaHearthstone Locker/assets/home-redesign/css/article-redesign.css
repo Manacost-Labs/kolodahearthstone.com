@@ -111,11 +111,14 @@ body.single-post .svl-paywall-heading-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    border: 1px solid rgba(141, 23, 29, 0.22);
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(151, 101, 32, 0.48);
     border-radius: 50%;
-    background: rgba(141, 23, 29, 0.08);
+    background: linear-gradient(145deg, #fff5d4, #f0d28d);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        0 2px 5px rgba(86, 46, 13, 0.12);
 }
 
 body.single-post .svl-paywall-heading-icon img,
@@ -123,12 +126,12 @@ body.single-post .svl-code-panel-icon img,
 body.single-post .svl-why-icon img,
 body.single-post .svl-social-proof-icon img {
     display: block;
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
 }
 
 body.single-post .svl-paywall-heading-icon img {
-    filter: invert(17%) sepia(60%) saturate(2960%) hue-rotate(335deg) brightness(77%);
+    filter: none;
 }
 
 body.single-post .svl-paywall-kicker {
@@ -1451,13 +1454,13 @@ body.single-post .ct-back-to-top {
     }
 
     body.single-post .svl-paywall-heading-icon {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
     }
 
     body.single-post .svl-paywall-heading-icon img {
-        width: 16px;
-        height: 16px;
+        width: 20px;
+        height: 20px;
     }
 
     body.single-post .svl-wrapper .svl-message {

@@ -1903,7 +1903,7 @@ function svl_render_locker($atts, $content = null) {
             <div class="svl-body">
                 <div class="svl-paywall-heading">
                     <span class="svl-paywall-heading-icon" aria-hidden="true">
-                        <img src="<?php echo esc_url($ui_asset_url . 'shield-check.svg'); ?>" alt="">
+                        <img src="<?php echo esc_url($ui_asset_url . 'subscription-shield.svg'); ?>" alt="">
                     </span>
                     <div>
                         <p class="svl-paywall-kicker">Доступ по подписке</p>

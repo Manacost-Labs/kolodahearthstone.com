@@ -1,0 +1,92 @@
+#kh_tooltip_workspace.kh-tooltip-workspace--pinned {
+    position: sticky;
+    top: 46px;
+    z-index: 9;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__tabs {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 10px;
+    border-bottom: 1px solid #dcdcde;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__tab {
+    margin: 0;
+    padding: 4px 0 6px;
+    color: #50575e;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    font-size: 13px;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__tab:hover,
+#kh_tooltip_workspace .kh-tooltip-workspace__tab:focus {
+    color: #135e96;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__tab:focus-visible {
+    outline: 1px solid #3582c4;
+    outline-offset: 2px;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__tab.is-active {
+    color: #135e96;
+    border-bottom-color: #135e96;
+    font-weight: 600;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__pin {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    padding-bottom: 4px;
+    color: #646970;
+    font-size: 11px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__pin:hover {
+    color: #135e96;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__pin-input {
+    width: 14px;
+    min-width: 14px;
+    height: 14px;
+    margin: 0;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__toggle {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f1;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__toggle label {
+    font-size: 12px;
+}
+
+#kh_tooltip_workspace .kh-tooltip-workspace__toggle p {
+    margin-bottom: 0;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+@media (max-width: 500px) {
+    #kh_tooltip_workspace .kh-tooltip-workspace__tabs {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    #kh_tooltip_workspace .kh-tooltip-workspace__pin {
+        margin-left: 0;
+    }
+}

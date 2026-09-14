@@ -120,6 +120,16 @@
       ]
     },
     {
+      "patterns": ["wordpress/mu-plugins/koloda-tooltip-workspace.php", "wordpress/mu-plugins/koloda-tooltip-workspace/**", "tests/test_tooltip_workspace.py"],
+      "owner": "editor-tooltip-workspace",
+      "classified": true,
+      "risk": "high",
+      "surfaces": ["wp-admin", "editor", "shortcodes"],
+      "domains": ["kolodahearthstone.com", "kolodahearthstone.ru", "test.kolodahearthstone.com"],
+      "skills": ["wordpress-admin-ui", "wordpress-article-editor", "wordpress-accessibility", "wordpress-plugin-dev"],
+      "checks": ["make check", "staging desktop/mobile tooltip-editor flow"]
+    },
+    {
       "patterns": ["wordpress/mu-plugins/**"],
       "owner": "first-party-generic",
       "classified": false,

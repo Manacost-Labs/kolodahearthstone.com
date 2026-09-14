@@ -97,6 +97,29 @@
       ]
     },
     {
+      "patterns": ["wordpress/mu-plugins/hs-article-tail-controls.php", "tests/test_article_tail_controls.py", "wordpress/plugins/KolodaHearthstone Locker/svl-home-redesign.php"],
+      "owner": "article-tail-presentation",
+      "classified": true,
+      "risk": "high",
+      "surfaces": ["frontend", "blocksy", "content-rendering"],
+      "domains": [
+        "kolodahearthstone.com",
+        "kolodahearthstone.ru",
+        "test.kolodahearthstone.com"
+      ],
+      "skills": [
+        "blocksy-theme",
+        "wordpress-responsive-experience",
+        "wordpress-accessibility",
+        "wp-plugin-development"
+      ],
+      "checks": [
+        "make check",
+        "make blocksy-audit",
+        "staging desktop/mobile article-tail preview"
+      ]
+    },
+    {
       "patterns": ["wordpress/mu-plugins/**"],
       "owner": "first-party-generic",
       "classified": false,

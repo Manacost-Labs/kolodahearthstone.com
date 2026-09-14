@@ -19,6 +19,7 @@
       "wordpress/mu-plugins/hs-belwe-font.php",
       "wordpress/mu-plugins/hs-local-image-optimizer.php",
       "wordpress/mu-plugins/hs-article-versions.php",
+      "wordpress/mu-plugins/hs-article-tail-controls.php",
       "wordpress/mu-plugins/manacost-cache-purge.php",
       "wordpress/mu-plugins/manacost-media-unique-filenames.php",
       "wordpress/mu-plugins/plausible-analytics.php",

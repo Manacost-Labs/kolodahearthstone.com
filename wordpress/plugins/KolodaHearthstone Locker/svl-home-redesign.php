@@ -1792,12 +1792,23 @@ function svl_home_redesign_render_public_feedback_stats($post_id) {
     <?php
 }
 
+/**
+ * Controls whether visitors can view or submit article feedback.
+ *
+ * Feedback records remain available in wp-admin while the public feature is
+ * disabled. A first-party integration can opt back in through this filter.
+ */
+function svl_home_redesign_article_feedback_is_enabled() {
+    return (bool) apply_filters('kh_article_feedback_enabled', false);
+}
+
 add_filter('the_content', 'svl_home_redesign_append_article_feedback', 95);
 function svl_home_redesign_append_article_feedback($content) {
     static $rendered_posts = array();
 
     if (
         !svl_home_redesign_enabled()
+        || !svl_home_redesign_article_feedback_is_enabled()
         || !is_singular('post')
         || !is_main_query()
         || !in_the_loop()
@@ -1935,6 +1946,10 @@ add_action('wp_ajax_nopriv_kh_submit_article_feedback', 'svl_home_redesign_submi
 function svl_home_redesign_submit_article_feedback() {
     if (!check_ajax_referer('kh_article_feedback', 'nonce', false)) {
         wp_send_json_error(array('message' => 'Страница устарела. Обновите её и попробуйте снова.'), 403);
+    }
+
+    if (!svl_home_redesign_article_feedback_is_enabled()) {
+        wp_send_json_error(array('message' => 'Оценка статьи сейчас отключена.'), 403);
     }
 
     if (!empty($_POST['company'])) {

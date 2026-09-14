@@ -260,6 +260,28 @@ body.single-post .svl-bot-login:hover .svl-bot-login-arrow {
     transform: translateX(3px);
 }
 
+body.single-post .svl-subscribe-cta {
+    display: block;
+    width: min(100%, 365px);
+    margin: 12px auto 0;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+body.single-post .svl-subscribe-cta img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: inherit;
+    filter: drop-shadow(0 4px 7px rgba(74, 29, 8, 0.22));
+    transition: filter 150ms ease, transform 150ms ease;
+}
+
+body.single-post .svl-subscribe-cta:hover img {
+    filter: brightness(1.06) drop-shadow(0 5px 9px rgba(74, 29, 8, 0.28));
+    transform: translateY(-1px);
+}
+
 body.single-post .svl-code-divider {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -338,8 +360,7 @@ body.single-post .svl-wrapper .svl-input:focus {
 
 body.single-post .svl-wrapper .svl-row {
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr);
-    gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
 }
 
 body.single-post .svl-wrapper .svl-btn {
@@ -368,32 +389,6 @@ body.single-post .svl-wrapper .svl-btn-primary:hover {
         inset 0 1px 0 rgba(255, 255, 255, 0.22),
         0 4px 0 #3f090d,
         0 8px 15px rgba(93, 13, 19, 0.24) !important;
-}
-
-body.single-post .svl-wrapper .svl-btn-boosty {
-    display: inline-flex;
-    gap: 9px;
-    align-items: center;
-    justify-content: center;
-    color: #fff !important;
-    border: 1px solid var(--kh-boosty-dark) !important;
-    background: linear-gradient(180deg, #ff7042, var(--kh-boosty)) !important;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.25),
-        0 3px 0 #9e3116,
-        0 6px 12px rgba(202, 67, 29, 0.2) !important;
-    text-decoration: none !important;
-}
-
-body.single-post .svl-wrapper .svl-btn-boosty:hover {
-    color: #fff !important;
-    background: linear-gradient(180deg, #ff7b50, #df4d24) !important;
-    transform: translateY(-1px);
-}
-
-body.single-post .svl-wrapper .svl-btn-boosty .svl-brand-icon img {
-    width: 19px;
-    height: 19px;
 }
 
 body.single-post .svl-wrapper .svl-why {
@@ -459,6 +454,7 @@ body.single-post .svl-social-proof-icon img {
 }
 
 body.single-post .svl-wrapper .svl-bot-login:focus-visible,
+body.single-post .svl-wrapper .svl-subscribe-cta:focus-visible,
 body.single-post .svl-wrapper .svl-btn:focus-visible,
 body.single-post .svl-wrapper .svl-input:focus-visible,
 body.single-post .svl-wrapper .svl-why summary:focus-visible {

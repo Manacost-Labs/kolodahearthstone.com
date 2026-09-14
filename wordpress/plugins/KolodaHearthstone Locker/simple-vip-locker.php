@@ -1935,6 +1935,21 @@ function svl_render_locker($atts, $content = null) {
                     <span class="svl-bot-login-arrow" aria-hidden="true">→</span>
                 </a>
 
+                <?php $bo = svl_opt('svl_boosty_url') ?: SVL_BOOSTY_URL; ?>
+                <a
+                    href="<?php echo esc_url($bo); ?>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="svl-subscribe-cta"
+                >
+                    <img
+                        src="<?php echo esc_url($ui_asset_url . 'subscribe-cta.png'); ?>"
+                        alt="Оформить подписку"
+                        width="365"
+                        height="71"
+                    >
+                </a>
+
                 <div class="svl-code-divider">
                     <span>или введите код доступа</span>
                 </div>
@@ -1960,19 +1975,6 @@ function svl_render_locker($atts, $content = null) {
                             <span class="svl-btn-label">Разблокировать статью</span>
                             <span class="svl-btn-loader" aria-hidden="true"></span>
                         </button>
-
-                        <?php $bo = svl_opt('svl_boosty_url') ?: SVL_BOOSTY_URL; ?>
-                        <a
-                            href="<?php echo esc_url($bo); ?>"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="svl-btn svl-btn-boosty"
-                        >
-                            <span class="svl-brand-icon svl-brand-icon-boosty" aria-hidden="true">
-                                <img src="<?php echo esc_url($ui_asset_url . 'boosty.svg'); ?>" alt="">
-                            </span>
-                            <span>Оформить подписку</span>
-                        </a>
                     </div>
                 </div>
 

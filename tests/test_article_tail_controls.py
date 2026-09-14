@@ -13,6 +13,33 @@ FEEDBACK_MODULE = (
     / "KolodaHearthstone Locker"
     / "svl-home-redesign.php"
 )
+LOCKER_PLUGIN = (
+    ROOT
+    / "wordpress"
+    / "plugins"
+    / "KolodaHearthstone Locker"
+    / "simple-vip-locker.php"
+)
+SUBSCRIBE_ASSET = (
+    ROOT
+    / "wordpress"
+    / "plugins"
+    / "KolodaHearthstone Locker"
+    / "assets"
+    / "home-redesign"
+    / "img"
+    / "subscribe-cta.png"
+)
+ARTICLE_STYLES = (
+    ROOT
+    / "wordpress"
+    / "plugins"
+    / "KolodaHearthstone Locker"
+    / "assets"
+    / "home-redesign"
+    / "css"
+    / "article-redesign.css"
+)
 
 
 class ArticleTailControlsTest(unittest.TestCase):
@@ -37,6 +64,25 @@ class ArticleTailControlsTest(unittest.TestCase):
         self.assertIn("!svl_home_redesign_article_feedback_is_enabled()", render_callback)
         self.assertIn("!svl_home_redesign_article_feedback_is_enabled()", submit_callback)
         self.assertIn("Оценка статьи сейчас отключена.", submit_callback)
+
+    def test_subscription_asset_is_a_separate_accessible_cta(self) -> None:
+        plugin = LOCKER_PLUGIN.read_text(encoding="utf-8")
+        styles = ARTICLE_STYLES.read_text(encoding="utf-8")
+
+        self.assertTrue(SUBSCRIBE_ASSET.is_file())
+        self.assertGreater(SUBSCRIBE_ASSET.stat().st_size, 0)
+        self.assertIn("class=\"svl-subscribe-cta\"", plugin)
+        self.assertIn("subscribe-cta.png", plugin)
+        self.assertIn('alt="Оформить подписку"', plugin)
+        self.assertIn("width=\"365\"", plugin)
+        self.assertIn("height=\"71\"", plugin)
+        self.assertLess(
+            plugin.index('class="svl-subscribe-cta"'),
+            plugin.index('class="svl-code-divider"'),
+        )
+        self.assertNotIn("svl-btn-boosty", plugin)
+        self.assertIn("width: min(100%, 365px);", styles)
+        self.assertIn(".svl-subscribe-cta:focus-visible", styles)
 
 
 if __name__ == "__main__":

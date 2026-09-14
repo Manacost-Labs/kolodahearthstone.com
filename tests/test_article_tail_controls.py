@@ -78,16 +78,16 @@ class ArticleTailControlsTest(unittest.TestCase):
         self.assertIn("height=\"71\"", plugin)
         self.assertLess(
             plugin.index('class="svl-subscribe-cta"'),
-            plugin.index('<details class="svl-code-panel">'),
+            plugin.index('<div class="svl-code-panel">'),
         )
         self.assertNotIn("svl-btn-boosty", plugin)
         self.assertNotIn('class="svl-banner"', plugin)
-        self.assertIn('<details class="svl-code-panel">', plugin)
-        self.assertIn('<summary class="svl-code-panel-heading">', plugin)
+        self.assertIn('<div class="svl-code-panel">', plugin)
+        self.assertIn('<div class="svl-code-panel-heading">', plugin)
         self.assertIn('class="svl-code-panel-body"', plugin)
         self.assertIn("width: min(100%, 365px);", styles)
         self.assertIn(".svl-subscribe-cta:focus-visible", styles)
-        self.assertIn(".svl-code-panel-heading::after", styles)
+        self.assertNotIn(".svl-code-panel-heading::after", styles)
 
 
 if __name__ == "__main__":

@@ -1922,7 +1922,7 @@ function svl_render_locker($atts, $content = null) {
                     </span>
                     <span class="svl-bot-login-copy">
                         <strong>Войти через Telegram</strong>
-                        <small>Без кода — бот автоматически откроет доступ к выбранной статье</small>
+                        <small>Бот автоматически откроет доступ к статье</small>
                     </span>
                     <span class="svl-bot-login-arrow" aria-hidden="true">→</span>
                 </a>
@@ -1942,13 +1942,13 @@ function svl_render_locker($atts, $content = null) {
                     >
                 </a>
 
-                <details class="svl-code-panel">
-                    <summary class="svl-code-panel-heading">
+                <div class="svl-code-panel">
+                    <div class="svl-code-panel-heading">
                         <span class="svl-code-panel-icon" aria-hidden="true">
                             <img src="<?php echo esc_url($ui_asset_url . 'key-round.svg'); ?>" alt="">
                         </span>
-                        <span>У меня есть код доступа</span>
-                    </summary>
+                        <span>Есть код доступа?</span>
+                    </div>
 
                     <div class="svl-code-panel-body">
                         <div class="svl-input-wrap">
@@ -1966,7 +1966,7 @@ function svl_render_locker($atts, $content = null) {
                             </button>
                         </div>
                     </div>
-                </details>
+                </div>
 
                 <details class="svl-why">
                     <summary>

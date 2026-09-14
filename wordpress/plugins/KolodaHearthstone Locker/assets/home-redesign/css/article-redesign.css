@@ -155,19 +155,17 @@ body.single-post .svl-wrapper .svl-message {
 
 body.single-post .svl-bot-login {
     display: grid;
-    grid-template-columns: 48px minmax(0, 1fr) auto;
-    gap: 14px;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    gap: 11px;
     align-items: center;
-    min-height: 68px;
+    min-height: 62px;
     margin: 0 0 14px;
-    padding: 10px 16px 10px 12px;
-    color: #fff !important;
-    border: 1px solid #0f6f9f;
+    padding: 10px 14px 10px 11px;
+    color: #1977a5 !important;
+    border: 1px solid rgba(25, 119, 165, 0.35);
     border-radius: 7px;
-    background: linear-gradient(180deg, var(--kh-telegram), var(--kh-telegram-dark));
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.25),
-        0 4px 10px rgba(20, 127, 179, 0.18);
+    background: rgba(38, 159, 211, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
     text-decoration: none !important;
     transition:
         transform 160ms ease,
@@ -176,12 +174,10 @@ body.single-post .svl-bot-login {
 }
 
 body.single-post .svl-bot-login:hover {
-    color: #fff !important;
-    background: linear-gradient(180deg, #32ace2, #1174a4);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        0 9px 20px rgba(20, 127, 179, 0.28);
-    transform: translateY(-2px);
+    color: #12628b !important;
+    background: rgba(38, 159, 211, 0.16);
+    box-shadow: 0 3px 8px rgba(20, 127, 179, 0.12);
+    transform: translateY(-1px);
 }
 
 body.single-post .svl-brand-icon {
@@ -192,11 +188,11 @@ body.single-post .svl-brand-icon {
 }
 
 body.single-post .svl-bot-login .svl-brand-icon {
-    width: 48px;
-    height: 48px;
-    border: 1px solid rgba(255, 255, 255, 0.36);
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(25, 119, 165, 0.25);
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.74);
 }
 
 body.single-post .svl-brand-icon img {
@@ -207,7 +203,11 @@ body.single-post .svl-brand-icon img {
 
 body.single-post .svl-brand-icon-telegram img,
 body.single-post .svl-brand-icon-boosty img {
-    filter: brightness(0) invert(1);
+    filter: none;
+}
+
+body.single-post .svl-brand-icon-telegram img {
+    filter: invert(45%) sepia(51%) saturate(1211%) hue-rotate(159deg) brightness(88%) contrast(89%);
 }
 
 body.single-post .svl-bot-login-copy {
@@ -217,20 +217,20 @@ body.single-post .svl-bot-login-copy {
 
 body.single-post .svl-bot-login-copy strong {
     color: inherit;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.15;
 }
 
 body.single-post .svl-bot-login-copy small {
-    color: rgba(255, 255, 255, 0.88);
+    color: rgba(25, 79, 105, 0.82);
     font-family: Arial, sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.35;
 }
 
 body.single-post .svl-bot-login-arrow {
     font-family: Arial, sans-serif;
-    font-size: 26px;
+    font-size: 21px;
     line-height: 1;
     transition: transform 150ms ease;
 }
@@ -272,38 +272,16 @@ body.single-post .svl-code-panel {
 }
 
 body.single-post .svl-code-panel-heading {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    display: flex;
     gap: 8px;
     align-items: center;
-    min-height: 50px;
-    margin: 0;
+    min-height: 46px;
+    margin: 0 0 11px;
     padding: 12px 16px;
     color: var(--kh-ink);
     font-family: Arial, sans-serif;
     font-size: 13px;
     font-weight: 800;
-    list-style: none;
-    cursor: pointer;
-}
-
-body.single-post .svl-code-panel-heading::-webkit-details-marker {
-    display: none;
-}
-
-body.single-post .svl-code-panel-heading::after {
-    color: var(--kh-red);
-    content: '+';
-    font-size: 19px;
-    line-height: 1;
-}
-
-body.single-post .svl-code-panel[open] .svl-code-panel-heading {
-    margin-bottom: 11px;
-}
-
-body.single-post .svl-code-panel[open] .svl-code-panel-heading::after {
-    content: '−';
 }
 
 body.single-post .svl-code-panel-body {
@@ -1481,15 +1459,15 @@ body.single-post .ct-back-to-top {
     }
 
     body.single-post .svl-bot-login {
-        grid-template-columns: 42px minmax(0, 1fr) auto;
+        grid-template-columns: 38px minmax(0, 1fr) auto;
         gap: 10px;
-        min-height: 64px;
+        min-height: 60px;
         padding: 10px 11px;
     }
 
     body.single-post .svl-bot-login .svl-brand-icon {
-        width: 42px;
-        height: 42px;
+        width: 38px;
+        height: 38px;
     }
 
     body.single-post .svl-bot-login-copy strong {

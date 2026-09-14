@@ -6,6 +6,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTICLE_STYLESHEET = ROOT / "wordpress/plugins/KolodaHearthstone Locker/assets/home-redesign/css/article-redesign.css"
+REDESIGN_PLUGIN = ROOT / "wordpress/plugins/KolodaHearthstone Locker/svl-home-redesign.php"
 
 
 class ArticleHeroLayoutTests(unittest.TestCase):
@@ -18,6 +19,7 @@ class ArticleHeroLayoutTests(unittest.TestCase):
         self.assertIn(hero + " > figure", css)
         self.assertIn("position: relative;", css)
         self.assertIn("margin: 0;", css)
+        self.assertIn("overflow: visible;", css)
         self.assertIn('[data-parallax] > figure', css)
         self.assertIn("transform: none !important;", css)
         self.assertIn(".ct-media-container::after", css)
@@ -25,9 +27,16 @@ class ArticleHeroLayoutTests(unittest.TestCase):
         self.assertIn(hero + " > .entry-header", css)
         header_rule = css.split(hero + " > .entry-header {", 1)[1].split("}\n", 1)[0]
         self.assertIn("background: transparent;", header_rule)
-        self.assertIn("margin-top: 24px !important;", css)
+        self.assertIn("padding-top: 24px;", css)
+        self.assertIn("margin-top: 12px !important;", css)
         self.assertIn("--theme-text-transform: none;", css)
         self.assertIn("text-transform: none;", css)
+
+    def test_blocksy_parallax_is_disabled_before_its_runtime_script_loads(self) -> None:
+        plugin = REDESIGN_PLUGIN.read_text(encoding="utf-8")
+
+        self.assertIn("'ct-scripts'", plugin)
+        self.assertIn("hero.removeAttribute(\\'data-parallax\\');", plugin)
 
 
 if __name__ == "__main__":

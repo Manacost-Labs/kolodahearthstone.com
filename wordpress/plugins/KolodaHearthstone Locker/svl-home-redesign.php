@@ -2141,6 +2141,18 @@ function svl_home_redesign_enqueue_assets() {
                 : SVL_HOME_REDESIGN_VERSION
         );
 
+        wp_add_inline_script(
+            'ct-scripts',
+            '(function () {'
+                . 'document.querySelectorAll(\'body.single-post .hero-section[data-type="type-2"][data-parallax]\').forEach(function (hero) {'
+                . 'hero.removeAttribute(\'data-parallax\');'
+                . 'var image = hero.querySelector(\'figure .ct-media-container > img\');'
+                . 'if (image) { image.style.removeProperty(\'transform\'); }'
+                . '});'
+                . '}());',
+            'before'
+        );
+
         wp_enqueue_script(
             'svl-article-feedback',
             $asset_url . 'js/article-feedback.js',

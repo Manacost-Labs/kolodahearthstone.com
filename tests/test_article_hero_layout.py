@@ -13,12 +13,15 @@ class ArticleHeroLayoutTests(unittest.TestCase):
         css = ARTICLE_STYLESHEET.read_text(encoding="utf-8")
         hero = 'body.single-post .hero-section[data-type="type-2"]'
 
+        self.assertIn("--kh-article-hero-width: 1176px;", css)
+        self.assertIn("width: min(var(--kh-article-hero-width), calc(100% - 40px));", css)
         self.assertIn(hero + " > figure", css)
         self.assertIn("position: relative;", css)
         self.assertIn("margin: 0;", css)
         self.assertIn(".ct-media-container::after", css)
         self.assertIn("background-color: transparent;", css)
         self.assertIn(hero + " > .entry-header", css)
+        self.assertIn("margin-top: 24px !important;", css)
         self.assertIn("--theme-text-transform: none;", css)
         self.assertIn("text-transform: none;", css)
 

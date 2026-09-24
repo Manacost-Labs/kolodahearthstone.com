@@ -69,6 +69,22 @@ class SharedPluginVerifierTest(unittest.TestCase):
             (plugin / "outside.php").symlink_to(outside)
             self.assertTrue(VERIFIER.verify_plugins(root))
 
+    def test_plugin_directory_cannot_be_a_symlink(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            outside = root / "outside"
+            outside.mkdir()
+            (outside / "main.php").write_text("outside", encoding="utf-8")
+            plugins = root / "wordpress/plugins"
+            plugins.mkdir(parents=True)
+            (plugins / "shared-plugin").symlink_to(outside, target_is_directory=True)
+            (root / "config").mkdir()
+            (root / "config/shared-plugin-lock.json").write_text(
+                json.dumps({"plugins": {"shared-plugin": {"tree_sha256": VERIFIER.tree_digest(outside)}}}),
+                encoding="utf-8",
+            )
+            self.assertTrue(VERIFIER.verify_plugins(root))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -53,7 +53,7 @@ def verify_plugins(root: Path) -> list[str]:
         if not plugin.is_dir():
             errors.append(f"{slug}: source is missing")
             continue
-        if any(path.is_symlink() for path in plugin.rglob("*")):
+        if plugin.is_symlink() or any(path.is_symlink() for path in plugin.rglob("*")):
             errors.append(f"{slug}: symlinks are not allowed in a shared plugin")
             continue
         if tree_digest(plugin) != entry["tree_sha256"]:

@@ -22,6 +22,7 @@
     "wordpress-media-integrity",
     "wordpress-observability",
     "wordpress-plugin-dev",
+    "wordpress-shared-plugin-consumer",
     "wordpress-privacy-consent",
     "wordpress-redesign-system",
     "wordpress-release-manager",
@@ -58,6 +59,7 @@
   "task_routes": {
     "blocksy-theme": ["blocksy-theme", "wordpress-responsive-experience", "wordpress-accessibility", "wordpress-typography-layout-system"],
     "plugin": ["wordpress-plugin-dev", "wp-plugin-development", "wordpress-clean-code", "wordpress-change-impact"],
+    "shared-plugin-import": ["wordpress-shared-plugin-consumer", "wordpress-admin-ui", "wordpress-plugin-dev", "wordpress-change-impact"],
     "runtime": ["wordpress-runtime-stack", "wp-wpcli-and-ops", "wp-performance", "wordpress-observability"],
     "editor": ["wordpress-article-editor", "wordpress-admin-ui", "wordpress-accessibility"],
     "media": ["wordpress-media-integrity", "wordpress-content-integrity", "wordpress-runtime-stack"],

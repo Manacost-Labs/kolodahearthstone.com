@@ -54,11 +54,14 @@ def main() -> int:
     if site["site"]["staging_url"] != "https://test.kolodahearthstone.com":
         errors.append("staging URL must be test.kolodahearthstone.com")
     lock = load("shared-plugin-lock.json")
-    tooltip = lock["plugins"]["hs-tooltip"]
-    if len(tooltip["source_commit"]) != 40 or not re.fullmatch(r"[0-9a-f]{40}", tooltip["source_commit"]):
-        errors.append("hs-tooltip source_commit must be a full SHA")
-    if len(tooltip["tree_sha256"]) != 64 or not re.fullmatch(r"[0-9a-f]{64}", tooltip["tree_sha256"]):
-        errors.append("hs-tooltip tree_sha256 must be a SHA256")
+    for slug, entry in lock["plugins"].items():
+        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
+            errors.append("shared plugin slug must use lowercase letters, digits and hyphens")
+            continue
+        if not re.fullmatch(r"[0-9a-f]{40}", entry.get("source_commit", "")):
+            errors.append(f"{slug} source_commit must be a full SHA")
+        if not re.fullmatch(r"[0-9a-f]{64}", entry.get("tree_sha256", "")):
+            errors.append(f"{slug} tree_sha256 must be a SHA256")
 
     if errors:
         print("Config validation failed:", file=sys.stderr)

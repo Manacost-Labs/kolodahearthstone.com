@@ -1,0 +1,4 @@
+interface:
+  display_name: "WordPress Shared Plugin Consumer"
+  short_description: "Проверяемый перенос плагинов и настроек на Koloda"
+  default_prompt: "Используй $wordpress-shared-plugin-consumer, чтобы перенести проверенный плагин и разрешённые настройки с hs-manacost.ru на kolodahearthstone.com."

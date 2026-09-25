@@ -20,6 +20,33 @@
   },
   "rules": [
     {
+      "patterns": ["ops/nginx/**"],
+      "owner": "regional-proxy-configuration",
+      "classified": true,
+      "risk": "high",
+      "surfaces": ["nginx", "regional-proxy", "media", "performance"],
+      "domains": [
+        "kolodahearthstone.com",
+        "kolodahearthstone.ru",
+        "test.kolodahearthstone.com",
+        "origin",
+        "ru-moscow",
+        "ru-novosibirsk"
+      ],
+      "skills": [
+        "wordpress-incident-response",
+        "wordpress-runtime-stack",
+        "wordpress-media-integrity",
+        "wordpress-release-manager"
+      ],
+      "checks": [
+        "make check",
+        "nginx -t on the affected proxy",
+        "cold and warm origin/Moscow/Novosibirsk media checks",
+        "staging and production smoke checks"
+      ]
+    },
+    {
       "patterns": ["wordpress/mu-plugins/hs-media-upload-accelerator.php"],
       "owner": "media-upload-performance",
       "classified": true,

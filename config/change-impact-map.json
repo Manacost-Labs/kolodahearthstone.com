@@ -20,6 +20,49 @@
   },
   "rules": [
     {
+      "patterns": [
+        "wordpress/plugins/hs-api-gallery/**",
+        "wordpress/plugins/manacost-koloda-api/**",
+        "wordpress/mu-plugins/koloda-native-gallery.php",
+        "wordpress/mu-plugins/koloda-native-gallery/**",
+        "tests/api-gallery/**",
+        "tests/test_api_gallery_port.py",
+        "docs/api-gallery.md"
+      ],
+      "owner": "native-api-gallery",
+      "classified": true,
+      "risk": "high",
+      "surfaces": [
+        "editor",
+        "wp-admin",
+        "media",
+        "shortcodes",
+        "frontend",
+        "blocksy",
+        "external-api",
+        "database",
+        "privacy"
+      ],
+      "domains": [
+        "kolodahearthstone.com",
+        "test.kolodahearthstone.com"
+      ],
+      "skills": [
+        "wordpress-admin-ui",
+        "wordpress-article-editor",
+        "wordpress-shared-plugin-consumer",
+        "blocksy-theme",
+        "wordpress-accessibility",
+        "wp-plugin-development"
+      ],
+      "checks": [
+        "make check",
+        "shared source SHA256 verification",
+        "native gallery browser regression",
+        "staging gallery editor and reader flow"
+      ]
+    },
+    {
       "patterns": ["ops/nginx/**"],
       "owner": "regional-proxy-configuration",
       "classified": true,

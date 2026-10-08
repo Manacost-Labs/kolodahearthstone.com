@@ -23,17 +23,45 @@
       "wordpress/mu-plugins/manacost-cache-purge.php",
       "wordpress/mu-plugins/manacost-media-unique-filenames.php",
       "wordpress/mu-plugins/plausible-analytics.php",
-      "wordpress/mu-plugins/teamplanner-application-password-policy.php"
+      "wordpress/mu-plugins/teamplanner-application-password-policy.php",
+      "wordpress/plugins/hs-api-gallery",
+      "wordpress/plugins/manacost-koloda-api",
+      "wordpress/mu-plugins/koloda-native-gallery.php"
     ],
     "dynamic_contracts": "Unresolved hooks and options require an integration test before release."
   },
   "contracts": {
-    "post_meta": ["_hs_article_versions", "_hs_article_versions_active", "_hs_article_versions_state"],
-    "options": [],
-    "shortcodes": ["hs_card", "hs_bg", "khs_poll"],
-    "ajax_actions": [],
-    "rest_routes": ["manacost/v1/article-versions"],
-    "cron_hooks": [],
-    "capabilities": ["edit_post"]
+    "post_meta": [
+      "_hs_article_versions",
+      "_hs_article_versions_active",
+      "_hs_article_versions_state",
+      "_hs_api_gallery_sha256",
+      "_hs_api_gallery_snapshot",
+      "_hs_api_gallery_source"
+    ],
+    "options": [
+      "hs_api_gallery_schema"
+    ],
+    "shortcodes": [
+      "hs_card",
+      "hs_bg",
+      "khs_poll"
+    ],
+    "ajax_actions": [
+      "hs_api_gallery_catalog",
+      "hs_api_gallery_import",
+      "hs_api_gallery_state",
+      "hs_api_gallery_vote"
+    ],
+    "rest_routes": [
+      "manacost/v1/article-versions"
+    ],
+    "cron_hooks": [
+      "hs_api_gallery_expire_votes"
+    ],
+    "capabilities": [
+      "edit_post",
+      "upload_files"
+    ]
   }
 }

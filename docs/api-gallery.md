@@ -52,11 +52,23 @@ Run `make check` and the staged secret scanner. The read-only staging fixture
 actual core plain/rated gallery markup. Run it with `KOLODA_GALLERY_SOURCE` set
 to this reviewed source directory. Save output as
 `.artifacts/api-gallery/markup.json` and the installed Blocksy main bundle as
-`.artifacts/api-gallery/blocksy.css`. `node tests/api-gallery/layout.mjs` checks
+`.artifacts/api-gallery/blocksy.css`, plus core gallery block styles as
+`.artifacts/api-gallery/core-gallery.css`. `node tests/api-gallery/layout.mjs` checks
 column settings, mobile widths, touch star targets, transparent backgrounds,
 widget isolation and block-gallery isolation. Optional `PLAYWRIGHT_PACKAGE`
 locates an existing pinned Node toolchain. `KOLODA_GALLERY_PHASE=before` excludes
 the adapter to reproduce the original vertical layout.
+
+`tests/api-gallery/staging-core.php` verifies real diamond imports, original
+SHA256, retry reuse, schema idempotence, stored shortcode, autosave, revision
+restore, published gallery membership, vote upsert/removal and draft rejection.
+It requires `KOLODA_GALLERY_FIXTURE_POST_ID` pointing to a disposable staging post
+with `_koloda_api_gallery_port_fixture=gallery-port-…` and a dedicated author
+whose login equals that marker. It refuses production and unrelated posts. The
+fixture is returned to draft after the check. Protect a staging backup and verify
+its restoration before running; this check creates three owned attachments and
+briefly publishes the disposable staging article. It does not replace the editor
+browser check. Staging HTTP credentials are required for that browser flow.
 
 Release only after staging editor/import/save/preview/revision/vote checks and
 regional delivery checks. Keep production promotion separate. Roll back by

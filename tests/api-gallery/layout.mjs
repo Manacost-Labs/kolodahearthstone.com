@@ -55,8 +55,15 @@ try {
       await context.close();
     }
   }
+  const zoomContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const zoomPage = await zoomContext.newPage();
+  await zoomPage.route('**/*', route => route.abort());
+  await zoomPage.setContent(`<meta name="viewport" content="width=device-width, initial-scale=1"><style>${theme}\n${ratings}\n${adapter}\nbody { zoom: 2; }</style><main style="max-width:740px;margin:20px auto;padding:0 20px"><article class="entry-content">${markup['3-rated']}${markup['3-plain']}</article></main>`);
+  assert.ok(await zoomPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), '200% layout zoom preserves gallery fit');
+  assert.equal(await zoomPage.locator('.gallery-item').count(), 12, 'Zoom retains all images and controls');
+  await zoomContext.close();
   writeFileSync('.artifacts/api-gallery/layout-report.json', JSON.stringify(report, null, 2));
-  console.log(`Native Blocksy galleries: ${report.length} layout states passed.`);
+  console.log(`Native Blocksy galleries: ${report.length} layout states and 200% layout zoom passed.`);
 } finally {
   await browser.close();
 }

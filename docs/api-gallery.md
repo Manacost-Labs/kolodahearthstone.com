@@ -70,6 +70,21 @@ its restoration before running; this check creates three owned attachments and
 briefly publishes the disposable staging article. It does not replace the editor
 browser check. Staging HTTP credentials are required for that browser flow.
 
+`tests/api-gallery/staging-editor.mjs` exercises the real Classic Editor: diamond
+selection, native media settings, insertion, saved shortcode, keyboard close and
+empty selection for the next gallery. `tests/api-gallery/staging-frontend.mjs`
+checks two native galleries on the published disposable fixture at six widths
+with mouse/touch, real images, three desktop columns, keyboard voting, persistence,
+update/removal and rejection of an invalid nonce. Private session/HTTP fixture
+JSON stays under ignored `.artifacts`; never commit it. Set `KOLODA_TEST_ORIGIN`
+only when authenticated staging tests need a direct origin route. Run mutating
+fixture checks sequentially and return the article to draft afterwards.
+
+This repository currently has no deployment workflow. Promotion uses the
+project's manual exact-SHA staging/production process, with a verified database
+backup/restore and a source archive containing only the two new regular plugins
+and the native-gallery MU adapter. No other plugin/theme/runtime is replaced.
+
 Release only after staging editor/import/save/preview/revision/vote checks and
 regional delivery checks. Keep production promotion separate. Roll back by
 deactivating the two newly installed regular plugins and restoring the previous

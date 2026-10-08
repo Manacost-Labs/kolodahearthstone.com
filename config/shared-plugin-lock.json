@@ -19,6 +19,49 @@
         "Manacost-Labs/hs-manacost.ru",
         "Manacost-Labs/kolodahearthstone.com"
       ]
+    },
+    "hs-api-gallery": {
+      "version": "1.0.4",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "99c7b6e7730265210d42172dda868fca6925c9bf",
+      "source_files": {
+        "hs-api-gallery.php": "wordpress/mu-plugins/hs-api-gallery.php",
+        "hs-api-gallery/class-admin.php": "wordpress/mu-plugins/hs-api-gallery/class-admin.php",
+        "hs-api-gallery/class-ajax.php": "wordpress/mu-plugins/hs-api-gallery/class-ajax.php",
+        "hs-api-gallery/class-catalog.php": "wordpress/mu-plugins/hs-api-gallery/class-catalog.php",
+        "hs-api-gallery/class-gallery.php": "wordpress/mu-plugins/hs-api-gallery/class-gallery.php",
+        "hs-api-gallery/class-identity.php": "wordpress/mu-plugins/hs-api-gallery/class-identity.php",
+        "hs-api-gallery/class-importer.php": "wordpress/mu-plugins/hs-api-gallery/class-importer.php",
+        "hs-api-gallery/class-votes.php": "wordpress/mu-plugins/hs-api-gallery/class-votes.php",
+        "hs-api-gallery/editor.css": "wordpress/mu-plugins/hs-api-gallery/editor.css",
+        "hs-api-gallery/editor.js": "wordpress/mu-plugins/hs-api-gallery/editor.js",
+        "hs-api-gallery/ratings.css": "wordpress/mu-plugins/hs-api-gallery/ratings.css",
+        "hs-api-gallery/ratings.js": "wordpress/mu-plugins/hs-api-gallery/ratings.js"
+      },
+      "tree_sha256": "d07a7d818b7e38f4494c830debea4eb7035263361b960ba1639a6869a76c27ec",
+      "entrypoints": [
+        "hs-api-gallery.php"
+      ],
+      "consumers": [
+        "Manacost-Labs/hs-manacost.ru",
+        "Manacost-Labs/kolodahearthstone.com"
+      ]
+    },
+    "manacost-koloda-api": {
+      "version": "1.0.0",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "99c7b6e7730265210d42172dda868fca6925c9bf",
+      "source_files": {
+        "manacost-koloda-api.php": "wordpress/mu-plugins/manacost-koloda-api.php"
+      },
+      "tree_sha256": "0046d33129c26b2adcc221309bbbe843cfa2d866352efb75268283a6c70c55d9",
+      "entrypoints": [
+        "manacost-koloda-api.php"
+      ],
+      "consumers": [
+        "Manacost-Labs/hs-manacost.ru",
+        "Manacost-Labs/kolodahearthstone.com"
+      ]
     }
   }
 }

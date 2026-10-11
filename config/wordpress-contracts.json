@@ -26,7 +26,9 @@
       "wordpress/mu-plugins/teamplanner-application-password-policy.php",
       "wordpress/plugins/hs-api-gallery",
       "wordpress/plugins/manacost-koloda-api",
-      "wordpress/mu-plugins/koloda-native-gallery.php"
+      "wordpress/mu-plugins/koloda-native-gallery.php",
+      "wordpress/plugins/hs-editor-ai",
+      "wordpress/mu-plugins/koloda-editor-ai-access.php"
     ],
     "dynamic_contracts": "Unresolved hooks and options require an integration test before release."
   },
@@ -40,7 +42,9 @@
       "_hs_api_gallery_source"
     ],
     "options": [
-      "hs_api_gallery_schema"
+      "hs_api_gallery_schema",
+      "hs_editor_ai_lock_{user}",
+      "hs_editor_ai_budget_{user}"
     ],
     "shortcodes": [
       "hs_card",
@@ -54,14 +58,20 @@
       "hs_api_gallery_vote"
     ],
     "rest_routes": [
-      "manacost/v1/article-versions"
+      "manacost/v1/article-versions",
+      "hs-editor-ai/v1/jobs",
+      "hs-editor-ai/v1/jobs/(?P<id>[a-f0-9]{32})"
     ],
     "cron_hooks": [
-      "hs_api_gallery_expire_votes"
+      "hs_api_gallery_expire_votes",
+      "hs_editor_ai_process",
+      "hs_editor_ai_expire"
     ],
     "capabilities": [
       "edit_post",
-      "upload_files"
+      "upload_files",
+      "edit_posts",
+      "manage_options"
     ]
   }
 }

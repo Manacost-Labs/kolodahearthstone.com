@@ -1,7 +1,7 @@
 # Koloda deployment adapter
 
 This site consumes the exact reviewed Manacost source commit
-`da75800709de8fe32ea44cac7939567363c36c4d`, pinned by tree SHA256.
+`79bd2670e8f56970bff74f469310f0cad73c4af9`, pinned by tree SHA256.
 It is a regular plugin with its original bootstrap and nested asset structure.
 The separate MU adapter supplies the missing `hs_ew_is_enabled` predicate after
 plugins load. Only `manage_options` administrators are allowed; an existing

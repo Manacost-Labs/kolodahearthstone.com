@@ -64,11 +64,11 @@
       ]
     },
     "hs-editor-ai": {
-      "version": "1.0.1",
+      "version": "1.1.0",
       "source_repository": "Manacost-Labs/hs-manacost.ru",
-      "source_commit": "79bd2670e8f56970bff74f469310f0cad73c4af9",
+      "source_commit": "e282ad647ca1a5f917dbbf42510ad6787877d664",
       "source_path": "wordpress/mu-plugins/hs-editor-ai.php + wordpress/mu-plugins/hs-editor-ai",
-      "tree_sha256": "f91f0f48b4db627e1d30ad99cf62b1935f90301696b2a637e47019a750970813",
+      "tree_sha256": "5576e9198a2bdccd5d39377fbc2dcd9bd0ea4b9d7e2373947a209d4a8c519f2c",
       "source_files": [
         "hs-editor-ai/admin.css",
         "hs-editor-ai/admin.js",

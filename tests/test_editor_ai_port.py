@@ -21,5 +21,5 @@ class EditorAiPortTest(unittest.TestCase):
 
     def test_shared_source_is_pinned(self):
         lock = json.loads((ROOT / 'config/shared-plugin-lock.json').read_text())['plugins']['hs-editor-ai']
-        self.assertEqual(lock['source_commit'], 'da75800709de8fe32ea44cac7939567363c36c4d')
+        self.assertEqual(lock['source_commit'], '79bd2670e8f56970bff74f469310f0cad73c4af9')
         self.assertTrue((ROOT / 'wordpress/plugins/hs-editor-ai/hs-editor-ai/class-admin.php').is_file())

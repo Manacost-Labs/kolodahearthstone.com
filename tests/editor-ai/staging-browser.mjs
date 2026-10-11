@@ -45,12 +45,22 @@ try {
   };
   const apply = () => dialog.getByRole('button', { name: 'Применить изменения' }).click();
   const close = () => dialog.getByRole('button', { name: 'Закрыть', exact: true }).click();
+  // Browser requests share Chromium's direct-origin resolver and staging credentials.
+  const request = async (method, url, options = {}) => {
+    const result = await page.evaluate(async ({method,url,options}) => {
+      const response = await fetch(url, {method, credentials:'include', headers:{'Content-Type':'application/json',...options.headers}, ...(options.data ? {body:JSON.stringify(options.data)} : {})});
+      return {status:response.status, body:await response.json()};
+    }, {method,url,options});
+    return {status:()=>result.status,ok:()=>result.status>=200&&result.status<300,json:async()=>result.body};
+  };
   const payload = { post_id: post, mode: 'proofread', source: 'Тест.', context: 'Тест.' };
-  const denied = await context.request.post(`${base}/wp-json/hs-editor-ai/v1/jobs`, { headers: { 'X-WP-Nonce': 'invalid' }, data: payload });
+  const denied = await request('POST', `${base}/wp-json/hs-editor-ai/v1/jobs`, { headers: { 'X-WP-Nonce': 'invalid' }, data: payload });
   assert.equal(denied.status(), 403);
   const anonymous = await browser.newContext({httpCredentials});
-  const unauth = await anonymous.request.post(`${base}/wp-json/hs-editor-ai/v1/jobs`, { data: payload });
-  assert.equal(unauth.status(), 401);
+  const anonymousPage = await anonymous.newPage();
+  await anonymousPage.goto(`${base}/wp-admin/`);
+  const unauthStatus = await anonymousPage.evaluate(async ({base,payload}) => (await fetch(`${base}/wp-json/hs-editor-ai/v1/jobs`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})).status,{base,payload});
+  assert.equal(unauthStatus, 401);
   await anonymous.close();
   report.checks.push('real cookie authentication and invalid nonce rejection');
 
@@ -149,7 +159,7 @@ try {
   await page.waitForFunction(() => window.tinymce?.get('content')?.initialized);
   assert.equal(await getContent(), saved);
   const headers = { 'X-WP-Nonce': await page.evaluate(() => window.hsEditorAi.nonce) };
-  const stored = await context.request.get(`${base}/wp-json/wp/v2/posts/${post}?context=edit`, { headers });
+  const stored = await request('GET', `${base}/wp-json/wp/v2/posts/${post}?context=edit`, { headers });
   const nativeSaved = await page.evaluate(() => window.switchEditors.pre_wpautop(window.tinymce.get('content').getContent()));
   assert.equal((await stored.json()).content.raw, nativeSaved);
   report.checks.push('native draft save and stored post_content');
@@ -160,7 +170,7 @@ try {
   const autosave = await heartbeat;
   const autosaveBody = await autosave.json();
   assert.ok(autosave.ok() && autosaveBody.wp_autosave && !autosaveBody.wp_autosave.errors);
-  const revisions = await context.request.get(`${base}/wp-json/wp/v2/posts/${post}/revisions?context=edit`, { headers });
+  const revisions = await request('GET', `${base}/wp-json/wp/v2/posts/${post}/revisions?context=edit`, { headers });
   assert.ok((await revisions.json()).length > 0);
   report.checks.push('native editor heartbeat autosave and revision retained');
   await setContent(saved);
@@ -171,7 +181,7 @@ try {
   await expect(preview.locator('body')).toContainText('Эта карта стоит 3 маны');
   await preview.close();
   report.checks.push('native article preview');
-  const publish = await context.request.post(`${base}/wp-json/wp/v2/posts/${post}`, { headers, data: { content: saved, status: 'publish' } });
+  const publish = await request('POST', `${base}/wp-json/wp/v2/posts/${post}`, { headers, data: { content: saved, status: 'publish' } });
   assert.ok(publish.ok());
   const rendered = await publish.json();
   await page.goto(rendered.link);

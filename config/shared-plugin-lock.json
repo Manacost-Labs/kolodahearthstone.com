@@ -62,6 +62,34 @@
         "Manacost-Labs/hs-manacost.ru",
         "Manacost-Labs/kolodahearthstone.com"
       ]
+    },
+    "hs-editor-ai": {
+      "version": "1.0.0",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "da75800709de8fe32ea44cac7939567363c36c4d",
+      "source_path": "wordpress/mu-plugins/hs-editor-ai.php + wordpress/mu-plugins/hs-editor-ai",
+      "tree_sha256": "1b4c21e8898b0a89fb47b442a5cfa3392ab39006727b3b88ed3f899adcd3eece",
+      "source_files": [
+        "hs-editor-ai/admin.css",
+        "hs-editor-ai/admin.js",
+        "hs-editor-ai/class-admin.php",
+        "hs-editor-ai/class-catalog.php",
+        "hs-editor-ai/class-content.php",
+        "hs-editor-ai/class-jobs.php",
+        "hs-editor-ai/class-prompts.php",
+        "hs-editor-ai/class-provider.php",
+        "hs-editor-ai/editor-team/README.md",
+        "hs-editor-ai/editor-team/style.md",
+        "hs-editor-ai/editor-team/voice.md",
+        "hs-editor-ai.php"
+      ],
+      "entrypoints": [
+        "hs-editor-ai.php"
+      ],
+      "consumers": [
+        "Manacost-Labs/hs-manacost.ru",
+        "Manacost-Labs/kolodahearthstone.com"
+      ]
     }
   }
 }

@@ -21,6 +21,43 @@
   "rules": [
     {
       "patterns": [
+        "wordpress/plugins/hs-editor-ai/**",
+        "wordpress/mu-plugins/koloda-editor-ai-access.php",
+        "tests/editor-ai/**",
+        "tests/test_editor_ai*.py",
+        "docs/editor-ai.md"
+      ],
+      "owner": "editor-ai-port",
+      "classified": true,
+      "risk": "high",
+      "surfaces": [
+        "editor",
+        "wp-admin",
+        "external-api",
+        "privacy"
+      ],
+      "domains": [
+        "kolodahearthstone.com",
+        "test.kolodahearthstone.com"
+      ],
+      "skills": [
+        "wordpress-admin-ui",
+        "wordpress-article-editor",
+        "wordpress-shared-plugin-consumer",
+        "wordpress-external-integrations",
+        "wordpress-privacy-consent",
+        "wordpress-accessibility",
+        "wp-plugin-development"
+      ],
+      "checks": [
+        "make check",
+        "shared source SHA256 verification",
+        "staging editor AI browser flow",
+        "regional smoke checks"
+      ]
+    },
+    {
+      "patterns": [
         "wordpress/plugins/hs-api-gallery/**",
         "wordpress/plugins/manacost-koloda-api/**",
         "wordpress/mu-plugins/koloda-native-gallery.php",

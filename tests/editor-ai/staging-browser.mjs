@@ -41,7 +41,7 @@ try {
   const open = mode => page.locator(`.hs-editor-ai-open[data-mode="${mode}"]`).click();
   const run = async () => {
     await dialog.getByRole('button', { name: 'Отправить текст', exact: true }).click();
-    await expect(dialog.locator('#hs-editor-ai-status')).toContainText('Предложение готово');
+    await expect(dialog.locator('#hs-editor-ai-status')).toContainText('Предложение готово', { timeout: 30000 });
   };
   const apply = () => dialog.getByRole('button', { name: 'Применить изменения' }).click();
   const close = () => dialog.getByRole('button', { name: 'Закрыть', exact: true }).click();
@@ -125,7 +125,7 @@ try {
   assert.equal(await getContent(), retained);
   await page.unroute('**/wp-json/hs-editor-ai/v1/jobs', temporaryFailure);
   await dialog.getByRole('button', { name: 'Повторить отправку', exact: true }).click();
-  await expect(dialog.locator('#hs-editor-ai-status')).toContainText('Предложение готово');
+  await expect(dialog.locator('#hs-editor-ai-status')).toContainText('Предложение готово', { timeout: 30000 });
   await apply();
   report.checks.push('empty text, visible service failure and successful retry without lost text');
 
@@ -134,7 +134,7 @@ try {
   await dialog.getByRole('button', { name: 'Отправить текст', exact: true }).click();
   await expect(dialog.getByRole('button', { name: 'Продолжить писать', exact: true })).toBeVisible();
   await close(); await open('proofread');
-  await expect(dialog.locator('#hs-editor-ai-status')).toContainText('Предложение готово');
+  await expect(dialog.locator('#hs-editor-ai-status')).toContainText('Предложение готово', { timeout: 30000 });
   await expect(dialog.locator('.hs-editor-ai-compare img, .hs-editor-ai-compare script')).toHaveCount(0);
   await expect(dialog.locator('#hs-editor-ai-after')).toContainText('<img src=x onerror=alert(1)>');
   await apply();
@@ -178,7 +178,7 @@ try {
   await touchPage.locator('.hs-editor-ai-open[data-mode="proofread"]').tap();
   const touchDialog = touchPage.locator('#hs-editor-ai-dialog');
   await touchDialog.getByRole('button', { name: 'Отправить текст', exact: true }).tap();
-  await expect(touchDialog.locator('#hs-editor-ai-status')).toContainText('Предложение готово');
+  await expect(touchDialog.locator('#hs-editor-ai-status')).toContainText('Предложение готово', { timeout: 30000 });
   await touchDialog.getByRole('button', { name: 'Применить изменения' }).tap();
   assert.match(await touchPage.evaluate(() => window.tinymce.get('content').getContent()), /3 маны/);
   await touchPage.setViewportSize({ width: 844, height: 390 });

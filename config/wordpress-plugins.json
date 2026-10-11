@@ -6,7 +6,7 @@
   "plugins": [
     {"slug": "tinymce-advanced", "status": "active", "version": "5.9.2", "origin": "wordpress.org"},
     {"slug": "blocksy-companion", "status": "active", "version": "2.1.40", "origin": "wordpress.org"},
-    {"slug": "hs-editor-ai", "status": "active", "version": "1.0.1", "origin": "custom", "source_status": "pinned-reviewed-shared-source"},
+    {"slug": "hs-editor-ai", "status": "active", "version": "1.1.0", "origin": "custom", "source_status": "pinned-reviewed-shared-source"},
     {"slug": "classic-editor", "status": "active", "version": "1.6.7", "origin": "wordpress.org"},
     {"slug": "cyr2lat", "status": "active", "version": "6.7.0", "origin": "wordpress.org"},
     {"slug": "disable-comments-rb", "status": "active", "version": "1.0.26", "origin": "wordpress.org"},

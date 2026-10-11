@@ -63,8 +63,8 @@ try {
   await page.evaluate(() => window.tinymce.get('content').undoManager.undo());
   assert.equal(await getContent(), stable);
   report.checks.push('selected card insertion and TinyMCE undo');
-  await setContent('<p>На Полях сражений Лирой Дженкинс завершает бой.</p>');
-  await select('Лирой Дженкинс'); await open('cards'); await run(); await apply();
+  await setContent('<p>На Полях сражений Лирой Бесшабашный завершает бой.</p>');
+  await select('Лирой Бесшабашный'); await open('cards'); await run(); await apply();
   assert.match(await getContent(), new RegExp(`\\[hs_bg id="${fixture.bg_id}"\\]`));
   report.checks.push('BG context selects hs_bg');
   await setContent(original);

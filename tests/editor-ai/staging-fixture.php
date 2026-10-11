@@ -37,7 +37,8 @@ add_filter( 'pre_http_request', function ( $pre, $args, $url ) {
 			if ( ! empty( $input['catalog'] ) ) {
 				$tag = str_contains( $input['context'], 'Полях сражений' ) ? 'hs_bg' : 'hs_card';
 				$id = 'hs_bg' === $tag ? get_option( 'kh_editor_ai_fixture' )['bg_id'] : 'EX1_116';
-				$text = str_replace( 'Лирой Дженкинс', '[' . $tag . ' id="' . $id . '"]Лирой Дженкинс[/' . $tag . ']', $text );
+				$name = 'hs_bg' === $tag ? 'Лирой Бесшабашный' : 'Лирой Дженкинс';
+				$text = str_replace( $name, '[' . $tag . ' id="' . $id . '"]' . $name . '[/' . $tag . ']', $text );
 			} else { $text = str_replace( 'мнаны', 'маны', $text ); }
 			if ( $text !== $segment['text'] ) { $edits[] = array( 'segment' => $segment['segment'], 'replacement' => $text ); }
 		}

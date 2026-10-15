@@ -11,7 +11,7 @@
     {"slug": "cyr2lat", "status": "active", "version": "6.7.0", "origin": "wordpress.org"},
     {"slug": "disable-comments-rb", "status": "active", "version": "1.0.26", "origin": "wordpress.org"},
     {"slug": "hs-parses-graphs-wp", "status": "active", "version": "1.1.14", "origin": "custom", "source_status": "tracked-separately"},
-    {"slug": "hs-tooltip", "status": "active", "version": "1.1.8", "origin": "shared-custom", "source": "config/shared-plugin-lock.json"},
+    {"slug": "hs-tooltip", "status": "active", "version": "1.1.15", "origin": "shared-custom", "source": "config/shared-plugin-lock.json"},
     {"slug": "manacost-koloda-api", "status": "active", "version": "1.0.0", "origin": "shared-custom", "source": "config/shared-plugin-lock.json"},
     {"slug": "hs-api-gallery", "status": "active", "version": "1.0.4", "origin": "shared-custom", "source": "config/shared-plugin-lock.json"},
     {"slug": "wp-kolodahearthstone-shortcodes", "status": "active", "version": "2.0", "origin": "custom"},

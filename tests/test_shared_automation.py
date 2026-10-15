@@ -14,6 +14,16 @@ import shared_stage as stage
 
 
 class SharedAutomationTest(unittest.TestCase):
+    def test_redis_update_never_takes_over_a_foreign_dropin(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "object-cache.php").write_text("Another cache provider")
+            with patch.object(installer, "RUNTIME", root):
+                self.assertIsNone(installer.redis_dropin(root, "redis-cache"))
+                self.assertEqual(
+                    "Another cache provider", (root / "object-cache.php").read_text()
+                )
+
     def test_lock_digest_matches_existing_verifier_with_directory_and_same_prefix_file(
         self,
     ):

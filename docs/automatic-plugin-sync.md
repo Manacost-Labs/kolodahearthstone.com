@@ -35,6 +35,9 @@ expected canonical `.com` page and legacy `.ru` redirect. Failure restores the
 previous code and repeats the probes. Database rollback is deliberately manual
 to avoid overwriting concurrent editorial changes; its restore-tested snapshot
 is retained outside Git. Runtime tooltip dictionary data is preserved.
+An existing Redis-owned object-cache drop-in is refreshed through its supported
+WP-CLI command, verified and included in code rollback; foreign drop-ins remain
+untouched. Redis settings are retained and the object cache is not flushed.
 
 ## Operations
 

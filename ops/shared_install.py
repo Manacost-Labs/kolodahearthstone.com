@@ -218,6 +218,18 @@ def exchange(first, second):
         raise OSError(ctypes.get_errno(), "Atomic directory exchange failed")
 
 
+def redis_dropin(candidate, slug):
+    live = RUNTIME / "object-cache.php"
+    if slug != "redis-cache" or not live.is_file() or live.is_symlink():
+        return None
+    if b"https://wordpress.org/plugins/redis-cache/" not in live.read_bytes()[:8192]:
+        return None
+    source = candidate / "wordpress/plugins/redis-cache/includes/object-cache.php"
+    if not source.is_file():
+        raise RuntimeError("Redis drop-in source moved; review required")
+    return live, source
+
+
 def install(candidate, entry, data):
     state = json.loads(STATE.read_text())
     mutable = set(data["mutable_paths"])
@@ -228,7 +240,9 @@ def install(candidate, entry, data):
         raise RuntimeError(
             "Live plugin drift detected; refusing to overwrite local changes"
         )
-    if code(before) == code(incoming):
+    dropin = redis_dropin(candidate, entry["slug"])
+    dropin_change = bool(dropin and dropin[0].read_bytes() != dropin[1].read_bytes())
+    if code(before) == code(incoming) and not dropin_change:
         return {
             "slug": entry["slug"],
             "installed": False,
@@ -284,6 +298,15 @@ def install(candidate, entry, data):
                 temporary.chmod(original.st_mode & 0o777)
                 os.replace(temporary, live)
                 installed.append((live, saved, original))
+        if dropin_change:
+            live, source = dropin
+            saved = backup / "object-cache.php"
+            original = live.stat()
+            shutil.copy2(live, saved)
+            installed.append((live, saved, original))
+            run(wp_args("--skip-themes", "redis", "update-dropin"), timeout=60)
+            if live.read_bytes() != source.read_bytes():
+                raise RuntimeError("Redis drop-in update mismatch")
         if code(files(RUNTIME, entry["paths"], prefix="wordpress/")) != code(incoming):
             raise RuntimeError("Installed plugin digest mismatch")
         run(["systemctl", "reload", "php-fpm84"])

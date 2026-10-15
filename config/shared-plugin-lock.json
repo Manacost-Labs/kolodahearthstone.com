@@ -99,6 +99,15 @@
       "source_files": {
         "wordpress/plugins/classic-editor": "wordpress/plugins/classic-editor"
       }
+    },
+    "cyr2lat": {
+      "version": "7.0.2",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "f65294f91590e4481fd570508af4b5a6082e958a",
+      "tree_sha256": "946b9749762b23942174b5b848598aee0c878557421d380ad4bb6130517e9603",
+      "source_files": {
+        "wordpress/plugins/cyr2lat": "wordpress/plugins/cyr2lat"
+      }
     }
   }
 }

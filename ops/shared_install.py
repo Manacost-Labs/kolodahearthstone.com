@@ -304,7 +304,14 @@ def install(candidate, entry, data):
             original = live.stat()
             shutil.copy2(live, saved)
             installed.append((live, saved, original))
-            run(wp_args("--skip-themes", "redis", "update-dropin"), timeout=60)
+            run(
+                wp_args(
+                    "--skip-themes",
+                    "eval",
+                    "if(!function_exists('redis_object_cache'))WP_CLI::error('Redis updater unavailable');$plugin=redis_object_cache();if(!is_callable([$plugin,'update_dropin']))WP_CLI::error('Redis updater changed');$plugin->update_dropin();",
+                ),
+                timeout=60,
+            )
             if live.read_bytes() != source.read_bytes():
                 raise RuntimeError("Redis drop-in update mismatch")
         if code(files(RUNTIME, entry["paths"], prefix="wordpress/")) != code(incoming):

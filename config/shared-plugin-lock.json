@@ -108,6 +108,15 @@
       "source_files": {
         "wordpress/plugins/cyr2lat": "wordpress/plugins/cyr2lat"
       }
+    },
+    "shortcodes-ultimate": {
+      "version": "7.5.3",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "f65294f91590e4481fd570508af4b5a6082e958a",
+      "tree_sha256": "da491e7a4f1d0eff4eaa20bd7fac0177b8798ea46c1fe196a8905afbe784c7d3",
+      "source_files": {
+        "wordpress/plugins/shortcodes-ultimate": "wordpress/plugins/shortcodes-ultimate"
+      }
     }
   }
 }

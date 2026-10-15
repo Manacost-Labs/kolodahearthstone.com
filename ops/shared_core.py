@@ -179,7 +179,15 @@ def production_sha(log):
 
 def stage_import(root, entry, incoming):
     """Stage only canonical source files, including admitted vendor dependencies."""
-    run(["git", "add", "-u", "--", *entry["paths"]], cwd=root)
+    tracked = [
+        p.decode()
+        for p in run(["git", "ls-files", "-z", "--", *entry["paths"]], cwd=root).split(
+            b"\0"
+        )
+        if p
+    ]
+    for offset in range(0, len(tracked), 128):
+        run(["git", "add", "-u", "--", *tracked[offset : offset + 128]], cwd=root)
     names = sorted(incoming)
     for offset in range(0, len(names), 128):
         run(["git", "add", "-f", "--", *names[offset : offset + 128]], cwd=root)

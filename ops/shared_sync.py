@@ -272,6 +272,26 @@ def cycle(apply):
         source_sha=source_sha,
     )
     import_plugin(source, candidate, entry, source_sha)
+    impact = json.loads(
+        run(
+            [
+                "python3",
+                str(
+                    candidate
+                    / ".agents/skills/wordpress-change-impact/scripts/analyze_change_impact.py"
+                ),
+                "--base",
+                "origin/main",
+                "--format",
+                "json",
+            ],
+            cwd=candidate,
+        )
+    )
+    if impact["manual_review_required"]:
+        raise RuntimeError(
+            "Package includes unclassified paths; admission review required"
+        )
     run(["make", "check"], cwd=candidate, timeout=300)
     stage = verify(candidate, source, STATE, CONTROLLER)
     branch = "codex/auto-shared-" + entry["slug"] + "-" + source_sha[:10]

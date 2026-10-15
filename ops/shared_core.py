@@ -175,3 +175,38 @@ def production_sha(log):
     if len(values) != 1:
         raise ValueError("Production log has no unique deployed SHA")
     return values.pop()
+
+
+def stage_import(root, entry, incoming):
+    """Stage only canonical source files, including admitted vendor dependencies."""
+    tracked = [
+        p.decode()
+        for p in run(["git", "ls-files", "-z", "--", *entry["paths"]], cwd=root).split(
+            b"\0"
+        )
+        if p
+    ]
+    for offset in range(0, len(tracked), 128):
+        run(["git", "add", "-u", "--", *tracked[offset : offset + 128]], cwd=root)
+    names = sorted(incoming)
+    for offset in range(0, len(names), 128):
+        run(["git", "add", "-f", "--", *names[offset : offset + 128]], cwd=root)
+    indexed = {}
+    for record in run(
+        ["git", "ls-files", "--stage", "-z", "--", *entry["paths"]], cwd=root
+    ).split(b"\0"):
+        if not record:
+            continue
+        metadata, name = record.split(b"\t", 1)
+        mode, oid, stage = metadata.split()
+        if stage != b"0":
+            raise RuntimeError("Unmerged plugin source in index")
+        indexed[name.decode()] = oid.decode()
+    expected = {
+        name: hashlib.sha1(
+            b"blob " + str(len(data)).encode() + b"\0" + data, usedforsecurity=False
+        ).hexdigest()
+        for name, data in incoming.items()
+    }
+    if indexed != expected:
+        raise RuntimeError("Committed plugin snapshot differs from canonical source")

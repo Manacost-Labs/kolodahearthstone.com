@@ -28,50 +28,68 @@
       "wordpress/plugins/manacost-koloda-api",
       "wordpress/mu-plugins/koloda-native-gallery.php",
       "wordpress/plugins/hs-editor-ai",
-      "wordpress/mu-plugins/koloda-editor-ai-access.php"
+      "wordpress/mu-plugins/koloda-editor-ai-access.php",
+      "wordpress/mu-plugins/hs-local-image-optimizer",
+      "wordpress/mu-plugins/hs-media-upload-accelerator.php"
     ],
     "dynamic_contracts": "Unresolved hooks and options require an integration test before release."
   },
   "contracts": {
     "post_meta": [
+      "_hs_api_gallery_sha256",
+      "_hs_api_gallery_snapshot",
+      "_hs_api_gallery_source",
       "_hs_article_versions",
       "_hs_article_versions_active",
       "_hs_article_versions_state",
-      "_hs_api_gallery_sha256",
-      "_hs_api_gallery_snapshot",
-      "_hs_api_gallery_source"
+      "_hs_local_image_optimizer_finished_at",
+      "_hs_local_image_optimizer_pipeline",
+      "_hs_local_image_optimizer_queued_at",
+      "_hs_local_image_optimizer_result",
+      "_hs_media_upload_accelerator_error",
+      "_hs_tooltips_enabled",
+      "_imagify_data"
     ],
     "options": [
       "hs_api_gallery_schema",
+      "hs_editor_ai_budget_{user}",
       "hs_editor_ai_lock_{user}",
-      "hs_editor_ai_budget_{user}"
+      "hs_local_image_optimizer_enabled",
+      "hs_local_image_optimizer_worker_lock",
+      "hs_tooltip_logs",
+      "imagify_settings"
     ],
     "shortcodes": [
-      "hs_card",
       "hs_bg",
+      "hs_card",
       "khs_poll"
     ],
     "ajax_actions": [
       "hs_api_gallery_catalog",
       "hs_api_gallery_import",
       "hs_api_gallery_state",
-      "hs_api_gallery_vote"
+      "hs_api_gallery_vote",
+      "hs_tooltip_search",
+      "hs_tooltip_search_bgs"
     ],
     "rest_routes": [
-      "manacost/v1/article-versions",
       "hs-editor-ai/v1/jobs",
-      "hs-editor-ai/v1/jobs/(?P<id>[a-f0-9]{32})"
+      "hs-editor-ai/v1/jobs/(?P<id>[a-f0-9]{32})",
+      "manacost/v1/article-versions"
     ],
     "cron_hooks": [
       "hs_api_gallery_expire_votes",
+      "hs_editor_ai_expire",
       "hs_editor_ai_process",
-      "hs_editor_ai_expire"
+      "hs_local_image_optimizer_process_attachment",
+      "hs_media_upload_accelerator_generate_subsizes"
     ],
     "capabilities": [
+      "edit_pages",
       "edit_post",
-      "upload_files",
       "edit_posts",
-      "manage_options"
+      "manage_options",
+      "upload_files"
     ]
   }
 }

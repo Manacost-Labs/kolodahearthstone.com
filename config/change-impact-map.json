@@ -21,6 +21,39 @@
   "rules": [
     {
       "patterns": [
+        "wordpress/mu-plugins/hs-local-image-optimizer.php",
+        "wordpress/mu-plugins/hs-local-image-optimizer/**",
+        "wordpress/mu-plugins/manacost-media-unique-filenames.php",
+        "tests/test_local_image_optimizer.py",
+        "tests/test_media_unique_filenames.py"
+      ],
+      "owner": "shared-media-integrity",
+      "classified": true,
+      "risk": "high",
+      "surfaces": [
+        "media",
+        "wordpress-runtime"
+      ],
+      "domains": [
+        "kolodahearthstone.com",
+        "test.kolodahearthstone.com",
+        "origin",
+        "ru-moscow",
+        "ru-novosibirsk"
+      ],
+      "skills": [
+        "wordpress-media-integrity",
+        "wordpress-runtime-stack",
+        "wordpress-plugin-dev"
+      ],
+      "checks": [
+        "make check",
+        "shared media SHA256 verification",
+        "staging upload and duplicate filename checks"
+      ]
+    },
+    {
+      "patterns": [
         "wordpress/plugins/hs-editor-ai/**",
         "wordpress/mu-plugins/koloda-editor-ai-access.php",
         "tests/editor-ai/**",

@@ -21,6 +21,7 @@ from shared_core import (
     policy,
     production_sha,
     run,
+    stage_import,
 )
 from shared_stage import verify
 
@@ -296,11 +297,11 @@ def cycle(apply):
     stage = verify(candidate, source, STATE, CONTROLLER)
     branch = "codex/auto-shared-" + entry["slug"] + "-" + source_sha[:10]
     run(["git", "checkout", "-b", branch], cwd=candidate)
+    stage_import(candidate, entry, mapped_files(source, entry))
     run(
         [
             "git",
             "add",
-            "wordpress",
             "config/shared-plugin-lock.json",
             "config/wordpress-plugins.json",
         ],

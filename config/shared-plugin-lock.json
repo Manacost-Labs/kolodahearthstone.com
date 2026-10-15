@@ -126,6 +126,15 @@
       "source_files": {
         "wordpress/plugins/tinymce-advanced": "wordpress/plugins/tinymce-advanced"
       }
+    },
+    "redis-cache": {
+      "version": "2.8.0",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "f65294f91590e4481fd570508af4b5a6082e958a",
+      "tree_sha256": "6f735c7dbca6cc6d9bb05b7726fbc94db86002a1903c11e9ee757ff0cda28ad0",
+      "source_files": {
+        "wordpress/plugins/redis-cache": "wordpress/plugins/redis-cache"
+      }
     }
   }
 }

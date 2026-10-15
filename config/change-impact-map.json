@@ -21,6 +21,43 @@
   "rules": [
     {
       "patterns": [
+        "ops/shared_*.py",
+        "ops/shared-stage-browser.mjs",
+        "ops/systemd/koloda-shared-plugin-sync.*",
+        "config/shared-plugin-sync.json",
+        ".github/workflows/quality.yml",
+        "tests/test_shared_automation.py",
+        "docs/automatic-plugin-sync.md"
+      ],
+      "owner": "shared-plugin-delivery",
+      "classified": true,
+      "risk": "high",
+      "surfaces": [
+        "infrastructure",
+        "shared-plugins",
+        "wordpress-runtime"
+      ],
+      "domains": [
+        "kolodahearthstone.com",
+        "origin",
+        "ru-moscow",
+        "ru-novosibirsk"
+      ],
+      "skills": [
+        "wordpress-release-manager",
+        "wordpress-runtime-stack",
+        "agent-ci-cd-and-automation"
+      ],
+      "checks": [
+        "make check",
+        "staged security scan",
+        "isolated Blocksy verification",
+        "shared source SHA256 verification",
+        "regional smoke and rollback"
+      ]
+    },
+    {
+      "patterns": [
         "wordpress/mu-plugins/hs-local-image-optimizer.php",
         "wordpress/mu-plugins/hs-local-image-optimizer/**",
         "wordpress/mu-plugins/manacost-media-unique-filenames.php",

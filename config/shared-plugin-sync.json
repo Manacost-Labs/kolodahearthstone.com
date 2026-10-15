@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "source_repository": "Manacost-Labs/hs-manacost.ru",
+  "consumer_repository": "Manacost-Labs/kolodahearthstone.com",
+  "mutable_paths": [
+    "wordpress/plugins/hs-tooltip/hs_dictionary.json"
+  ],
+  "plugins": [
+    {
+      "slug": "manacost-koloda-api",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/manacost-koloda-api/manacost-koloda-api.php": "wordpress/mu-plugins/manacost-koloda-api.php"
+      }
+    },
+    {
+      "slug": "hs-api-gallery",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/hs-api-gallery/hs-api-gallery.php": "wordpress/mu-plugins/hs-api-gallery.php",
+        "wordpress/plugins/hs-api-gallery/hs-api-gallery": "wordpress/mu-plugins/hs-api-gallery"
+      }
+    },
+    {
+      "slug": "hs-editor-ai",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/hs-editor-ai/hs-editor-ai.php": "wordpress/mu-plugins/hs-editor-ai.php",
+        "wordpress/plugins/hs-editor-ai/hs-editor-ai": "wordpress/mu-plugins/hs-editor-ai"
+      }
+    },
+    {
+      "slug": "hs-tooltip",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/hs-tooltip": "wordpress/plugins/hs-tooltip"
+      }
+    },
+    {
+      "slug": "hs-local-image-optimizer",
+      "kind": "mu",
+      "paths": {
+        "wordpress/mu-plugins/hs-local-image-optimizer.php": "wordpress/mu-plugins/hs-local-image-optimizer.php",
+        "wordpress/mu-plugins/hs-local-image-optimizer": "wordpress/mu-plugins/hs-local-image-optimizer"
+      }
+    },
+    {
+      "slug": "hs-media-upload-accelerator",
+      "kind": "mu",
+      "paths": {
+        "wordpress/mu-plugins/hs-media-upload-accelerator.php": "wordpress/mu-plugins/hs-media-upload-accelerator.php"
+      }
+    },
+    {
+      "slug": "manacost-media-unique-filenames",
+      "kind": "mu",
+      "paths": {
+        "wordpress/mu-plugins/manacost-media-unique-filenames.php": "wordpress/mu-plugins/manacost-media-unique-filenames.php"
+      }
+    },
+    {
+      "slug": "hs-article-versions",
+      "kind": "mu",
+      "paths": {
+        "wordpress/mu-plugins/hs-article-versions.php": "wordpress/mu-plugins/hs-article-versions.php"
+      }
+    },
+    {
+      "slug": "separator-placeholder-quick-insert",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/separator-placeholder-quick-insert": "wordpress/plugins/separator-placeholder-quick-insert"
+      }
+    },
+    {
+      "slug": "classic-editor",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/classic-editor": "wordpress/plugins/classic-editor"
+      }
+    },
+    {
+      "slug": "cyr2lat",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/cyr2lat": "wordpress/plugins/cyr2lat"
+      }
+    },
+    {
+      "slug": "shortcodes-ultimate",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/shortcodes-ultimate": "wordpress/plugins/shortcodes-ultimate"
+      }
+    },
+    {
+      "slug": "tinymce-advanced",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/tinymce-advanced": "wordpress/plugins/tinymce-advanced"
+      }
+    },
+    {
+      "slug": "redis-cache",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/redis-cache": "wordpress/plugins/redis-cache"
+      }
+    },
+    {
+      "slug": "wordfence",
+      "kind": "plugin",
+      "paths": {
+        "wordpress/plugins/wordfence": "wordpress/plugins/wordfence"
+      }
+    }
+  ]
+}

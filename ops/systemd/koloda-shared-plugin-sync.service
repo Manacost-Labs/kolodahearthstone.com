@@ -1,0 +1,14 @@
+[Unit]
+Description=Synchronize approved Manacost plugins to Koloda
+Wants=network-online.target
+After=network-online.target mariadb.service docker.service
+
+[Service]
+Type=oneshot
+User=debian
+Group=debian
+WorkingDirectory=/opt/koloda-plugin-sync/current
+ExecStart=/usr/bin/python3 /opt/koloda-plugin-sync/current/ops/shared_sync.py --apply
+TimeoutStartSec=30min
+UMask=0077
+Nice=10

@@ -90,6 +90,15 @@
         "Manacost-Labs/hs-manacost.ru",
         "Manacost-Labs/kolodahearthstone.com"
       ]
+    },
+    "classic-editor": {
+      "version": "1.6.7",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "f65294f91590e4481fd570508af4b5a6082e958a",
+      "tree_sha256": "d0b216e80d9c8e8320b3b94b62dab2824b2a1923ba635b7e92e25824926ebe49",
+      "source_files": {
+        "wordpress/plugins/classic-editor": "wordpress/plugins/classic-editor"
+      }
     }
   }
 }

@@ -117,6 +117,15 @@
       "source_files": {
         "wordpress/plugins/shortcodes-ultimate": "wordpress/plugins/shortcodes-ultimate"
       }
+    },
+    "tinymce-advanced": {
+      "version": "5.9.2",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "f65294f91590e4481fd570508af4b5a6082e958a",
+      "tree_sha256": "92aa8b63bb49f7f2ea862bb701d7bf28bcf929b8d111e7e01403e20b76d43e46",
+      "source_files": {
+        "wordpress/plugins/tinymce-advanced": "wordpress/plugins/tinymce-advanced"
+      }
     }
   }
 }

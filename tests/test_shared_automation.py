@@ -14,6 +14,35 @@ import shared_stage as stage
 
 
 class SharedAutomationTest(unittest.TestCase):
+    def test_canonical_vendor_files_survive_gitignore_without_staging_unrelated_data(
+        self,
+    ):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            core.run(["git", "init", "-q"], cwd=root)
+            (root / ".gitignore").write_text("vendor/\nwp-config.php\n")
+            source = {
+                "wordpress/plugins/demo/main.php": b"<?php // plugin",
+                "wordpress/plugins/demo/vendor/autoload.php": b"<?php // canonical dependency",
+            }
+            for name, data in source.items():
+                (root / name).parent.mkdir(parents=True, exist_ok=True)
+                (root / name).write_bytes(data)
+            (root / "wp-config.php").write_text("do not stage")
+            entry = {
+                "slug": "demo",
+                "paths": {"wordpress/plugins/demo": "wordpress/plugins/demo"},
+            }
+            core.stage_import(root, entry, source)
+            self.assertEqual(
+                source["wordpress/plugins/demo/vendor/autoload.php"],
+                core.run(
+                    ["git", "show", ":wordpress/plugins/demo/vendor/autoload.php"],
+                    cwd=root,
+                ),
+            )
+            self.assertNotIn(b"wp-config.php", core.run(["git", "ls-files"], cwd=root))
+
     def test_redis_update_never_takes_over_a_foreign_dropin(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

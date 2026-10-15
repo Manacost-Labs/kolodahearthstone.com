@@ -21,6 +21,88 @@
   "rules": [
     {
       "patterns": [
+        "wordpress/plugins/manacost-koloda-api/manacost-koloda-api.php",
+        "wordpress/plugins/hs-api-gallery/hs-api-gallery.php",
+        "wordpress/plugins/hs-api-gallery/hs-api-gallery/**",
+        "wordpress/plugins/hs-editor-ai/hs-editor-ai.php",
+        "wordpress/plugins/hs-editor-ai/hs-editor-ai/**",
+        "wordpress/plugins/hs-tooltip/**",
+        "wordpress/mu-plugins/hs-local-image-optimizer.php",
+        "wordpress/mu-plugins/hs-local-image-optimizer/**",
+        "wordpress/mu-plugins/hs-media-upload-accelerator.php",
+        "wordpress/mu-plugins/manacost-media-unique-filenames.php",
+        "wordpress/mu-plugins/hs-article-versions.php",
+        "wordpress/plugins/separator-placeholder-quick-insert/**",
+        "wordpress/plugins/classic-editor/**",
+        "wordpress/plugins/cyr2lat/**",
+        "wordpress/plugins/shortcodes-ultimate/**",
+        "wordpress/plugins/tinymce-advanced/**",
+        "wordpress/plugins/redis-cache/**",
+        "wordpress/plugins/wordfence/**"
+      ],
+      "owner": "approved-shared-plugin-fleet",
+      "classified": true,
+      "risk": "high",
+      "surfaces": [
+        "shared-plugins",
+        "wordpress-runtime"
+      ],
+      "domains": [
+        "kolodahearthstone.com",
+        "origin",
+        "ru-moscow",
+        "ru-novosibirsk"
+      ],
+      "skills": [
+        "wordpress-runtime-stack",
+        "wordpress-release-manager"
+      ],
+      "checks": [
+        "make check",
+        "isolated Blocksy upgrade verification",
+        "restore-tested backup",
+        "regional smoke and rollback"
+      ]
+    },
+    {
+      "patterns": [
+        "ops/shared_*.py",
+        "ops/shared-stage-browser.mjs",
+        "ops/systemd/koloda-shared-plugin-sync.*",
+        "config/shared-plugin-sync.json",
+        ".github/workflows/quality.yml",
+        "tests/test_shared_automation.py",
+        "docs/automatic-plugin-sync.md"
+      ],
+      "owner": "shared-plugin-delivery",
+      "classified": true,
+      "risk": "high",
+      "surfaces": [
+        "infrastructure",
+        "shared-plugins",
+        "wordpress-runtime"
+      ],
+      "domains": [
+        "kolodahearthstone.com",
+        "origin",
+        "ru-moscow",
+        "ru-novosibirsk"
+      ],
+      "skills": [
+        "wordpress-release-manager",
+        "wordpress-runtime-stack",
+        "agent-ci-cd-and-automation"
+      ],
+      "checks": [
+        "make check",
+        "staged security scan",
+        "isolated Blocksy verification",
+        "shared source SHA256 verification",
+        "regional smoke and rollback"
+      ]
+    },
+    {
+      "patterns": [
         "wordpress/mu-plugins/hs-local-image-optimizer.php",
         "wordpress/mu-plugins/hs-local-image-optimizer/**",
         "wordpress/mu-plugins/manacost-media-unique-filenames.php",

@@ -135,6 +135,15 @@
       "source_files": {
         "wordpress/plugins/redis-cache": "wordpress/plugins/redis-cache"
       }
+    },
+    "wordfence": {
+      "version": "9.0.1",
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "f65294f91590e4481fd570508af4b5a6082e958a",
+      "tree_sha256": "25fc3bf020e827b54ed284841dc3ad8c5690f52afe0dad482364c21f1c2c06c4",
+      "source_files": {
+        "wordpress/plugins/wordfence": "wordpress/plugins/wordfence"
+      }
     }
   }
 }

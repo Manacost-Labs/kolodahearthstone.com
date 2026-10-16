@@ -65,7 +65,7 @@
     {
       "slug": "hs-api-gallery",
       "status": "active",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "origin": "shared-custom",
       "source": "config/shared-plugin-lock.json"
     },

@@ -203,6 +203,7 @@
     resizeCanvas(false);
     setupFullscreen(wrapper, function() {
       resizeCanvas(true);
+      wake();
     });
 
     if (startClass && data.classes_summary) {
@@ -433,6 +434,7 @@
         });
         updateNodesTable();
         updateSelectedCardView();
+        wake();
       }).catch(function() {
         // English names remain usable if the translation endpoint is unavailable.
       });
@@ -653,6 +655,32 @@
       cancelAnimationFrame(activeAnimations.get(wrapperIndex));
     }
 
+    // The layout runs only while it moves or the reader interacts; a settled or
+    // off-screen radar leaves the main thread free for scrolling and taps.
+    var running = false;
+    var visible = true;
+    var calmFrames = 0;
+    var framesSinceWake = 0;
+
+    function wake() {
+      calmFrames = 0;
+      framesSinceWake = 0;
+      if (running || !visible) return;
+      running = true;
+      activeAnimations.set(wrapperIndex, requestAnimationFrame(tick));
+    }
+
+    ['pointerdown', 'pointermove', 'touchstart', 'input', 'click', 'keydown'].forEach(function(type) {
+      wrapper.addEventListener(type, wake, { capture: true, passive: true });
+    });
+    window.addEventListener('mouseup', wake);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries) {
+        visible = entries[entries.length - 1].isIntersecting;
+        if (visible) wake();
+      }).observe(canvas);
+    }
+
     function tick() {
       if (!ctx) {
         resizeCanvas(false);
@@ -704,6 +732,7 @@
         }
       }
 
+      var energy = 0;
       for (var m = 0; m < nodes.length; m++) {
         var n = nodes[m];
         if (n === draggedNode) continue;
@@ -712,6 +741,7 @@
         n.vy *= 0.84;
         n.x += n.vx;
         n.y += n.vy;
+        energy += n.vx * n.vx + n.vy * n.vy;
 
         var margin = n.radius + 12;
         if (n.x < margin) { n.x = margin; n.vx = -n.vx * 0.45; }
@@ -722,8 +752,16 @@
 
       drawFrame();
 
-      var nextAnim = requestAnimationFrame(tick);
-      activeAnimations.set(wrapperIndex, nextAnim);
+      // Half a second below 0.1 px/frame per node counts as settled; a jittering
+      // layout still stops 15 s after the last interaction.
+      calmFrames = !draggedNode && energy < 0.01 * Math.max(1, nodes.length) ? calmFrames + 1 : 0;
+      framesSinceWake++;
+      if (!visible || (!draggedNode && (calmFrames > 30 || framesSinceWake > 900))) {
+        running = false;
+        activeAnimations.delete(wrapperIndex);
+        return;
+      }
+      activeAnimations.set(wrapperIndex, requestAnimationFrame(tick));
     }
 
     function drawFrame() {
@@ -845,7 +883,7 @@
       return !searchText || nodeObj.searchName.indexOf(searchText) !== -1;
     }
 
-    tick();
+    wake();
   }
 
   function prepareCanvas(canvas, baseWidth, baseHeight) {

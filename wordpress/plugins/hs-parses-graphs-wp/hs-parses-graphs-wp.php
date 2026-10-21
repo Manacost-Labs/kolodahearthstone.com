@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Hearthstone Parses - Interactive Graphs
  * Description:       Integrates high-performance interactive hsguru meta scatter plots (Standard/Wild) and Vicious Syndicate radars into WordPress via simple shortcodes.
- * Version:           1.1.14
+ * Version:           1.1.15
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Hearthstone Parses Dev Team
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'HS_PARSES_GRAPHS_VERSION', '1.1.14' );
+define( 'HS_PARSES_GRAPHS_VERSION', '1.1.15' );
 define( 'HS_PARSES_GRAPHS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'HS_PARSES_GRAPHS_URL', plugin_dir_url( __FILE__ ) );
 

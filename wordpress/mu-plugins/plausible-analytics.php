@@ -135,6 +135,8 @@ final class KolodaHS_Plausible_Analytics
 
         echo "<script>\n";
         echo "(function(){\n";
+        // A prerendered page that is never shown must not report reading or scroll depth.
+        echo "function run(){\n";
         echo "var baseProps={$payload};\n";
         echo "window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};\n";
         echo "function copy(extra){var out={},k;for(k in baseProps){if(Object.prototype.hasOwnProperty.call(baseProps,k)){out[k]=String(baseProps[k]);}}for(k in extra){if(Object.prototype.hasOwnProperty.call(extra,k)){out[k]=String(extra[k]);}}return out;}\n";
@@ -146,6 +148,8 @@ final class KolodaHS_Plausible_Analytics
         echo "function check(){var current=Math.max(0,Math.min(100,depth()));if(current>maxDepth){maxDepth=current;}if(!readSent&&maxDepth>=90&&Date.now()-start>=15000){readSent=true;send('Article Read',{depth_bucket:bucket(maxDepth)});}}\n";
         echo "function sendDepth(){if(depthSent)return;check();depthSent=true;send('Scroll Depth',{depth_bucket:bucket(maxDepth)});}\n";
         echo "window.addEventListener('scroll',check,{passive:true});window.addEventListener('resize',check,{passive:true});window.addEventListener('pagehide',sendDepth);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){sendDepth();}else{check();}});setTimeout(check,1000);setInterval(check,5000);\n";
+        echo "}\n";
+        echo "if(document.prerendering){document.addEventListener('prerenderingchange',run,{once:true});}else{run();}\n";
         echo "})();\n";
         echo "</script>\n";
     }

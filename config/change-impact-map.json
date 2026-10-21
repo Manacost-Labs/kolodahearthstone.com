@@ -352,6 +352,16 @@
       "checks": ["make check", "staging desktop/mobile tooltip-editor flow"]
     },
     {
+      "patterns": ["wordpress/mu-plugins/koloda-frontend-speed.php", "tests/test_frontend_speed.py"],
+      "owner": "public-navigation-speed",
+      "classified": true,
+      "risk": "high",
+      "surfaces": ["frontend", "cache", "performance", "analytics"],
+      "domains": ["kolodahearthstone.com", "kolodahearthstone.ru", "origin", "ru-moscow", "ru-novosibirsk"],
+      "skills": ["blocksy-theme", "wordpress-runtime-stack", "wp-performance", "web-perf", "wordpress-ads-analytics", "playwright"],
+      "checks": ["make check", "make blocksy-audit", "disposable Blocksy browser verification", "regional smoke checks"]
+    },
+    {
       "patterns": ["wordpress/mu-plugins/**"],
       "owner": "first-party-generic",
       "classified": false,

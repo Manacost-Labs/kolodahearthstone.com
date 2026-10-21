@@ -239,7 +239,9 @@ class KolodaHearthstone_Decks {
                     '}).catch(function(){});' .
                 '}catch(e){}' .
             '}' .
-            'if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",send);}else{send();}' .
+            'function start(){if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",send);}else{send();}}' .
+            // A prerendered article counts a view only once the reader opens it.
+            'if(document.prerendering){document.addEventListener("prerenderingchange",start,{once:true});}else{start();}' .
         '})();</script>';
 
         return $stats . $content;

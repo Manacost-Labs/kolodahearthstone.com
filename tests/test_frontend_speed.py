@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "wordpress" / "mu-plugins" / "koloda-frontend-speed.php"
 PLAUSIBLE = ROOT / "wordpress" / "mu-plugins" / "plausible-analytics.php"
+DECKS = ROOT / "wordpress" / "plugins" / "wp-kolodahearthstone-decks" / "kolodahearthstone-decks.php"
 
 STUBS = r'''
 define('ABSPATH', '/');
@@ -107,6 +108,12 @@ class FrontendSpeedTest(unittest.TestCase):
         self.assertIn("if(document.prerendering){document.addEventListener('prerenderingchange',run,{once:true});}else{run();}", source)
         self.assertLess(source.find('echo "function run(){'), source.find("addEventListener('pagehide',sendDepth)"))
 
+
+    def test_article_views_are_counted_only_for_shown_pages(self) -> None:
+        source = DECKS.read_text(encoding="utf-8")
+        counter = source[source.find('fd.append("action","hs_count_view")'):source.find("return $stats . $content;")]
+        self.assertIn('if(document.prerendering){document.addEventListener("prerenderingchange",start,{once:true});}else{start();}', counter)
+        self.assertNotIn("}else{send();}' .\n        '})();", counter)
 
 if __name__ == "__main__":
     unittest.main()

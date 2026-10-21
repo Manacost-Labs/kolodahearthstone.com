@@ -4,6 +4,8 @@
   "canonical_skill_root": ".agents/skills",
   "synchronized_skill_roots": [".claude/skills", ".codex/skills"],
   "included_skills": [
+    "hearthstone-deck-article",
+    "wordpress-article-anchors",
     "kolodahearthstone-project",
     "blocksy-theme",
     "wordpress-accessibility",
@@ -57,6 +59,8 @@
     "wp-plugin-development"
   ],
   "task_routes": {
+    "deck-article-import": ["hearthstone-deck-article", "wordpress-article-anchors", "wordpress-article-editor", "wordpress-media-integrity", "wordpress-content-integrity"],
+    "article-anchors": ["wordpress-article-anchors", "wordpress-article-editor", "wordpress-accessibility"],
     "blocksy-theme": ["blocksy-theme", "wordpress-responsive-experience", "wordpress-accessibility", "wordpress-typography-layout-system"],
     "plugin": ["wordpress-plugin-dev", "wp-plugin-development", "wordpress-clean-code", "wordpress-change-impact"],
     "shared-plugin-import": ["wordpress-shared-plugin-consumer", "wordpress-admin-ui", "wordpress-plugin-dev", "wordpress-change-impact"],

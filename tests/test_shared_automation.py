@@ -14,6 +14,36 @@ import shared_stage as stage
 
 
 class SharedAutomationTest(unittest.TestCase):
+    def test_editorial_snapshot_exports_helpers_without_reusing_plugin_only_cache(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            repository, state = root / "repository", root / "state"
+            repository.mkdir()
+            state.mkdir()
+            core.run(["git", "init", "-q"], cwd=repository)
+            selected = ["wordpress/mu-plugins/hs-article-cards.php",
+                        "tests/article-cards/components.mjs",
+                        "tests/article-cards/inline-image.mjs"]
+            for name in [*selected, "unrelated.txt"]:
+                path = repository / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("fixture")
+            core.run(["git", "add", "."], cwd=repository)
+            core.run(["git", "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
+                      "commit", "-qm", "fixture"], cwd=repository)
+            sha = core.run(["git", "rev-parse", "HEAD"], cwd=repository).decode().strip()
+            legacy = state / ("source-" + sha)
+            legacy.mkdir()
+            data = {"plugins": [{"slug": "hs-article-cards", "paths": {selected[0]: selected[0]}}]}
+            with patch.object(sync, "STATE", state):
+                snapshot = sync.source_snapshot(repository, sha, data)
+                self.assertNotEqual(snapshot, legacy)
+                self.assertEqual(snapshot, sync.source_snapshot(repository, sha, data))
+            for name in selected:
+                self.assertEqual((snapshot / name).read_text(), "fixture")
+            self.assertFalse((snapshot / "unrelated.txt").exists())
+            self.assertTrue(legacy.is_dir())
+
     def test_first_mu_install_and_rollback_preserve_unrelated_files(self):
         for fail in (False, True):
             with self.subTest(fail=fail), tempfile.TemporaryDirectory() as folder:

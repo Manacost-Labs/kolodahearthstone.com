@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import fcntl
+import hashlib
 import json
 import os
 import shutil
@@ -119,6 +120,17 @@ def report(**values):
         json.dumps(values, ensure_ascii=False, indent=2) + "\n"
     )
     print(json.dumps(values, ensure_ascii=False), flush=True)
+
+
+def source_snapshot(repository, sha, data):
+    paths = {p for entry in data["plugins"] for p in entry["paths"].values()}
+    if any(entry["slug"] == "hs-article-cards" for entry in data["plugins"]):
+        paths.update({"tests/article-cards/components.mjs", "tests/article-cards/inline-image.mjs"})
+    paths = sorted(paths)
+    inputs = hashlib.sha256("\n".join(paths).encode()).hexdigest()[:12]
+    destination = STATE / ("source-" + sha + "-" + inputs)
+    source_archive(repository, sha, destination, paths)
+    return destination
 
 
 def cycle(apply):
@@ -249,9 +261,7 @@ def cycle(apply):
             "Unfinished candidate without pending record; inspect before retry"
         )
     run(["git", "worktree", "add", "--detach", str(candidate), base], cwd=target)
-    source = STATE / ("source-" + source_sha)
-    origins = sorted({p for e in data["plugins"] for p in e["paths"].values()})
-    source_archive(source_repo, source_sha, source, origins)
+    source = source_snapshot(source_repo, source_sha, data)
     changes = [
         entry
         for entry in data["plugins"]

@@ -48,7 +48,7 @@ def fixture_sources(state):
                     "--path=" + str(core),
                     "--quiet",
                 ],
-                timeout=180,
+                timeout=360,
             )
             run(
                 [
@@ -171,6 +171,7 @@ def verify(candidate, source, state, controller):
         "WP_HOME": URL,
         "WP_SITEURL": URL,
         "WP_ENVIRONMENT_TYPE": "local",
+        "HS_ARTICLE_CARDS_LOCAL_SOURCE": "koloda",
         "WP_ACCESSIBLE_HOSTS": "art.hearthstonejson.com,api.hearthstonejson.com,api.kolodahearthstone.com",
     }.items():
         config += f"define({json.dumps(key)},{json.dumps(value)});\n"
@@ -282,12 +283,14 @@ def verify(candidate, source, state, controller):
             SYNC_STAGE_ADMIN=admin,
             SYNC_STAGE_POST=str(info["post"]),
             SYNC_STAGE_DISPOSABLE="1",
+            SYNC_STAGE_SOURCE=str(source),
+            SYNC_STAGE_EDITORIAL="1" if (site / "wp-content/mu-plugins/hs-article-cards.php").exists() else "0",
         )
         result = subprocess.run(
             ["node", str(controller / "ops/shared-stage-browser.mjs")],
             env=environment,
             capture_output=True,
-            timeout=180,
+            timeout=360,
         )
         if result.returncode:
             raise RuntimeError(

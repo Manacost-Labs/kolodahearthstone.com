@@ -14,6 +14,64 @@ import shared_stage as stage
 
 
 class SharedAutomationTest(unittest.TestCase):
+    def test_first_mu_install_and_rollback_preserve_unrelated_files(self):
+        for fail in (False, True):
+            with self.subTest(fail=fail), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                runtime = root / "runtime"
+                candidate = root / "candidate"
+                (runtime / "mu-plugins").mkdir(parents=True)
+                unrelated = runtime / "mu-plugins/unrelated.php"
+                unrelated.write_text("preserve")
+                paths = {"wordpress/mu-plugins/demo": "wordpress/mu-plugins/demo",
+                         "wordpress/mu-plugins/demo.php": "wordpress/mu-plugins/demo.php"}
+                entry = {"slug": "demo", "kind": "mu", "allow_initial_install": True, "paths": paths}
+                (candidate / "wordpress/mu-plugins/demo").mkdir(parents=True)
+                (candidate / "wordpress/mu-plugins/demo/main.php").write_text("<?php // assets")
+                (candidate / "wordpress/mu-plugins/demo.php").write_text("<?php // loader")
+                state = root / "runtime.json"
+                state.write_text("{}")
+                with patch.object(installer, "RUNTIME", runtime), patch.object(installer, "STATE", state), patch.object(installer, "BACKUPS", root / "backups"), patch.object(installer, "restore_drill") as restore, patch.object(installer, "run"), patch.object(installer, "probe", side_effect=[RuntimeError("probe failed"), None] if fail else None):
+                    if fail:
+                        with self.assertRaisesRegex(RuntimeError, "probe failed"):
+                            installer.install(candidate, entry, {"mutable_paths": []})
+                        self.assertFalse((runtime / "mu-plugins/demo.php").exists())
+                        self.assertFalse((runtime / "mu-plugins/demo").exists())
+                        self.assertEqual(json.loads(state.read_text()), {})
+                    else:
+                        result = installer.install(candidate, entry, {"mutable_paths": []})
+                        self.assertTrue(result["installed"])
+                        self.assertEqual(core.files(runtime, paths, prefix="wordpress/"), core.files(candidate, paths))
+                        self.assertIn("demo", json.loads(state.read_text()))
+                    restore.assert_called_once()
+                self.assertEqual(unrelated.read_text(), "preserve")
+
+    def test_first_mu_install_refuses_untracked_live_code(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "mu-plugins").mkdir()
+            live = root / "mu-plugins/demo.php"
+            live.write_text("operator code")
+            state = root / "state.json"
+            state.write_text("{}")
+            entry = {"slug": "demo", "kind": "mu", "allow_initial_install": True,
+                     "paths": {"wordpress/mu-plugins/demo.php": "wordpress/mu-plugins/demo.php"}}
+            with patch.object(installer, "RUNTIME", root), patch.object(installer, "STATE", state), patch.object(installer, "restore_drill") as restore:
+                with self.assertRaisesRegex(RuntimeError, "drift"):
+                    installer.install(root / "candidate", entry, {"mutable_paths": []})
+                restore.assert_not_called()
+            self.assertEqual(live.read_text(), "operator code")
+
+    def test_initial_mu_admission_requires_loader_last(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "config").mkdir()
+            entry = {"slug": "demo", "kind": "mu", "allow_initial_install": True,
+                     "paths": {"wordpress/mu-plugins/demo.php": "wordpress/mu-plugins/demo.php", "wordpress/mu-plugins/demo": "wordpress/mu-plugins/demo"}}
+            (root / "config/shared-plugin-sync.json").write_text(json.dumps({"plugins": [entry]}))
+            with self.assertRaisesRegex(ValueError, "assets before its loader"):
+                core.policy(root)
+
     def test_canonical_vendor_files_survive_gitignore_without_staging_unrelated_data(
         self,
     ):
@@ -177,7 +235,7 @@ class SharedAutomationTest(unittest.TestCase):
     def test_registered_fleet_is_explicit_and_contains_requested_common_plugins(self):
         data = core.policy(Path(__file__).resolve().parents[1])
         slugs = {x["slug"] for x in data["plugins"]}
-        self.assertEqual(15, len(slugs))
+        self.assertEqual(16, len(slugs))
         self.assertTrue(
             {
                 "wordfence",
@@ -186,6 +244,7 @@ class SharedAutomationTest(unittest.TestCase):
                 "cyr2lat",
                 "shortcodes-ultimate",
                 "tinymce-advanced",
+                "hs-article-cards",
             }
             <= slugs
         )

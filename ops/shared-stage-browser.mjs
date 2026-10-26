@@ -41,7 +41,7 @@ try {
     const { insertComponents, verifyComponents } = await import(pathToFileURL(`${source}/tests/article-cards/components.mjs`).href);
     const { insertInlineImage, verifyInlineImage } = await import(pathToFileURL(`${source}/tests/article-cards/inline-image.mjs`).href);
     await editor.waitForFunction(() => window.tinymce?.get('content')?.initialized);
-    await editor.evaluate(() => tinymce.get('content').setContent('<p>Первый абзац.</p>'));
+    await editor.evaluate(() => tinymce.get('content').setContent('<p>Первый абзац.</p><p>[hs_card id="BE_222t"]Безднокрыл[/hs_card]</p>'));
     await insertComponents(editor);
     await editor.getByRole('button', { name: 'Вставить статью', exact: true }).click();
     await editor.locator('#hs-ac-source').selectOption('koloda');
@@ -79,5 +79,5 @@ try {
     assert.deepEqual(await original.body(),png);
   }
   assert.notEqual(urls[0],urls[1]);
-  console.log(JSON.stringify({php:'8.4',theme:'Blocksy 2.1.40',tooltip:true,viewports:[320,1440],draft_save:true,duplicate_uploads:true,originals_unchanged:true}));
+  console.log(JSON.stringify({php:'8.4',theme:'Blocksy 2.1.40',tooltip:true,viewports:[320,1440],draft_save:true,duplicate_uploads:true,originals_unchanged:true,editorial_components:process.env.SYNC_STAGE_EDITORIAL==='1',editorial_viewports:process.env.SYNC_STAGE_EDITORIAL==='1'?[320,390,768,1024,1440]:[]}));
 } finally { await browser.close(); }

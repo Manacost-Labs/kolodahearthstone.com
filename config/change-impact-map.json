@@ -2,7 +2,9 @@
   "schema_version": 1,
   "defaults": {
     "risk": "low",
-    "domains": ["test.kolodahearthstone.com"],
+    "domains": [
+      "test.kolodahearthstone.com"
+    ],
     "skills": [
       "kolodahearthstone-project",
       "wordpress-change-impact",
@@ -38,7 +40,9 @@
         "wordpress/plugins/shortcodes-ultimate/**",
         "wordpress/plugins/tinymce-advanced/**",
         "wordpress/plugins/redis-cache/**",
-        "wordpress/plugins/wordfence/**"
+        "wordpress/plugins/wordfence/**",
+        "wordpress/mu-plugins/hs-article-cards.php",
+        "wordpress/mu-plugins/hs-article-cards/**"
       ],
       "owner": "approved-shared-plugin-fleet",
       "classified": true,
@@ -215,11 +219,18 @@
       ]
     },
     {
-      "patterns": ["ops/nginx/**"],
+      "patterns": [
+        "ops/nginx/**"
+      ],
       "owner": "regional-proxy-configuration",
       "classified": true,
       "risk": "high",
-      "surfaces": ["nginx", "regional-proxy", "media", "performance"],
+      "surfaces": [
+        "nginx",
+        "regional-proxy",
+        "media",
+        "performance"
+      ],
       "domains": [
         "kolodahearthstone.com",
         "kolodahearthstone.ru",
@@ -242,11 +253,17 @@
       ]
     },
     {
-      "patterns": ["wordpress/mu-plugins/hs-media-upload-accelerator.php"],
+      "patterns": [
+        "wordpress/mu-plugins/hs-media-upload-accelerator.php"
+      ],
       "owner": "media-upload-performance",
       "classified": true,
       "risk": "high",
-      "surfaces": ["media", "wp-admin", "performance"],
+      "surfaces": [
+        "media",
+        "wp-admin",
+        "performance"
+      ],
       "domains": [
         "kolodahearthstone.com",
         "kolodahearthstone.ru",
@@ -268,11 +285,17 @@
       ]
     },
     {
-      "patterns": ["wordpress/mu-plugins/kolodahearthstone-shortcode-compat/**"],
+      "patterns": [
+        "wordpress/mu-plugins/kolodahearthstone-shortcode-compat/**"
+      ],
       "owner": "shortcode-formatting-compatibility",
       "classified": true,
       "risk": "high",
-      "surfaces": ["content-rendering", "shortcodes", "blocksy"],
+      "surfaces": [
+        "content-rendering",
+        "shortcodes",
+        "blocksy"
+      ],
       "domains": [
         "kolodahearthstone.com",
         "kolodahearthstone.ru",
@@ -290,11 +313,22 @@
       ]
     },
     {
-      "patterns": ["wordpress/mu-plugins/hs-article-versions.php", "tests/test_article_versions.py", "config/wordpress-contracts.json"],
+      "patterns": [
+        "wordpress/mu-plugins/hs-article-versions.php",
+        "tests/test_article_versions.py",
+        "config/wordpress-contracts.json"
+      ],
       "owner": "article-editorial-versions",
       "classified": true,
       "risk": "high",
-      "surfaces": ["wp-admin", "editor", "frontend", "blocksy", "rest-api", "content-integrity"],
+      "surfaces": [
+        "wp-admin",
+        "editor",
+        "frontend",
+        "blocksy",
+        "rest-api",
+        "content-integrity"
+      ],
       "domains": [
         "kolodahearthstone.com",
         "kolodahearthstone.ru",
@@ -319,11 +353,19 @@
       ]
     },
     {
-      "patterns": ["wordpress/mu-plugins/hs-article-tail-controls.php", "tests/test_article_tail_controls.py", "wordpress/plugins/KolodaHearthstone Locker/svl-home-redesign.php"],
+      "patterns": [
+        "wordpress/mu-plugins/hs-article-tail-controls.php",
+        "tests/test_article_tail_controls.py",
+        "wordpress/plugins/KolodaHearthstone Locker/svl-home-redesign.php"
+      ],
       "owner": "article-tail-presentation",
       "classified": true,
       "risk": "high",
-      "surfaces": ["frontend", "blocksy", "content-rendering"],
+      "surfaces": [
+        "frontend",
+        "blocksy",
+        "content-rendering"
+      ],
       "domains": [
         "kolodahearthstone.com",
         "kolodahearthstone.ru",
@@ -342,34 +384,92 @@
       ]
     },
     {
-      "patterns": ["wordpress/mu-plugins/koloda-tooltip-workspace.php", "wordpress/mu-plugins/koloda-tooltip-workspace/**", "tests/test_tooltip_workspace.py"],
+      "patterns": [
+        "wordpress/mu-plugins/koloda-tooltip-workspace.php",
+        "wordpress/mu-plugins/koloda-tooltip-workspace/**",
+        "tests/test_tooltip_workspace.py"
+      ],
       "owner": "editor-tooltip-workspace",
       "classified": true,
       "risk": "high",
-      "surfaces": ["wp-admin", "editor", "shortcodes"],
-      "domains": ["kolodahearthstone.com", "kolodahearthstone.ru", "test.kolodahearthstone.com"],
-      "skills": ["wordpress-admin-ui", "wordpress-article-editor", "wordpress-accessibility", "wordpress-plugin-dev"],
-      "checks": ["make check", "staging desktop/mobile tooltip-editor flow"]
+      "surfaces": [
+        "wp-admin",
+        "editor",
+        "shortcodes"
+      ],
+      "domains": [
+        "kolodahearthstone.com",
+        "kolodahearthstone.ru",
+        "test.kolodahearthstone.com"
+      ],
+      "skills": [
+        "wordpress-admin-ui",
+        "wordpress-article-editor",
+        "wordpress-accessibility",
+        "wordpress-plugin-dev"
+      ],
+      "checks": [
+        "make check",
+        "staging desktop/mobile tooltip-editor flow"
+      ]
     },
     {
-      "patterns": ["wordpress/mu-plugins/koloda-frontend-speed.php", "tests/test_frontend_speed.py"],
+      "patterns": [
+        "wordpress/mu-plugins/koloda-frontend-speed.php",
+        "tests/test_frontend_speed.py"
+      ],
       "owner": "public-navigation-speed",
       "classified": true,
       "risk": "high",
-      "surfaces": ["frontend", "cache", "performance", "analytics"],
-      "domains": ["kolodahearthstone.com", "kolodahearthstone.ru", "origin", "ru-moscow", "ru-novosibirsk"],
-      "skills": ["blocksy-theme", "wordpress-runtime-stack", "wp-performance", "web-perf", "wordpress-ads-analytics", "playwright"],
-      "checks": ["make check", "make blocksy-audit", "disposable Blocksy browser verification", "regional smoke checks"]
+      "surfaces": [
+        "frontend",
+        "cache",
+        "performance",
+        "analytics"
+      ],
+      "domains": [
+        "kolodahearthstone.com",
+        "kolodahearthstone.ru",
+        "origin",
+        "ru-moscow",
+        "ru-novosibirsk"
+      ],
+      "skills": [
+        "blocksy-theme",
+        "wordpress-runtime-stack",
+        "wp-performance",
+        "web-perf",
+        "wordpress-ads-analytics",
+        "playwright"
+      ],
+      "checks": [
+        "make check",
+        "make blocksy-audit",
+        "disposable Blocksy browser verification",
+        "regional smoke checks"
+      ]
     },
     {
-      "patterns": ["wordpress/mu-plugins/**"],
+      "patterns": [
+        "wordpress/mu-plugins/**"
+      ],
       "owner": "first-party-generic",
       "classified": false,
       "risk": "medium",
-      "surfaces": ["wordpress-runtime"],
-      "domains": ["kolodahearthstone.com", "kolodahearthstone.ru"],
-      "skills": ["wp-project-triage", "wp-plugin-development"],
-      "checks": ["make check"]
+      "surfaces": [
+        "wordpress-runtime"
+      ],
+      "domains": [
+        "kolodahearthstone.com",
+        "kolodahearthstone.ru"
+      ],
+      "skills": [
+        "wp-project-triage",
+        "wp-plugin-development"
+      ],
+      "checks": [
+        "make check"
+      ]
     }
   ]
 }

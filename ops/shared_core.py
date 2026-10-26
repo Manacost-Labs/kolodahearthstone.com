@@ -51,6 +51,10 @@ def policy(root):
         seen.add(entry["slug"])
         if entry["kind"] not in ("plugin", "mu"):
             raise ValueError("Invalid plugin kind")
+        if entry.get("allow_initial_install"):
+            expected_paths = [f"wordpress/mu-plugins/{entry['slug']}", f"wordpress/mu-plugins/{entry['slug']}.php"]
+            if entry["kind"] != "mu" or list(entry["paths"]) != expected_paths:
+                raise ValueError("Initial MU install requires assets before its loader")
         for target, source in entry["paths"].items():
             safe_path(target)
             safe_path(source)

@@ -236,7 +236,14 @@ def install(candidate, entry, data):
     before = files(RUNTIME, entry["paths"], prefix="wordpress/")
     incoming = files(candidate, entry["paths"])
     code = lambda values: {k: v for k, v in values.items() if k not in mutable}
-    if digest(code(before)) != state[entry["slug"]]:
+    initial = (
+        entry.get("allow_initial_install") is True
+        and entry["kind"] == "mu"
+        and state.get(entry["slug"]) in (None, digest({}))
+        and not before
+    )
+    expected = digest({}) if initial else state.get(entry["slug"])
+    if digest(code(before)) != expected:
         raise RuntimeError(
             "Live plugin drift detected; refusing to overwrite local changes"
         )
@@ -260,8 +267,26 @@ def install(candidate, entry, data):
         for name in entry["paths"]:
             relative = name.removeprefix("wordpress/")
             live = RUNTIME / relative
-            if not live.exists() or live.is_symlink():
-                raise RuntimeError("Missing or linked live plugin root")
+            if live.is_symlink():
+                raise RuntimeError("Linked live plugin root")
+            if not live.exists():
+                if not initial:
+                    raise RuntimeError("Missing live plugin root")
+                source = candidate / name
+                owner = live.parent.stat()
+                temporary = live.with_name("." + live.name + ".initial-" + secrets.token_hex(6))
+                if source.is_dir():
+                    shutil.copytree(source, temporary)
+                    paths = [temporary, *temporary.rglob("*")]
+                else:
+                    shutil.copy2(source, temporary)
+                    paths = [temporary]
+                for path in paths:
+                    os.chown(path, owner.st_uid, owner.st_gid)
+                    path.chmod(0o755 if path.is_dir() else 0o644)
+                os.replace(temporary, live)
+                installed.append((live, None, None))
+                continue
             saved = backup / relative
             saved.parent.mkdir(parents=True, exist_ok=True)
             original = live.stat()
@@ -320,6 +345,12 @@ def install(candidate, entry, data):
         probe()
     except BaseException:
         for live, saved, original in reversed(installed):
+            if saved is None:
+                if live.is_dir():
+                    shutil.rmtree(live)
+                else:
+                    live.unlink()
+                continue
             if live.is_dir():
                 recovery = live.with_name(
                     "." + live.name + ".rollback-" + secrets.token_hex(6)

@@ -36,6 +36,35 @@ try {
   await editor.locator('#save-post').click();
   await editor.waitForURL(/post\.php/);
   await expect(editor.locator('#title')).toHaveValue('Shared automatic draft');
+  if (process.env.SYNC_STAGE_EDITORIAL === '1') {
+    const source = process.env.SYNC_STAGE_SOURCE;
+    const { insertComponents, verifyComponents } = await import(pathToFileURL(`${source}/tests/article-cards/components.mjs`).href);
+    const { insertInlineImage, verifyInlineImage } = await import(pathToFileURL(`${source}/tests/article-cards/inline-image.mjs`).href);
+    await editor.waitForFunction(() => window.tinymce?.get('content')?.initialized);
+    await editor.evaluate(() => tinymce.get('content').setContent('<p>Первый абзац.</p>'));
+    await insertComponents(editor);
+    await editor.getByRole('button', { name: 'Вставить статью', exact: true }).click();
+    await editor.locator('#hs-ac-source').selectOption('koloda');
+    await editor.waitForFunction(() => document.querySelector('#hs-ac-results').getAttribute('aria-busy') === 'false');
+    await editor.locator('.hs-ac-choice').first().click();
+    await editor.locator('#hs-ac-insert').click();
+    await editor.waitForFunction(() => !document.querySelector('#hs-article-cards-dialog').open);
+    await insertInlineImage(editor);
+    await editor.evaluate(() => window.scrollTo(0, 0));
+    await Promise.all([editor.waitForNavigation(), editor.locator('#save-post').click()]);
+    await editor.waitForFunction(() => window.tinymce?.get('content')?.initialized);
+    assert.match(await editor.evaluate(() => tinymce.get('content').getContent()), /hs-inline-image/);
+    const id = new URL(editor.url()).searchParams.get('post');
+    const preview = await context.newPage();
+    await preview.goto(`${base}/?p=${id}&preview=true`);
+    await verifyComponents(preview, '.entry-content');
+    await verifyInlineImage(preview);
+    for (const width of [320,390,768,1024,1440]) {
+      await preview.setViewportSize({width,height:900});
+      assert.ok(await preview.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+    }
+    await preview.close();
+  }
   await editor.goto(`${base}/wp-admin/media-new.php`);
   const nonce=await editor.evaluate(()=>window._wpPluploadSettings.defaults.multipart_params._wpnonce);
   const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j5V8AAAAASUVORK5CYII=','base64');

@@ -59,3 +59,12 @@ target main changes or unexpected live edits require inspection; do not discard
 evidence or reset the baseline to hide a failure. After review, archive the owned
 candidate/pending evidence, remove that owned Git worktree, and retry. Never
 prune unrelated containers or reset an operator's source checkout.
+
+HS Article Cards is admitted as an MU package with identical source paths. Its
+first install requires an empty recorded runtime tree (or no prior entry), a
+restore-tested backup, and the same exact candidate/staging/CI proof as upgrades.
+Assets are installed before the PHP loader. On failure the new loader and assets
+are removed, preserving unrelated MU files and the previous runtime baseline.
+Theme/cache packages are unchanged. The Blocksy fixture sets the explicit local
+catalog identity and exercises components, inline media, saving, preview and
+mobile layout using the tests from the verified source commit.

@@ -113,6 +113,15 @@
       "paths": {
         "wordpress/plugins/wordfence": "wordpress/plugins/wordfence"
       }
+    },
+    {
+      "slug": "hs-article-cards",
+      "kind": "mu",
+      "allow_initial_install": true,
+      "paths": {
+        "wordpress/mu-plugins/hs-article-cards": "wordpress/mu-plugins/hs-article-cards",
+        "wordpress/mu-plugins/hs-article-cards.php": "wordpress/mu-plugins/hs-article-cards.php"
+      }
     }
   ]
 }

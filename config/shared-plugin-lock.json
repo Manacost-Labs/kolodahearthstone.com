@@ -6,19 +6,11 @@
     "hs-tooltip": {
       "version": "1.1.15",
       "source_repository": "Manacost-Labs/hs-manacost.ru",
-      "source_path": "wordpress/plugins/hs-tooltip",
-      "source_commit": "f65294f91590e4481fd570508af4b5a6082e958a",
-      "tree_sha256": "b22805a8bacbe23e3c5075d368124b71afd1164286198ea93249a2a429335db3",
-      "entrypoints": [
-        "hs-smart-tooltip.php",
-        "assets/hs-tooltip.js",
-        "assets/hs-tooltip.css",
-        "assets/hs-tooltip-v115.js"
-      ],
-      "consumers": [
-        "Manacost-Labs/hs-manacost.ru",
-        "Manacost-Labs/kolodahearthstone.com"
-      ]
+      "source_commit": "13872df20a4197af2c76882455230fb5ac7ef312",
+      "tree_sha256": "3da815ad1435b5b345974c5b5a17d6dda16f012810a1e6ee817b96cdbe361757",
+      "source_files": {
+        "wordpress/plugins/hs-tooltip": "wordpress/plugins/hs-tooltip"
+      }
     },
     "hs-api-gallery": {
       "version": "1.0.5",

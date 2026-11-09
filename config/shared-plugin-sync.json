@@ -3,7 +3,10 @@
   "source_repository": "Manacost-Labs/hs-manacost.ru",
   "consumer_repository": "Manacost-Labs/kolodahearthstone.com",
   "mutable_paths": [
-    "wordpress/plugins/hs-tooltip/hs_dictionary.json"
+    "wordpress/plugins/hs-tooltip/hs_dictionary.json",
+    "wordpress/plugins/hs-tooltip/hs_dictionary.bak.json",
+    "wordpress/plugins/hs-tooltip/hs_bgs_dictionary.json",
+    "wordpress/plugins/hs-tooltip/assets/hs-tooltip-bgs-catalog.json"
   ],
   "plugins": [
     {

@@ -280,6 +280,44 @@ class SharedAutomationTest(unittest.TestCase):
         )
         self.assertFalse({"td-composer", "wp-rocket", "blocksy-companion"} & slugs)
 
+    def test_tooltip_runtime_dictionaries_are_preserved_not_reported_as_drift(self):
+        # The plugin's own cron rewrites these four files; an update must keep them.
+        base = "wordpress/plugins/hs-tooltip/"
+        generated = ["hs_dictionary.json", "hs_dictionary.bak.json",
+                     "hs_bgs_dictionary.json", "assets/hs-tooltip-bgs-catalog.json"]
+        data = core.policy(Path(__file__).resolve().parents[1])
+        self.assertLessEqual({base + name for name in generated}, set(data["mutable_paths"]))
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            live, candidate = root / "live/plugins/hs-tooltip", root / "candidate/" / base
+            for directory in (live / "assets", candidate / "assets"):
+                directory.mkdir(parents=True)
+            for tree, code in ((live, "old"), (candidate, "new")):
+                (tree / "hs-smart-tooltip.php").write_text(code)
+                for name in generated[:1] + generated[2:]:
+                    (tree / name).write_text("shipped")
+            entry = {"slug": "hs-tooltip", "kind": "plugin",
+                     "paths": {"wordpress/plugins/hs-tooltip": "wordpress/plugins/hs-tooltip"}}
+            mutable = set(data["mutable_paths"])
+            before = core.files(root / "live", entry["paths"], prefix="wordpress/")
+            state = root / "state.json"
+            state.write_text(json.dumps({"hs-tooltip": core.digest(
+                {k: v for k, v in before.items() if k not in mutable})}))
+            for name in generated:
+                (live / name).write_text("cron " + name)
+            with (
+                patch.object(installer, "RUNTIME", root / "live"),
+                patch.object(installer, "STATE", state),
+                patch.object(installer, "BACKUPS", root / "backups"),
+                patch.object(installer, "restore_drill"),
+                patch.object(installer, "run"),
+                patch.object(installer, "probe"),
+            ):
+                installer.install(root / "candidate", entry, data)
+            self.assertEqual("new", (live / "hs-smart-tooltip.php").read_text())
+            for name in generated:
+                self.assertEqual("cron " + name, (live / name).read_text())
+
     def test_failed_or_pending_source_promotion_does_not_authorize_sync(self):
         for status, conclusion in [("completed", "failure"), ("in_progress", None)]:
             with patch.object(

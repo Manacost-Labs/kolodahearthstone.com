@@ -51,7 +51,8 @@
       "slug": "hs-media-upload-accelerator",
       "kind": "mu",
       "paths": {
-        "wordpress/mu-plugins/hs-media-upload-accelerator.php": "wordpress/mu-plugins/hs-media-upload-accelerator.php"
+        "wordpress/mu-plugins/hs-media-upload-accelerator.php": "wordpress/mu-plugins/hs-media-upload-accelerator.php",
+        "wordpress/mu-plugins/hs-media-upload-accelerator": "wordpress/mu-plugins/hs-media-upload-accelerator"
       }
     },
     {

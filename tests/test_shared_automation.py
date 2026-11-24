@@ -297,6 +297,21 @@ class SharedAutomationTest(unittest.TestCase):
                 core.import_plugin(source, target, entry, "b" * 40)
             self.assertEqual(before, core.files(target, entry["paths"]))
 
+    def test_mu_import_pins_the_same_source_and_digest_as_the_release(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source, target = root / "source", root / "target"
+            (target / "config").mkdir(parents=True)
+            (target / "config/shared-plugin-lock.json").write_text('{"plugins": {}}')
+            loader = "wordpress/mu-plugins/demo.php"
+            (source / loader).parent.mkdir(parents=True)
+            (source / loader).write_text("<?php // demo")
+            entry = {"slug": "demo", "kind": "mu", "paths": {loader: loader}}
+            self.assertTrue(core.import_plugin(source, target, entry, "a" * 40))
+            record = json.loads((target / "config/shared-plugin-lock.json").read_text())["mu_plugins"]["demo"]
+            self.assertEqual(record["source_commit"], "a" * 40)
+            self.assertEqual(record["tree_sha256"], core.digest(core.files(target, entry["paths"])))
+
     def test_registered_fleet_is_explicit_and_contains_requested_common_plugins(self):
         data = core.policy(Path(__file__).resolve().parents[1])
         slugs = {x["slug"] for x in data["plugins"]}

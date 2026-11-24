@@ -120,5 +120,12 @@
         "wordpress/plugins/wordfence": "wordpress/plugins/wordfence"
       }
     }
+  },
+  "mu_plugins": {
+    "hs-article-cards": {
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "1ef6ff4ce5aa06a73d03700a3e82e6e441800f3f",
+      "tree_sha256": "66e7b0371ed615a82f91a7ad135dd60d0f2086527116f0f4d8f5b67074b543ae"
+    }
   }
 }

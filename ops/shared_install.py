@@ -423,7 +423,10 @@ def main():
         raise RuntimeError("Stage proof belongs to another plugin")
     if manual:
         lock = json.loads((candidate / "config/shared-plugin-lock.json").read_text())
-        if candidate.name != proof["target_sha"] or lock["plugins"][args.slug]["source_commit"] != proof["source_sha"]:
+        record = lock["mu_plugins" if entry["kind"] == "mu" else "plugins"][args.slug]
+        if (candidate.name != proof["target_sha"]
+                or record["source_commit"] != proof["source_sha"]
+                or (entry["kind"] == "mu" and record["tree_sha256"] != proof["plugin_digest"])):
             raise RuntimeError("Manual release does not match the verified source and target")
     if (
         run([*git, "rev-parse", "HEAD"], cwd=args.candidate).decode().strip()

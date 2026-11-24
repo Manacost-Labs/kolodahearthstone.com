@@ -11,6 +11,9 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "ops"))
+from shared_core import SHA, digest, files
+
 SLUG = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -58,6 +61,18 @@ def verify_plugins(root: Path) -> list[str]:
             continue
         if tree_digest(plugin) != entry["tree_sha256"]:
             errors.append(f"{slug}: source digest mismatch")
+    for slug, entry in lock.get("mu_plugins", {}).items():
+        if not SLUG.fullmatch(slug) or not isinstance(entry, dict) or not SHA.fullmatch(str(entry.get("source_commit", ""))):
+            errors.append("Invalid shared MU package lock")
+            continue
+        base = "wordpress/mu-plugins/" + slug
+        try:
+            contents = files(root, (base + ".php", base))
+        except ValueError as error:
+            errors.append(f"{slug}: {error}")
+            continue
+        if base + ".php" not in contents or digest(contents) != entry.get("tree_sha256"):
+            errors.append(f"{slug}: MU source digest mismatch")
     return errors
 
 

@@ -170,7 +170,13 @@ def import_plugin(source, target, entry, source_sha):
         inventory_path.write_text(
             json.dumps(inventory, ensure_ascii=False, indent=2) + "\n"
         )
-        lock_path.write_text(json.dumps(lock, ensure_ascii=False, indent=2) + "\n")
+    else:
+        lock.setdefault("mu_plugins", {})[entry["slug"]] = {
+            "source_repository": "Manacost-Labs/hs-manacost.ru",
+            "source_commit": source_sha,
+            "tree_sha256": digest(incoming),
+        }
+    lock_path.write_text(json.dumps(lock, ensure_ascii=False, indent=2) + "\n")
     return True
 
 

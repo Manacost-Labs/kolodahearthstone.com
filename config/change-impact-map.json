@@ -32,6 +32,7 @@
         "wordpress/mu-plugins/hs-local-image-optimizer.php",
         "wordpress/mu-plugins/hs-local-image-optimizer/**",
         "wordpress/mu-plugins/hs-media-upload-accelerator.php",
+        "wordpress/mu-plugins/hs-media-upload-accelerator/**",
         "wordpress/mu-plugins/manacost-media-unique-filenames.php",
         "wordpress/mu-plugins/hs-article-versions.php",
         "wordpress/plugins/separator-placeholder-quick-insert/**",
@@ -254,7 +255,8 @@
     },
     {
       "patterns": [
-        "wordpress/mu-plugins/hs-media-upload-accelerator.php"
+        "wordpress/mu-plugins/hs-media-upload-accelerator.php",
+        "wordpress/mu-plugins/hs-media-upload-accelerator/**"
       ],
       "owner": "media-upload-performance",
       "classified": true,

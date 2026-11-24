@@ -126,6 +126,11 @@
       "source_repository": "Manacost-Labs/hs-manacost.ru",
       "source_commit": "1ef6ff4ce5aa06a73d03700a3e82e6e441800f3f",
       "tree_sha256": "66e7b0371ed615a82f91a7ad135dd60d0f2086527116f0f4d8f5b67074b543ae"
+    },
+    "hs-media-upload-accelerator": {
+      "source_repository": "Manacost-Labs/hs-manacost.ru",
+      "source_commit": "1ef6ff4ce5aa06a73d03700a3e82e6e441800f3f",
+      "tree_sha256": "7e3d647b9327c14a4badc8ecd1274f2c84e1bede74325ccd5916d274a1ef3922"
     }
   }
 }

@@ -14,7 +14,7 @@ import subprocess
 import time
 from pathlib import Path
 
-from shared_core import digest, files, policy, run
+from shared_core import SHA, digest, files, policy, run
 from shared_stage import DB_IMAGE, PHP, WP, wait_database
 
 RUNTIME = Path("/var/www/koloda/data/www/kolodahearthstone.ru/wp-content")
@@ -270,7 +270,13 @@ def install(candidate, entry, data):
             if live.is_symlink():
                 raise RuntimeError("Linked live plugin root")
             if not live.exists():
-                if not initial:
+                new_assets = (
+                    entry.get("allow_new_asset_directory") is True
+                    and name == f"wordpress/mu-plugins/{entry['slug']}"
+                    and (candidate / name).is_dir()
+                    and f"{name}.php" in before
+                )
+                if not (initial or new_assets):
                     raise RuntimeError("Missing live plugin root")
                 source = candidate / name
                 owner = live.parent.stat()
@@ -401,13 +407,24 @@ def main():
         print(json.dumps({"registered": len(state)}))
         return
     entry = next(e for e in data["plugins"] if e["slug"] == args.slug)
-    if (
-        args.candidate.resolve()
-        != Path("/var/lib/koloda-plugin-sync/candidate").resolve()
-    ):
+    candidate = args.candidate.resolve(strict=True)
+    manual = (
+        candidate == args.candidate
+        and candidate.parent == Path("/var/lib/koloda-manual-release")
+        and SHA.fullmatch(candidate.name)
+        and all(p.stat().st_uid == 0 and p.stat().st_mode & 0o022 == 0
+                for p in (candidate, candidate.parent))
+    )
+    if candidate != Path("/var/lib/koloda-plugin-sync/candidate").resolve() and not manual:
         raise RuntimeError("Only the owned candidate worktree may be installed")
     git = ["git", "-c", "safe.directory=" + str(args.candidate.resolve())]
     proof = json.loads((args.candidate / "stage-proof.json").read_text())
+    if proof["plugin"] != args.slug:
+        raise RuntimeError("Stage proof belongs to another plugin")
+    if manual:
+        lock = json.loads((candidate / "config/shared-plugin-lock.json").read_text())
+        if candidate.name != proof["target_sha"] or lock["plugins"][args.slug]["source_commit"] != proof["source_sha"]:
+            raise RuntimeError("Manual release does not match the verified source and target")
     if (
         run([*git, "rev-parse", "HEAD"], cwd=args.candidate).decode().strip()
         != proof["target_sha"]

@@ -76,6 +76,41 @@ class SharedAutomationTest(unittest.TestCase):
                     restore.assert_called_once()
                 self.assertEqual(unrelated.read_text(), "preserve")
 
+    def test_existing_loader_adds_verified_assets_and_rolls_back_on_failure(self):
+        for fail in (False, True):
+            with self.subTest(fail=fail), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                runtime = root / "runtime"
+                candidate = root / "candidate"
+                (runtime / "mu-plugins").mkdir(parents=True)
+                unrelated = runtime / "mu-plugins/unrelated.php"
+                unrelated.write_text("preserve")
+                paths = {"wordpress/mu-plugins/demo": "wordpress/mu-plugins/demo",
+                         "wordpress/mu-plugins/demo.php": "wordpress/mu-plugins/demo.php"}
+                entry = {"slug": "demo", "kind": "mu", "allow_new_asset_directory": True, "paths": paths}
+                (candidate / "wordpress/mu-plugins/demo").mkdir(parents=True)
+                (candidate / "wordpress/mu-plugins/demo/main.php").write_text("<?php // assets")
+                (candidate / "wordpress/mu-plugins/demo.php").write_text("<?php // loader")
+                state = root / "runtime.json"
+                loader = runtime / "mu-plugins/demo.php"
+                loader.write_text("original loader")
+                previous = {"demo": core.digest(core.files(runtime, paths, prefix="wordpress/"))}
+                state.write_text(json.dumps(previous))
+                with patch.object(installer, "RUNTIME", runtime), patch.object(installer, "STATE", state), patch.object(installer, "BACKUPS", root / "backups"), patch.object(installer, "restore_drill") as restore, patch.object(installer, "run"), patch.object(installer, "probe", side_effect=[RuntimeError("probe failed"), None] if fail else None):
+                    if fail:
+                        with self.assertRaisesRegex(RuntimeError, "probe failed"):
+                            installer.install(candidate, entry, {"mutable_paths": []})
+                        self.assertEqual(loader.read_text(), "original loader")
+                        self.assertFalse((runtime / "mu-plugins/demo").exists())
+                        self.assertEqual(json.loads(state.read_text()), previous)
+                    else:
+                        result = installer.install(candidate, entry, {"mutable_paths": []})
+                        self.assertTrue(result["installed"])
+                        self.assertEqual(core.files(runtime, paths, prefix="wordpress/"), core.files(candidate, paths))
+                        self.assertIn("demo", json.loads(state.read_text()))
+                    restore.assert_called_once()
+                self.assertEqual(unrelated.read_text(), "preserve")
+
     def test_first_mu_install_refuses_untracked_live_code(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

@@ -51,9 +51,10 @@
       "slug": "hs-media-upload-accelerator",
       "kind": "mu",
       "paths": {
-        "wordpress/mu-plugins/hs-media-upload-accelerator.php": "wordpress/mu-plugins/hs-media-upload-accelerator.php",
-        "wordpress/mu-plugins/hs-media-upload-accelerator": "wordpress/mu-plugins/hs-media-upload-accelerator"
-      }
+        "wordpress/mu-plugins/hs-media-upload-accelerator": "wordpress/mu-plugins/hs-media-upload-accelerator",
+        "wordpress/mu-plugins/hs-media-upload-accelerator.php": "wordpress/mu-plugins/hs-media-upload-accelerator.php"
+      },
+      "allow_new_asset_directory": true
     },
     {
       "slug": "manacost-media-unique-filenames",
